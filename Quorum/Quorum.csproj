@@ -62,6 +62,7 @@
     <Compile Include="Integration\Http\ClientDetails.cs" />
     <Compile Include="Integration\Http\HttpAddressingScheme.cs" />
     <Compile Include="Integration\Http\HttpEventListener.cs" />
+    <Compile Include="Integration\Http\HttpQuorumImpl.cs" />
     <Compile Include="Integration\Http\HttpReadableChannel.cs" />
     <Compile Include="Integration\Http\HttpResponseContainer.cs" />
     <Compile Include="Integration\Http\HttpWriteableChannel.cs" />
