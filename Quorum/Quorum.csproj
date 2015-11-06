@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4955C96A-D5A1-4D55-B7ED-9250BE68AB18}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Quorum</RootNamespace>
+    <AssemblyName>Quorum</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Castle.Core">
+      <HintPath>..\packages\Castle.Core.3.3.0\lib\net45\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Windsor">
+      <HintPath>..\packages\Castle.Windsor.3.3.0\lib\net45\Castle.Windsor.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AOP\LoggingInterceptor.cs" />
+    <Compile Include="Builder.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="EventInterpreter.cs" />
+    <Compile Include="EventNames.cs" />
+    <Compile Include="ExecutionContext.cs" />
+    <Compile Include="IExecutionContext.cs" />
+    <Compile Include="IMasterWorkAdapter.cs" />
+    <Compile Include="Integration\Http\ActionDisposition.cs" />
+    <Compile Include="Integration\Http\BaseHttpChannel.cs" />
+    <Compile Include="Integration\Http\ClientDetails.cs" />
+    <Compile Include="Integration\Http\HttpAddressingScheme.cs" />
+    <Compile Include="Integration\Http\HttpEventListener.cs" />
+    <Compile Include="Integration\Http\HttpReadableChannel.cs" />
+    <Compile Include="Integration\Http\HttpResponseContainer.cs" />
+    <Compile Include="Integration\Http\HttpWriteableChannel.cs" />
+    <Compile Include="Integration\Http\IHttpClientModifier.cs" />
+    <Compile Include="Integration\Http\IHttpEventListener.cs" />
+    <Compile Include="Integration\IAddressingScheme.cs" />
+    <Compile Include="Integration\IElectionAdjudicator.cs" />
+    <Compile Include="Integration\IPayloadBuilder.cs" />
+    <Compile Include="Integration\IPayloadParser.cs" />
+    <Compile Include="Integration\IReadableChannel.cs" />
+    <Compile Include="Integration\IWriteableChannel.cs" />
+    <Compile Include="Integration\JsonPayloadBuilder.cs" />
+    <Compile Include="Integration\JsonPayloadParser.cs" />
+    <Compile Include="Integration\OldestCandidateAdjudicator.cs" />
+    <Compile Include="Integration\SimpleNetworkEnvironment.cs" />
+    <Compile Include="Payloads\BasePayload.cs" />
+    <Compile Include="Payloads\DeathAnnouncement.cs" />
+    <Compile Include="Payloads\Neighbour.cs" />
+    <Compile Include="Payloads\Neighbourhood.cs" />
+    <Compile Include="Payloads\QueryRequest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="States\BaseQuorumState.cs" />
+    <Compile Include="States\DeathAnnouncementState.cs" />
+    <Compile Include="States\DeathState.cs" />
+    <Compile Include="States\DiscoveryState.cs" />
+    <Compile Include="States\ElectionState.cs" />
+    <Compile Include="States\MasterState.cs" />
+    <Compile Include="States\QueryState.cs" />
+    <Compile Include="States\QuiescentState.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FSM\FSM.csproj">
+      <Project>{eda7c996-5b71-40d1-b8f8-ed1a9fe5af63}</Project>
+      <Name>FSM</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Infra\Infra.csproj">
+      <Project>{7758b13b-e49d-4cc6-80cf-5a7b2290f9aa}</Project>
+      <Name>Infra</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

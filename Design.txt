@@ -1,0 +1,85 @@
+
+Start
+=====
+
+Activate listening for messages (http as one example)
+
+Discover:
+* Machines via DirectoryEntry or
+* from app.config set of names (e.g. AD not used)
+
+Behaviour
+=========
+
+* States
+ - Discovery
+ - Dying
+ - RequestElection
+ - WaitingResponse (must be able to timeout, and decide what to do. Also needs some intelligence e.g. if 2 machine farm, and gets no response for an election, self elect - as one example)
+ - ElectionResult (reflexive)
+ - SelfElect
+ - Active
+ - Quiescent
+ - Query - tell world about self - then transition back to whatever state was in (yes, finally got there)
+
+ * Start message check pump - source of transitional events for a state machine? It will be.
+
+ * Discovery state (initial state) - not interruptable; must queue transitions - could get complex
+	* TPL disovery of all neighbours; timeout in configuration
+	* Response if received has status (master or not)
+	* Mark each as reachable or not
+    * If no master:
+      * Go to election state
+	  * Otherwise quiescent state
+
+ * Election state
+  * If only one active, elect self
+  * else 
+  * Propose election - timestamped - earliest timestamp wins
+  * Wait until all hosts have accepted or another proposal comes in - earliest wins
+  * Now have picture of all participants
+   * broadcast voter names to reachable hosts
+   * await votes from r-hosts
+   * Election has to result in something
+   * I am master - go to processing state
+   * else go to quiescent state
+    
+ * Quiescent state
+   * Shutdown - broadcast shutdown
+   * Election requested
+ * Incoming comms - master dying
+  * Remove from reachable 
+  * Trigger election
+
+ * Outgoing
+  * I am dying
+  * I can't see anybody
+
+  State
+   - cannot be interrupted or can be (self determined)
+   - ability to transition to one state, and when that has finished, self transition to previous state???
+     - e.g. In Active State - message, election proposed, transition to election state
+
+
+var fsm = new PassiveStateMachine<ProcessState, Command>();
+fsm.In(ProcessState.Inactive)
+   .On(Command.Exit).Goto(ProcessState.Terminated).Execute(SomeTransitionAction)
+   .On(Command.Begin).Goto(ProcessState.Active);
+fsm.In(ProcessState.Active)
+   .ExecuteOnEntry(SomeEntryAction)
+   .ExecuteOnExit(SomeExitAction)
+   .On(Command.End).Goto(ProcessState.Inactive)
+   .On(Command.Pause).Goto(ProcessState.Paused);
+fsm.In(ProcessState.Paused)
+   .On(Command.End).Goto(ProcessState.Inactive).OnlyIf(SomeGuard)
+   .On(Command.Resume).Goto(ProcessState.Active);
+fsm.Initialize(ProcessState.Inactive);
+fsm.Start();
+
+fsm.Fire(Command.Begin);
+
+
+** Each state is a class (IState)
+** Each state gets an object of type IStateMachineContext<TType> - which has an IStateMachine (to trigger change) and a strongly typed context object 
+** Support guards nicely
+** OnEntry and OnExit as well (see above, but not with Actions or Funcs)
