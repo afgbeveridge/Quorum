@@ -55,11 +55,15 @@ namespace Quorum.States {
         private IEnumerable<Neighbour> ContactNeighbours(string hostName) {
             var staticNeighbours = Configuration.Get<string>(Constants.Configuration.Nexus.Key);
             var neighbours = !String.IsNullOrEmpty(staticNeighbours) ? staticNeighbours.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries).Except(new [] { hostName }) : null;
-            LogFacade.Log("Apparent neighbours " + String.Join(", ", neighbours));
-            IEnumerable<Task<Neighbour>> queries = neighbours.Select(s => Task.Factory.StartNew<Neighbour>(QueryNeighbour, s)).ToArray();
-            LogFacade.Log("Wait for " + queries.Count() + " task(s)");
-            Task.WaitAll(queries.ToArray());
-            return queries.Where(t => !t.IsFaulted && t.Result.IsNotNull()).Select(t => t.Result);
+            var result = Enumerable.Empty<Neighbour>();
+            if (neighbours.IsNotNull()) {
+                LogFacade.Log("Apparent neighbours " + String.Join(", ", neighbours));
+                IEnumerable<Task<Neighbour>> queries = neighbours.Select(s => Task.Factory.StartNew<Neighbour>(QueryNeighbour, s)).ToArray();
+                LogFacade.Log("Wait for " + queries.Count() + " task(s)");
+                Task.WaitAll(queries.ToArray());
+                result = queries.Where(t => !t.IsFaulted && t.Result.IsNotNull()).Select(t => t.Result);
+            }
+            return result;
         }
 
         // A null neighbour is returned if cannot be reached
