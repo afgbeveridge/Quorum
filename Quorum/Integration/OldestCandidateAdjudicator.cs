@@ -11,9 +11,9 @@ namespace Quorum.Integration {
     public class OldestCandidateAdjudicator : IElectionAdjudicator {
 
         public Neighbour Choose(IList<Neighbour> neighbours, Neighbour self) {
-            LogFacade.Log("Choosing a master, candidates = " + (neighbours.IsNull() ? 0 : neighbours.Count));
+            LogFacade.Instance.LogInfo("Choosing a master, candidates = " + (neighbours.IsNull() ? 0 : neighbours.Count));
             var n = neighbours.IsNull() ? null : neighbours.Concat(new [] { self }).Aggregate((i, j) => i.UpTime > j.UpTime ? i : j);
-            LogFacade.Log("Candidate selected: " + (n.IsNull() ? "None - thus self" : n.Name));
+            LogFacade.Instance.LogInfo("Candidate selected: " + (n.IsNull() ? "None - thus self" : n.Name));
             return n;
         }
 

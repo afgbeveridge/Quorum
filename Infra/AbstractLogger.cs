@@ -25,6 +25,10 @@ namespace Infra {
 
         public abstract ILogger Configure();
 
+        public ILogger LogDebug(string message) {
+            return Log(LogLevel.Debug, message);
+        }
+
         public ILogger LogInfo(string message) {
             return Log(LogLevel.Info, message);
         }

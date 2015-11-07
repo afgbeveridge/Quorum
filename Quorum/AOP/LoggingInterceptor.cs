@@ -18,7 +18,7 @@ namespace Quorum.AOP {
 
         public void Intercept(IInvocation invocation) {
             if (!KnownNames.Any() || KnownNames.Contains(invocation.Method.Name))
-                LogFacade.Log(invocation.InvocationTarget.GetType().Name + ",Execute," + invocation.Method.Name);
+                LogFacade.Instance.LogInfo(invocation.InvocationTarget.GetType().Name + ",Execute," + invocation.Method.Name);
             invocation.Proceed();
         }
 

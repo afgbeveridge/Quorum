@@ -91,7 +91,7 @@ namespace Quorum.Integration.Http {
                             Payload = content,
                             ResponseContainer = context.IsNotNull() ? new HttpResponseContainer { Response = context.Response, Status = status } : null
                         };
-                        LogFacade.Log("Received an external event " + action.EventName + "; pass to state machine? " + (action.ExecutableStateType.IsNull() ? "Yes" : "No"));
+                        LogFacade.Instance.LogInfo("Received an external event " + action.EventName + "; pass to state machine? " + (action.ExecutableStateType.IsNull() ? "Yes" : "No"));
                         if (action.ExecutableStateType.IsNull())
                             Machine.Trigger(instance);
                         else {

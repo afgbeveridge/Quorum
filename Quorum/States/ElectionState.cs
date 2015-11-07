@@ -21,7 +21,7 @@ namespace Quorum.States {
         public IConfiguration Configuration { get; set; }
 
         public override async Task<StateResult> OnEntry(IStateMachineContext<IExecutionContext> context) {
-            //LogFacade.Log("Discovery requested? " + RequestedDiscovery);
+            //LogFacade.Instance.LogInfo("Discovery requested? " + RequestedDiscovery);
             var result = AnalyzeDiscovery(context); //!RequestedDiscovery ? StateResult.Create(nextState: EventNames.Discovery) : AnalyzeDiscovery(context.ExecutionContext);
             //RequestedDiscovery = !RequestedDiscovery;
             return result;

@@ -6,14 +6,24 @@ using System.Threading.Tasks;
 
 namespace Infra {
     
-    public static class LogFacade {
+    public class LogFacade : AbstractLogger {
 
-        public static ILogger Adapter { get; set; }
+        private static readonly Lazy<LogFacade> Singleton = new Lazy<LogFacade>(() => new LogFacade());
 
-        public static void Log(string msg, LogLevel level = LogLevel.Debug) {
-            if (Adapter.IsNotNull())
-                Adapter.Log(level, msg);
+        private LogFacade() { }
+
+        public static LogFacade Instance { get { return Singleton.Value; } }
+
+        public ILogger Adapter { get; set; }
+
+        public override ILogger Configure() {
+            return this;
         }
 
+        public override ILogger Log(LogLevel level, string message, Exception ex = null) {
+            if (Adapter.IsNotNull())
+                Adapter.Log(level, message);
+            return this;
+        }
     }
 }

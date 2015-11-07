@@ -17,11 +17,11 @@ namespace Quorum.Integration.Http {
             string result = null;
             try {
                 var request = CreateClient(address, timeoutMs);
-                LogFacade.Log("Contact " + request.Address);
+                LogFacade.Instance.LogInfo("Contact " + request.Address);
                 result = await request.Client.GetStringAsync(request.Address);
             }
             catch (Exception ex) {
-                LogFacade.Log("Issue: " + ex.Message);
+                LogFacade.Instance.LogInfo("Issue: " + ex.Message);
             }
             return result;
         }

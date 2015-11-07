@@ -43,7 +43,7 @@ namespace Quorum.Integration.Http {
                 settings.Converters.Add(new StringEnumConverter());
                 return settings;
             });
-            LogFacade.Adapter = new NLogLogger().Configure();
+            LogFacade.Instance.Adapter = new NLogLogger().Configure();
             DiscoveryTimer = new Timer(new Infra.Configuration().Get<int>(Constants.Configuration.DiscoveryPeriodMs));
             // Hook up the Elapsed event for the timer. 
             DiscoveryTimer.Elapsed += (src, args) => Machine.Trigger(EventInstance.Create(EventNames.Discovery));

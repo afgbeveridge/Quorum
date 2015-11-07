@@ -15,7 +15,7 @@ namespace Quorum.Integration.Http {
 
         public async Task<string> Write(string address, string content, int timeoutMs) {
             var request = CreateClient(address, timeoutMs, ActionDisposition.Write);
-            LogFacade.Log("Contact: " + request.Address);
+            LogFacade.Instance.LogInfo("Contact: " + request.Address);
             var response = await request.Client.PostAsync(request.Address, new ByteArrayContent(Encoding.Default.GetBytes(content)));
             string result = null;
             if (response.IsSuccessStatusCode) 

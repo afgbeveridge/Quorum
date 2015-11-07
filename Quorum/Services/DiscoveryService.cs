@@ -27,9 +27,9 @@ namespace Quorum.Services {
             var neighbours = !String.IsNullOrEmpty(staticNeighbours) ? staticNeighbours.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries).Except(new[] { invokingHostName }) : null;
             var result = Enumerable.Empty<Neighbour>();
             if (neighbours.IsNotNull()) {
-                LogFacade.Log("Apparent neighbours " + String.Join(", ", neighbours));
+                LogFacade.Instance.LogInfo("Apparent neighbours " + String.Join(", ", neighbours));
                 IEnumerable<Task<Neighbour>> queries = neighbours.Select(s => Task.Factory.StartNew<Neighbour>(QueryNeighbour, s)).ToArray();
-                LogFacade.Log("Wait for " + queries.Count() + " task(s)");
+                LogFacade.Instance.LogInfo("Wait for " + queries.Count() + " task(s)");
                 Task.WaitAll(queries.ToArray());
                 result = queries.Where(t => !t.IsFaulted && t.Result.IsNotNull()).Select(t => t.Result);
             }
@@ -44,14 +44,14 @@ namespace Quorum.Services {
                 var task = ChannelPrototype.NewInstance().Write(name.ToString(), Builder.Create(new QueryRequest { Requester = "Me" }), Configuration.Get<int>(Constants.Configuration.ResponseLimit));
                 task.Wait();
                 result = task.IsFaulted ? null : task.Result;
-                LogFacade.Log("Neighbour (" + name + ") queried, with result '" + result + "'");
+                LogFacade.Instance.LogInfo("Neighbour (" + name + ") queried, with result '" + result + "'");
 
             }
             catch (AggregateException ex) {
-                LogFacade.Log("Neighbour (" + name + ") queried, abend '" + ex.InnerException.Message + "'");
+                LogFacade.Instance.LogInfo("Neighbour (" + name + ") queried, aggregated exception abend '" + ex.InnerException.Message + "'");
             }
             catch (Exception ex) {
-                LogFacade.Log("Neighbour (" + name + ") queried, abend '" + ex.Message + "'");
+                LogFacade.Instance.LogInfo("Neighbour (" + name + ") queried, general exception abend '" + ex.Message + "'");
             }
             return result.IsNull() ? null : Parser.As<Neighbour>(result); ;
         }

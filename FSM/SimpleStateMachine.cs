@@ -81,11 +81,11 @@ namespace FSM {
 
         public async Task Trigger(IEventInstance anEvent) {
             // Some states may mark themselves as non interruptable, requiring self to queue events. If an event comes in, and queued events exist, maintain order
-            LogFacade.Log("Trigger " + anEvent.EventName + ", resource level: " + StateChangeAtomiser.CurrentCount);
+            LogFacade.Instance.LogInfo("Trigger " + anEvent.EventName + ", resource level: " + StateChangeAtomiser.CurrentCount);
             await StateChangeAtomiser.WaitAsync();
             try {
                 anEvent.PreviousStateName = HasPreviousState ? PreviousState.Name : null;
-                LogFacade.Log("Proceed with processing of " + anEvent.EventName);
+                LogFacade.Instance.LogInfo("Proceed with processing of " + anEvent.EventName);
                 if (!ActiveState.State.Interruptable || QueuedEvents.Any()) { 
                     if (!anEvent.NoQueue)
                         EnqueueEvent(anEvent);
@@ -97,7 +97,7 @@ namespace FSM {
                 }
             }
             finally {
-                LogFacade.Log("Release for Trigger " + anEvent.EventName);
+                LogFacade.Instance.LogInfo("Release for Trigger " + anEvent.EventName);
                 StateChangeAtomiser.Release();
             }
         }
@@ -111,11 +111,11 @@ namespace FSM {
         private DateTime CreationDateTime { get; set; }
 
         private async Task DispatchEvent(IEventInstance anEvent, Type type) {
-            LogFacade.Log("Dispatch " + anEvent.EventName);
+            LogFacade.Instance.LogInfo("Dispatch " + anEvent.EventName);
             Context.CurrentEvent = anEvent;
             var isReflexive = type == ActiveState.State.GetType();
             var target = States.First(s => s.StateType == type);
-            LogFacade.Log("Event " + anEvent.EventName + " transitions to " + target.StateType.Name);
+            LogFacade.Instance.LogInfo("Event " + anEvent.EventName + " transitions to " + target.StateType.Name);
             if (type == ActiveState.StateType) {
                 if (isReflexive)
                     await ActiveState.State.OnReflexiveEntry(Context);
@@ -125,7 +125,7 @@ namespace FSM {
             else {
                 await HandleStateResult(await ActiveState.State.OnExit(Context));
                 if (!ActiveState.IsBounceState) {
-                    LogFacade.Log("Revertable state detected, retain: " + ActiveState.StateType.Name);
+                    LogFacade.Instance.LogInfo("Revertable state detected, retain: " + ActiveState.StateType.Name);
                     PreviousState = ActiveState;
                 }
                 ActiveState = target;
@@ -138,20 +138,20 @@ namespace FSM {
         private async Task CheckQueuedEvents() {
             if (ActiveState.State.Interruptable && QueuedEvents.Any()) {
                 IEventInstance anEvent;
-                LogFacade.Log("Trying to dequeue an event");
+                LogFacade.Instance.LogInfo("Trying to dequeue an event");
                 if (QueuedEvents.TryDequeue(out anEvent))
                     await Trigger(anEvent);
             }
         }
 
         public async Task RevertToPreviousState() {
-            LogFacade.Log("Revert to previous state: " + PreviousState.StateType.Name);
+            LogFacade.Instance.LogInfo("Revert to previous state: " + PreviousState.StateType.Name);
             ActiveState = PreviousState;
             await HandleStateResult(await ActiveState.State.OnEntry(Context));
         }
 
         private async Task HandleStateResult(StateResult result) {
-            LogFacade.Log("Interpret: " + result);
+            LogFacade.Instance.LogInfo("Interpret: " + result);
             if (result.Revert)
                 await RevertToPreviousState();
             if (!result.Revert && result.NextState.IsNotNull())
@@ -160,7 +160,7 @@ namespace FSM {
 
         private void EnqueueEvent(IEventInstance instance) {
             QueuedEvents.Enqueue(instance);
-            LogFacade.Log("Queued events now " + QueuedEvents.Count);
+            LogFacade.Instance.LogInfo("Queued events now " + QueuedEvents.Count);
         }
 
         public bool HasPreviousState { get { return PreviousState.IsNotNull(); } }
