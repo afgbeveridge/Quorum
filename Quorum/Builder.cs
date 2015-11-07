@@ -11,6 +11,7 @@ using Castle.MicroKernel.Registration;
 using Castle.DynamicProxy;
 using Quorum.Integration;
 using Quorum.Integration.Http;
+using Quorum.Services;
 using System.Reflection;
 using Infra;
 
@@ -88,6 +89,7 @@ namespace Quorum {
             Register<IHttpEventListener<IExecutionContext>, HttpEventListener>();
             Register<INetworkEnvironment, SimpleNetworkEnvironment>();
             Register<IElectionAdjudicator, OldestCandidateAdjudicator>();
+            Register<IDiscoveryService, DiscoveryService>();
             RegisterStates();
         }
 

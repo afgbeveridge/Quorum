@@ -84,6 +84,8 @@
     <Compile Include="Payloads\Neighbourhood.cs" />
     <Compile Include="Payloads\QueryRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\DiscoveryService.cs" />
+    <Compile Include="Services\IDiscoveryService.cs" />
     <Compile Include="States\BaseQuorumState.cs" />
     <Compile Include="States\DeathAnnouncementState.cs" />
     <Compile Include="States\DeathState.cs" />

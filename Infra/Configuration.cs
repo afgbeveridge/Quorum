@@ -19,8 +19,7 @@ namespace Infra {
         }
 
         public T Get<T>(ConfigurationItem<T> src) {
-            var setting = ConfigurationManager.AppSettings[src.Key];
-            return setting == null ? src.DefaultValue : (T)Convert.ChangeType(setting, typeof(T));
+            return Get(src.Key, src.DefaultValue);
         }
 
     }
