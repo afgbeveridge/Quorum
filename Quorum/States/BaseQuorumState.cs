@@ -23,7 +23,7 @@ namespace Quorum.States {
                 worker.ProcessingTask = Task.Factory.StartNew(() => {
                     worker.Processor.Activated();
                     while (!token.IsCancellationRequested)
-                        Thread.Sleep(MiniPause);
+                        Task.Delay(500).Wait();
                 }, token);
                 SetWorker(ctx, worker);
             }

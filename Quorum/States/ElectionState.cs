@@ -28,15 +28,8 @@ namespace Quorum.States {
         }
 
         private StateResult AnalyzeDiscovery(IStateMachineContext<IExecutionContext> ctx) {
-            // TODO: Include self in choice list
-            var strength = Configuration.Get<string>(Constants.Configuration.MachineStrength.Key);
-            var actualStrength = String.IsNullOrEmpty(strength) ? MachineStrength.Compute : (MachineStrength)Enum.Parse(typeof(MachineStrength), strength, true);
-            Neighbour choice = Adjudicator.Choose(ctx.ExecutionContext.Network.Neighbours, new Neighbour {
-                IsMaster = ctx.ExecutionContext.IsMaster,
-                Name = ctx.ExecutionContext.HostName,
-                UpTime = ctx.EnclosingMachine.UpTime,
-                Strength = actualStrength
-            });
+            Neighbour choice = Adjudicator.Choose(ctx.ExecutionContext.Network.Neighbours, 
+                                                  Neighbour.Fabricate(ctx.ExecutionContext.IsMaster, ctx.ExecutionContext.HostName, ctx.EnclosingMachine.UpTime));
             var selfElected = choice.IsNull() || choice.Name == ctx.ExecutionContext.HostName;
             return StateResult.Create(nextState: selfElected ? EventNames.Elected : EventNames.Quiescent);
         }

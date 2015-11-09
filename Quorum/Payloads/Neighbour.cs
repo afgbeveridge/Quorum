@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Infra;
 
 namespace Quorum.Payloads {
 
@@ -24,6 +25,17 @@ namespace Quorum.Payloads {
         public double? TimeUntilRestart { get; set; }
 
         public MachineStrength Strength { get; set; }
+
+        public static Neighbour Fabricate(bool isMaster, string name, double upTime) {
+                var strength = new Configuration().Get<string>(Constants.Configuration.MachineStrength);
+                var actualStrength = String.IsNullOrEmpty(strength) ? MachineStrength.Compute : (MachineStrength)Enum.Parse(typeof(MachineStrength), strength, true);
+                return new Neighbour {
+                    IsMaster = isMaster,
+                    Name = name,
+                    UpTime = upTime,
+                    Strength = actualStrength
+                };
+        }
 
     }
 

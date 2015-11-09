@@ -80,8 +80,8 @@ namespace Quorum.Integration.Http {
             HttpListenerContext context = null;
             this.GuardedExecution(() => {
                 context = listener.EndGetContext(result);
-                HttpListenerRequest request = context.Request;
-                using (Stream streamResponse = request.InputStream) {
+                AllowCORS(context);
+                using (Stream streamResponse = context.Request.InputStream) {
                     var content = new StreamReader(streamResponse).ReadToEnd();
                     var action = Interpreter.TranslateToAction(content);
                     if (action.IsNotNull() && action.EventName.IsNotNull()) {
@@ -103,6 +103,15 @@ namespace Quorum.Integration.Http {
                 }
             },
             ex => status = 500);
+        }
+
+        private void AllowCORS(HttpListenerContext context) {
+            if (context.Request.HttpMethod == "OPTIONS") {
+                context.Response.AddHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With");
+                context.Response.AddHeader("Access-Control-Allow-Methods", "GET, POST");
+                context.Response.AddHeader("Access-Control-Max-Age", "1728000");
+            }
+            context.Response.AppendHeader("Access-Control-Allow-Origin", "*");
         }
 
     }

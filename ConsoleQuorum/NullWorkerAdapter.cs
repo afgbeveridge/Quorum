@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Quorum;
 using System.Threading;
+using Infra;
 
 namespace ConsoleQuorum {
     
@@ -16,12 +17,15 @@ namespace ConsoleQuorum {
             Finish = false;
             while (!Finish) {
                 await Task.Delay(5000);
-                Console.WriteLine("Working.....");
+                Finish
+                    .IfTrue(() => Console.WriteLine("Won't continue....."))
+                    .IfFalse(() => Console.WriteLine("Working....."));
             }
         }
 
         public async Task DeActivated() {
             Finish = true;
+            await Task.Delay(20);
             Console.WriteLine("Stopping.....");
         }
     }

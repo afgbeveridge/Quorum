@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "QCC Configuration";
+}
+
+<div class="jumbotron">
+    <h2>Quorum Control Centre - Configuration</h2>
+</div>
+
+<div class="row">
+    <div class="col-xs-2">Quorum members</div>
+    <div class="col-xs-10"><input id="members" type="text" style='min-width: 100%' maxlength="255"/></div>
+</div>
+<p></p>
+<div class="row">
+    <div class="col-xs-2">Quorum port</div>
+    <div class="col-xs-4"><input id="port" type="text"  maxlength="5" /></div>
+    <div class="col-xs-2">Response limit</div>
+    <div class="col-xs-4"><input id="responseLimit" type="text" maxlength="8" /></div>
+</div>
+<div class="row">
+    <div class="col-xs-4"><button id="save" class="btn-primary">Save</button>&nbsp;<button id="cancel" class="btn-primary">Cancel</button></div>
+</div>
+
+@section scripts { 
+    @Scripts.Render("~/bundles/qccconfiguration")
+}

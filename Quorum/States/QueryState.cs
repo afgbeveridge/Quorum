@@ -30,14 +30,7 @@ namespace Quorum.States {
         public override StateResult Execute(IStateMachineContext<IExecutionContext> context, IEventInstance anEvent) {
             try {
                 Interruptable = false;
-                var strength = Configuration.Get<string>(Constants.Configuration.MachineStrength.Key);
-                var actualStrength = String.IsNullOrEmpty(strength) ? MachineStrength.Compute : (MachineStrength)Enum.Parse(typeof(MachineStrength), strength, true);
-                var queryResponse = new Neighbour {
-                    IsMaster = context.ExecutionContext.IsMaster,
-                    Name = context.ExecutionContext.HostName,
-                    UpTime = context.EnclosingMachine.UpTime,
-                    Strength = actualStrength
-                };
+                var queryResponse = Neighbour.Fabricate(context.ExecutionContext.IsMaster, context.ExecutionContext.HostName, context.EnclosingMachine.UpTime);
                 /// Tell the world who we are
                 // context.ExecutionContext.ResultStore[context.CurrentEvent.Id] = Builder.Create(queryResponse);
                 var request = Parser.As<QueryRequest>(anEvent.Payload);
