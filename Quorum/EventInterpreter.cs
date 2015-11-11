@@ -18,7 +18,10 @@ namespace Quorum {
         }; 
 
         private static readonly Dictionary<string, string> TypeNameMap = new Dictionary<string, string> { 
-            { typeof(DeathAnnouncement).Name, EventNames.NeighbourDying }
+            { typeof(DeathAnnouncement).Name, EventNames.NeighbourDying },
+            { typeof(AbdicationState).Name, EventNames.Abdication },
+            { typeof(MasterState).Name, EventNames.Elected },
+            { typeof(DeathState).Name, EventNames.Die }
         }; 
 
         public IPayloadParser Parser { get; set; }

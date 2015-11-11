@@ -20,6 +20,7 @@ namespace Quorum {
         public const string Elected = "Elected";
         public const string NotElected = "NotElected";
         public const string VoteCast = "VoteCast";
+        public const string Abdication = "Abdication";
 
     }
 

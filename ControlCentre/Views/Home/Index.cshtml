@@ -7,35 +7,75 @@
 </div>
 
 <div id="monitorSection">
-    <div class="row">
-        <div class="cols-sm-2">Poll period:&nbsp;<input type="text" maxlength="8" data-bind="textinput: responseLimit" /></div>
+    <div class="container">
+        <div class="row">
+                <div class="col-xs-4">Poll period:&nbsp;<input type="text" maxlength="8" data-bind="textinput: responseLimit" /></div>
+                <div class="col-xs-4"><span data-bind="text: 'Queries sent:' + queries()"></span></div>
+                <div class="col-xs-4"><span data-bind="text: 'Quorum viable:' + (viable() ? 'Yes' : 'No')"></span></div>
+        </div>
+        <p></p>
+        <div class="row">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th style="width:15%;">Name</th>
+                        <th style="width:10%;">Port</th>
+                        <th style="width:20%;">Last contact</th>
+                        <th style="width:5%;">Alive?</th>
+                        <th style="width:5%;">Master?</th>
+                        <th style="width:10%;">Strength</th>
+                        <th style="width:15%;">Up time</th>
+                        <th style="width:10%;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody data-bind="foreach: members">
+                    <tr>
+                        <td data-bind="text: $data.name"></td>
+                        <td data-bind="text: $data.port"></td>
+                        <td data-bind="text: $data.lastContact"></td>
+                        <td data-bind="text: $data.alive"></td>
+                        <td data-bind="text: $data.IsMaster"></td>
+                        <td data-bind="text: $data.Strength"></td>
+                        <td data-bind="text: $data.UpTime().toFixed(4)"></td>
+                        <td>
+                            <!--
+                            <a href="#" data-bind="click: kill">UnElect</a>
+                            <a href="#" data-bind="click: elect">Elect</a>
+                            <br/>
+                            -->
+                            <!-- ko if: showingHardwareDetails -->
+                            <a href="#" data-bind="click: hideDetail">Hide detail</a>
+                            <!-- /ko -->
+                            <!-- ko if: !showingHardwareDetails() && alive() === 'Yes' -->
+                            <a href="#" data-bind="click: showDetail">Show detail</a>
+                            <!-- /ko -->
+                        </td>
+                    </tr>
+                    <tr data-bind="visible: $data.showingHardwareDetails" style="background-color: yellow;">
+                        <td colspan="8">
+                            <div class="row">
+                                <div class="col-xs-2"><em>Failed requests</em>: <span data-bind="text: $data.failedRequests"></span></div>
+                                <div class="col-xs-2"><em>Completed requests</em>: <span data-bind="text: $data.successfulRequests"></span></div>
+                                <div class="col-xs-3"><em>Minimum response ms</em>: <span data-bind="text: $data.minimumResponseTime"></span></div>
+                                <div class="col-xs-3"><em>Maximum response ms</em>: <span data-bind="text: $data.maximumResponseTime"></span></div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr data-bind="visible: $data.showingHardwareDetails" style="background-color: yellow;">
+                        <td colspan="8">
+                            <div class="row">
+                                <div class="col-xs-2"><em>Physical memory</em>: <span data-bind="text: $data.Hardware.PhysicalMemory"></span></div>
+                                <div class="col-xs-2"><em>CPU Manufacturer</em>: <span data-bind="text: $data.Hardware.CPUManufacturer"></span></div>
+                                <div class="col-xs-2"><em>CPU Speed (GHz)</em>: <span data-bind="text: $data.Hardware.CPUSpeed"></span></div>
+                                <div class="col-xs-6"><em>OS</em>: <span data-bind="text: $data.Hardware.OS"></span></div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-    <p></p>
-    <div class="row">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Port</th>
-                    <th>Last contact</th>
-                    <th>Alive?</th>
-                    <th>Master?</th>
-                    <th>Up time</th>
-                </tr>
-            </thead>
-            <tbody data-bind="foreach: members">
-                <tr>
-                    <td data-bind="text: $data.name"></td>
-                    <td data-bind="text: $data.port"></td>
-                    <td data-bind="text: $data.lastContact"></td>
-                    <td data-bind="text: $data.alive"></td>
-                    <td data-bind="text: $data.isMaster"></td>
-                    <td data-bind="text: $data.upTime"></td>
-                </tr>
-            </tbody>
-        </table>
     </div>
-</div>
 
 @section scripts {
     @Scripts.Render("~/bundles/qccmonitor")

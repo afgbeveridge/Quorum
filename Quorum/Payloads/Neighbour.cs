@@ -26,6 +26,8 @@ namespace Quorum.Payloads {
 
         public MachineStrength Strength { get; set; }
 
+        public HardwareDetails Hardware { get; set; }
+
         public static Neighbour Fabricate(bool isMaster, string name, double upTime) {
                 var strength = new Configuration().Get<string>(Constants.Configuration.MachineStrength);
                 var actualStrength = String.IsNullOrEmpty(strength) ? MachineStrength.Compute : (MachineStrength)Enum.Parse(typeof(MachineStrength), strength, true);
@@ -33,10 +35,24 @@ namespace Quorum.Payloads {
                     IsMaster = isMaster,
                     Name = name,
                     UpTime = upTime,
-                    Strength = actualStrength
+                    Strength = actualStrength,
+                    Hardware = new HardwareDetails()
                 };
         }
 
+    }
+
+    public class HardwareDetails {
+        public HardwareDetails() {
+            PhysicalMemory = HardwareInfo.GetPhysicalMemory();
+            CPUManufacturer = HardwareInfo.GetCPUManufacturer();
+            CPUSpeed = HardwareInfo.GetCpuSpeedInGHz().HasValue ? HardwareInfo.GetCpuSpeedInGHz().Value.ToString() : "Unknown";
+            OS = HardwareInfo.GetOSInformation();
+        }
+        public string PhysicalMemory { get; set; }
+        public string CPUManufacturer { get; set; }
+        public string CPUSpeed { get; set; }
+        public string OS { get; set; }
     }
 
 }

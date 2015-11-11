@@ -36,6 +36,7 @@ namespace Quorum.States {
                     worker.Processor.DeActivated();
                     worker.CancellationToken.Cancel();
                     worker.ProcessingTask.Wait();
+                    SetWorker(ctx, null);
                 }
             }
             catch { }

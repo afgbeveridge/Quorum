@@ -29,8 +29,8 @@ namespace ControlCentre {
 
             bundles.Add(new ScriptBundle("~/bundles/qccbase").Include("~/Scripts/qcc/qcc-base.js"));
             bundles.Add(new ScriptBundle("~/bundles/qccconfiguration").Include("~/Scripts/qcc/qcc-configuration.js"));
-            bundles.Add(new ScriptBundle("~/bundles/qccmonitor").Include("~/Scripts/qcc/qcc-monitor.js"));
-            bundles.Add(new ScriptBundle("~/bundles/knockout").Include("~/Scripts/knockout-{version}.js"));
+            bundles.Add(new ScriptBundle("~/bundles/qccmonitor").Include("~/Scripts/qcc/qcc-monitor.js").Include("~/Scripts/moment.js"));
+            bundles.Add(new ScriptBundle("~/bundles/knockout").Include("~/Scripts/knockout-{version}.js").Include("~/Scripts/knockout.mapping-latest.js"));
 
         }
 
