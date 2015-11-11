@@ -73,17 +73,6 @@
                 bundle.start = Date.now();
                 $.post(bundle.address, '{"TypeHint": "QueryRequest" }', function (d) {
                     bundle.vm.lastContact(moment(Date.now()).format("MMM Do YYYY, HH:mm:ss:SS"));
-                    //var data = JSON.parse(d);
-                    var yourMapping = {
-                        'Hardware': {
-                            create: function (options) {
-                                return Details(options.data);
-                            }
-                        }
-                    };
-                    function Details(data) {
-                        ko.mapping.fromJS(data, {}, this);
-                    };
                     ko.mapping.fromJSON(d, null, bundle.vm);
                     bundle.vm.alive('Yes');
                     bundle.vm.successfulRequests(bundle.vm.successfulRequests() + 1);
