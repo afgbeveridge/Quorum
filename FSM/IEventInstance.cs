@@ -23,5 +23,7 @@ namespace FSM {
 
         bool NoQueue { get; set; }
 
+        DateTime CreatedOn { get; }
+
     }
 }

@@ -30,7 +30,7 @@ namespace Quorum.States {
         public override StateResult Execute(IStateMachineContext<IExecutionContext> context, IEventInstance anEvent) {
             try {
                 Interruptable = false;
-                var queryResponse = Neighbour.Fabricate(context.ExecutionContext.IsMaster, context.ExecutionContext.HostName, context.EnclosingMachine.UpTime, context.ExecutionContext.InEligibleForElection);
+                var queryResponse = Neighbour.Fabricate(context);
                 /// Tell the world who we are
                 // context.ExecutionContext.ResultStore[context.CurrentEvent.Id] = Builder.Create(queryResponse);
                 var request = Parser.As<QueryRequest>(anEvent.Payload);

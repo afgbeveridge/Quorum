@@ -15,10 +15,13 @@ namespace FSM {
     public class SimpleStateMachine<TContext> : IStateMachine<TContext> {
 
         private List<StateDefinition> States = new List<StateDefinition>();
-        private ConcurrentQueue<IEventInstance> QueuedEvents = new ConcurrentQueue<IEventInstance>();
+        private IEventQueue QueueHandler { get; set; }
+        public IEventStatistician StatisticsHandler { get; private set; }
         private SemaphoreSlim StateChangeAtomiser;
 
-        public SimpleStateMachine() {
+        public SimpleStateMachine(IEventQueue queueHandler, IEventStatistician stats) {
+            QueueHandler = queueHandler;
+            StatisticsHandler = stats;
             CreationDateTime = DateTime.Now;
             // TODO: Config
             StateChangeAtomiser = new SemaphoreSlim(1, 1);
@@ -88,18 +91,21 @@ namespace FSM {
             try {
                 anEvent.PreviousStateName = HasPreviousState ? PreviousState.Name : null;
                 LogFacade.Instance.LogInfo("Proceed with processing of " + anEvent.EventName + ", current state interruptable? " + ActiveState.State.Interruptable);
-                if (!ActiveState.State.Interruptable || (QueuedEvents.Any() && !anEvent.NoQueue)) {
+                if (!ActiveState.State.Interruptable || (QueueHandler.Any() && !anEvent.NoQueue)) {
                     if (!anEvent.NoQueue) {
-                        LogFacade.Instance.LogInfo("Queue event: " + anEvent.EventName);
-                        EnqueueEvent(anEvent);
+                        QueueHandler.Enqueue(anEvent);
                     }
                 }
                 else {
                     var type = ActiveState.EventReceived(anEvent.EventName, IgnoreUnknownEvents);
-                    if (type.IsNotNull())
+                    if (type.IsNotNull()) {
+                        StatisticsHandler.NoteEvent(anEvent.EventName);
                         await DispatchEvent(anEvent, type);
-                    else
+                    }
+                    else {
+                        StatisticsHandler.NoteEvent(anEvent.EventName, false);
                         LogFacade.Instance.LogWarning("There is no defined state for event named '" + anEvent.EventName + "'");
+                    }
                 }
             }
             finally {
@@ -109,7 +115,7 @@ namespace FSM {
         }
 
         private bool NowProcessing(IEventInstance instance) {
-            var inQueue = QueuedEvents.ToArray().Any(e => e.Id == instance.Id);
+            var inQueue = QueueHandler.All.Any(e => e.Id == instance.Id);
             LogFacade.Instance.LogInfo("If in queue, proceed - " + inQueue);
             return inQueue;
         }
@@ -148,11 +154,9 @@ namespace FSM {
         }
 
         private async Task CheckQueuedEvents() {
-            if (ActiveState.State.Interruptable && QueuedEvents.Any()) {
-                IEventInstance anEvent;
-                LogFacade.Instance.LogInfo("Trying to dequeue an event");
-                if (QueuedEvents.TryDequeue(out anEvent)) {
-                    LogFacade.Instance.LogInfo("Dequeued: " + anEvent.EventName);
+            if (ActiveState.State.Interruptable && QueueHandler.Any()) {
+                IEventInstance anEvent = QueueHandler.Dequeue();
+                if (anEvent.IsNotNull()) {
                     anEvent.NoQueue = true;
                     await Trigger(anEvent);
                 }
@@ -174,9 +178,7 @@ namespace FSM {
         }
 
         private void EnqueueEvent(IEventInstance instance) {
-            QueuedEvents.Enqueue(instance);
-            LogFacade.Instance.LogInfo("Queued events now " + QueuedEvents.Count + "(added " + instance.EventName + ")");
-            LogFacade.Instance.LogInfo("Queued events waiting [" + (String.Join(", ", QueuedEvents.ToArray().Select(e => e.EventName))) + "]");
+            QueueHandler.Enqueue(instance);
         }
 
         public bool HasPreviousState { get { return PreviousState.IsNotNull(); } }
@@ -222,6 +224,8 @@ namespace FSM {
         private void Stable() {
             Assert.False(CurrentStateDefinition.IsNull(), () => "Machine is unstable");
         }
+
+        public IEnumerable<IEventInstance> PendingEvents { get { return QueueHandler.All; } }
 
         private string CurrentEventName { get; set; }
 

@@ -28,8 +28,7 @@ namespace Quorum.States {
         }
 
         private StateResult AnalyzeDiscovery(IStateMachineContext<IExecutionContext> ctx) {
-            Neighbour choice = Adjudicator.Choose(ctx.ExecutionContext.Network.Neighbours, 
-                                                  Neighbour.Fabricate(ctx.ExecutionContext.IsMaster, ctx.ExecutionContext.HostName, ctx.EnclosingMachine.UpTime, ctx.ExecutionContext.InEligibleForElection));
+            Neighbour choice = Adjudicator.Choose(ctx.ExecutionContext.Network.Neighbours, Neighbour.Fabricate(ctx));
             var selfElected = choice.IsNull() || choice.Name == ctx.ExecutionContext.HostName;
             return StateResult.Create(nextState: selfElected ? EventNames.Elected : EventNames.Quiescent);
         }

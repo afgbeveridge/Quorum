@@ -13,6 +13,7 @@ namespace FSM {
         public IStateMachineChannel<TContext> EnclosingMachine { get; internal set; }
 
         public IEventInstance CurrentEvent { get; set; }
+
     }
 
 }

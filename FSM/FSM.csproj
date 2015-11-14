@@ -40,11 +40,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseState.cs" />
+    <Compile Include="ConcurrentEventQueue.cs" />
     <Compile Include="EventInstance.cs" />
+    <Compile Include="EventStatistician.cs" />
     <Compile Include="IContainer.cs" />
     <Compile Include="IDirectlyExecutableState.cs" />
     <Compile Include="IEventInstance.cs" />
     <Compile Include="IEventInterpreter.cs" />
+    <Compile Include="IEventQueue.cs" />
+    <Compile Include="IEventStatistician.cs" />
+    <Compile Include="IEventSummary.cs" />
     <Compile Include="InterpreterResult.cs" />
     <Compile Include="IState.cs" />
     <Compile Include="IStateMachine.cs" />

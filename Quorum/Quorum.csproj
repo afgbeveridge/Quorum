@@ -82,6 +82,7 @@
     <Compile Include="Payloads\DeathAnnouncement.cs" />
     <Compile Include="Payloads\Neighbour.cs" />
     <Compile Include="Payloads\Neighbourhood.cs" />
+    <Compile Include="Payloads\PendingEvent.cs" />
     <Compile Include="Payloads\QueryRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\DiscoveryService.cs" />

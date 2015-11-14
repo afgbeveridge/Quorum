@@ -95,6 +95,7 @@ namespace Quorum.Integration.Http {
                         if (action.ExecutableStateType.IsNull())
                             Machine.Trigger(instance);
                         else {
+                            Machine.StatisticsHandler.NoteEvent(action.EventName);
                             var exec = Machine.Container.Resolve<IState<IExecutionContext>>(action.ExecutableStateType.Name);
                             if (exec.IsNotNull())
                                 exec.Execute(Machine.Context, instance);

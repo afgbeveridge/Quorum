@@ -11,6 +11,8 @@ namespace FSM {
         Task RevertToPreviousState();
         bool HasPreviousState { get; }
         double UpTime { get; }
+        IEnumerable<IEventInstance> PendingEvents { get; }
+        IEventStatistician StatisticsHandler { get; }
     }
 
 }

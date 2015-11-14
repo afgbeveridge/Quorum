@@ -10,6 +10,7 @@ namespace FSM {
 
         public EventInstance() {
             Id = Guid.NewGuid();
+            CreatedOn = DateTime.Now;
         }
 
         public string EventName { get; set; }
@@ -27,5 +28,7 @@ namespace FSM {
         public string PreviousStateName { get; set; }
 
         public bool NoQueue { get; set; }
+
+        public DateTime CreatedOn { get; private set; }
     }
 }

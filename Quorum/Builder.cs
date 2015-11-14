@@ -21,7 +21,7 @@ namespace Quorum {
         
         public IStateMachine<IExecutionContext> Create() {
             ConfigureInjections();
-            return new SimpleStateMachine<IExecutionContext>()
+            return new SimpleStateMachine<IExecutionContext>(Container.Resolve<IEventQueue>(), Container.Resolve<IEventStatistician>())
                         // Bootstrapping
                         .WithContext(Resolve<IExecutionContext>())
                         .DIContainer(AsContainer())
@@ -99,6 +99,8 @@ namespace Quorum {
             Register<INetworkEnvironment, SimpleNetworkEnvironment>();
             Register<IElectionAdjudicator, OldestCandidateAdjudicator>();
             Register<IDiscoveryService, DiscoveryService>();
+            Register<IEventQueue, ConcurrentEventQueue>();
+            Register<IEventStatistician, EventStatistician>();
             RegisterStates();
         }
 
