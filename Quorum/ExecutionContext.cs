@@ -28,6 +28,8 @@ namespace Quorum {
 
         public bool IsMaster { get; set; }
 
+        public bool InEligibleForElection { get; set; }
+
         public Neighbourhood Network { get; set; }
 
         public string LocalAddress { get; set; }

@@ -63,6 +63,10 @@ namespace Quorum {
                        .MarkAsBounceState()
                        // State
                        .DefineState<AbdicationState>()
+                       .MarkAsBounceState()
+                       // State
+                       .DefineState<PretenderState>()
+                       .MarkAsBounceState()
                        // Commit last state
                        .Complete()
                        // Allow query transition from all states
@@ -72,6 +76,7 @@ namespace Quorum {
                        .ForAllEnter<DeathAnnouncementState>(EventNames.NeighbourDying)
                        .ForAllEnter<AbdicationState>(EventNames.Abdication)
                        .ForAllEnter<MasterState>(EventNames.Elected)
+                       .ForAllEnter<PretenderState>(EventNames.MakePretender)
                        .ForAllEnter<QuiescentState>(EventNames.Quiescent);
 
         }

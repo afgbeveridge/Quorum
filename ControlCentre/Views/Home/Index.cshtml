@@ -38,11 +38,13 @@
                         <td data-bind="text: $data.Strength"></td>
                         <td data-bind="text: $data.UpTime().toFixed(4)"></td>
                         <td>
-                            <!--
-                            <a href="#" data-bind="click: kill">UnElect</a>
-                            <a href="#" data-bind="click: elect">Elect</a>
+                            <!-- ko if: InEligibleForElection() === false -->
+                            <a href="#" data-bind="click: kill">Make ineligible</a>
+                            <!-- /ko -->
+                            <!-- ko if: InEligibleForElection() === true -->
+                            <a href="#" data-bind="click: elect">Make eligible</a>
+                            <!-- /ko -->
                             <br/>
-                            -->
                             <!-- ko if: showingHardwareDetails -->
                             <a href="#" data-bind="click: hideDetail">Hide detail</a>
                             <!-- /ko -->
@@ -56,8 +58,9 @@
                             <div class="row">
                                 <div class="col-xs-2"><em>Failed requests</em>: <span data-bind="text: $data.failedRequests"></span></div>
                                 <div class="col-xs-2"><em>Completed requests</em>: <span data-bind="text: $data.successfulRequests"></span></div>
-                                <div class="col-xs-3"><em>Minimum response ms</em>: <span data-bind="text: $data.minimumResponseTime"></span></div>
-                                <div class="col-xs-3"><em>Maximum response ms</em>: <span data-bind="text: $data.maximumResponseTime"></span></div>
+                                <div class="col-xs-2"><em>Min response ms</em>: <span data-bind="text: $data.minimumResponseTime"></span></div>
+                                <div class="col-xs-2"><em>Max response ms</em>: <span data-bind="text: $data.maximumResponseTime"></span></div>
+                                <div class="col-xs-2"><em>Avg response ms</em>: <span data-bind="text: $data.averageResponseTime().toFixed(1)"></span></div>
                             </div>
                         </td>
                     </tr>

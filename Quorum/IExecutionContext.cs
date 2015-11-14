@@ -21,6 +21,8 @@ namespace Quorum {
         string HostName { get; set; }
 
         IDictionary<Guid, object> StateStore { get; }
+
+        bool InEligibleForElection { get; set; }
     }
 
 }

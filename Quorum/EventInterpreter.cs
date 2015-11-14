@@ -20,7 +20,7 @@ namespace Quorum {
         private static readonly Dictionary<string, string> TypeNameMap = new Dictionary<string, string> { 
             { typeof(DeathAnnouncement).Name, EventNames.NeighbourDying },
             { typeof(AbdicationState).Name, EventNames.Abdication },
-            { typeof(MasterState).Name, EventNames.Elected },
+            { typeof(PretenderState).Name, EventNames.MakePretender },
             { typeof(DeathState).Name, EventNames.Die }
         }; 
 

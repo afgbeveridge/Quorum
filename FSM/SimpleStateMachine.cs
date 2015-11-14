@@ -10,6 +10,8 @@ using Infra;
 
 namespace FSM {
 
+    internal enum TransitionType { OnEntry, OnExit, ReflexiveOnEntry }
+
     public class SimpleStateMachine<TContext> : IStateMachine<TContext> {
 
         private List<StateDefinition> States = new List<StateDefinition>();
@@ -21,7 +23,7 @@ namespace FSM {
             // TODO: Config
             StateChangeAtomiser = new SemaphoreSlim(1, 1);
             // TODO: Configuration
-            QueueTimer = new System.Timers.Timer(50);
+            QueueTimer = new System.Timers.Timer(1000);
             QueueTimer.Elapsed += (src, args) => { CheckQueuedEvents(); };
             QueueTimer.AutoReset = true;
             QueueTimer.Enabled = true;
@@ -85,21 +87,31 @@ namespace FSM {
             await StateChangeAtomiser.WaitAsync();
             try {
                 anEvent.PreviousStateName = HasPreviousState ? PreviousState.Name : null;
-                LogFacade.Instance.LogInfo("Proceed with processing of " + anEvent.EventName);
-                if (!ActiveState.State.Interruptable || QueuedEvents.Any()) { 
-                    if (!anEvent.NoQueue)
+                LogFacade.Instance.LogInfo("Proceed with processing of " + anEvent.EventName + ", current state interruptable? " + ActiveState.State.Interruptable);
+                if (!ActiveState.State.Interruptable || (QueuedEvents.Any() && !anEvent.NoQueue)) {
+                    if (!anEvent.NoQueue) {
+                        LogFacade.Instance.LogInfo("Queue event: " + anEvent.EventName);
                         EnqueueEvent(anEvent);
+                    }
                 }
                 else {
                     var type = ActiveState.EventReceived(anEvent.EventName, IgnoreUnknownEvents);
                     if (type.IsNotNull())
                         await DispatchEvent(anEvent, type);
+                    else
+                        LogFacade.Instance.LogWarning("There is no defined state for event named '" + anEvent.EventName + "'");
                 }
             }
             finally {
                 LogFacade.Instance.LogInfo("Release for Trigger " + anEvent.EventName);
                 StateChangeAtomiser.Release();
             }
+        }
+
+        private bool NowProcessing(IEventInstance instance) {
+            var inQueue = QueuedEvents.ToArray().Any(e => e.Id == instance.Id);
+            LogFacade.Instance.LogInfo("If in queue, proceed - " + inQueue);
+            return inQueue;
         }
 
         public double UpTime { 
@@ -123,7 +135,7 @@ namespace FSM {
                     await HandleStateResult(await ActiveState.State.OnEntry(Context));
             }
             else {
-                await HandleStateResult(await ActiveState.State.OnExit(Context));
+                await HandleStateResult(await ActiveState.State.OnExit(Context), TransitionType.OnExit);
                 if (!ActiveState.IsBounceState) {
                     LogFacade.Instance.LogInfo("Revertable state detected, retain: " + ActiveState.StateType.Name);
                     PreviousState = ActiveState;
@@ -139,8 +151,11 @@ namespace FSM {
             if (ActiveState.State.Interruptable && QueuedEvents.Any()) {
                 IEventInstance anEvent;
                 LogFacade.Instance.LogInfo("Trying to dequeue an event");
-                if (QueuedEvents.TryDequeue(out anEvent))
+                if (QueuedEvents.TryDequeue(out anEvent)) {
+                    LogFacade.Instance.LogInfo("Dequeued: " + anEvent.EventName);
+                    anEvent.NoQueue = true;
                     await Trigger(anEvent);
+                }
             }
         }
 
@@ -150,8 +165,8 @@ namespace FSM {
             await HandleStateResult(await ActiveState.State.OnEntry(Context));
         }
 
-        private async Task HandleStateResult(StateResult result) {
-            LogFacade.Instance.LogInfo("Interpret: " + result);
+        private async Task HandleStateResult(StateResult result, TransitionType type = TransitionType.OnEntry) {
+            LogFacade.Instance.LogInfo("Interpret state change (" + type + "), result: " + result);
             if (result.Revert)
                 await RevertToPreviousState();
             if (!result.Revert && result.NextState.IsNotNull())
@@ -160,7 +175,8 @@ namespace FSM {
 
         private void EnqueueEvent(IEventInstance instance) {
             QueuedEvents.Enqueue(instance);
-            LogFacade.Instance.LogInfo("Queued events now " + QueuedEvents.Count);
+            LogFacade.Instance.LogInfo("Queued events now " + QueuedEvents.Count + "(added " + instance.EventName + ")");
+            LogFacade.Instance.LogInfo("Queued events waiting [" + (String.Join(", ", QueuedEvents.ToArray().Select(e => e.EventName))) + "]");
         }
 
         public bool HasPreviousState { get { return PreviousState.IsNotNull(); } }

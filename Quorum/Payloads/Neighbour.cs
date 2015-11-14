@@ -13,6 +13,8 @@ namespace Quorum.Payloads {
 
         public bool IsMaster { get; set; }
 
+        public bool InEligibleForElection { get; set; }
+
         public string Name { get; set; }
 
         // Could be extended to allow heterogeneous addressing
@@ -28,7 +30,7 @@ namespace Quorum.Payloads {
 
         public HardwareDetails Hardware { get; set; }
 
-        public static Neighbour Fabricate(bool isMaster, string name, double upTime) {
+        public static Neighbour Fabricate(bool isMaster, string name, double upTime, bool ineligible) {
                 var strength = new Configuration().Get<string>(Constants.Configuration.MachineStrength);
                 var actualStrength = String.IsNullOrEmpty(strength) ? MachineStrength.Compute : (MachineStrength)Enum.Parse(typeof(MachineStrength), strength, true);
                 return new Neighbour {
@@ -36,7 +38,8 @@ namespace Quorum.Payloads {
                     Name = name,
                     UpTime = upTime,
                     Strength = actualStrength,
-                    Hardware = new HardwareDetails()
+                    Hardware = new HardwareDetails(),
+                    InEligibleForElection = ineligible
                 };
         }
 

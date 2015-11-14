@@ -94,6 +94,7 @@
     <Compile Include="States\DiscoveryState.cs" />
     <Compile Include="States\ElectionState.cs" />
     <Compile Include="States\MasterState.cs" />
+    <Compile Include="States\PretenderState.cs" />
     <Compile Include="States\QueryState.cs" />
     <Compile Include="States\QuiescentState.cs" />
   </ItemGroup>

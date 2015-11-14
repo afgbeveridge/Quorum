@@ -21,6 +21,7 @@ namespace Quorum {
         public const string NotElected = "NotElected";
         public const string VoteCast = "VoteCast";
         public const string Abdication = "Abdication";
+        public const string MakePretender = "MakePretender";
 
     }
 

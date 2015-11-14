@@ -2,7 +2,7 @@
 
     // See if we have some in local storage
 
-    var config = window.qcc.deserialize(), defaultDiscoveryPeriod = 2000;
+    var config = window.qcc.deserialize(), defaultDiscoveryPeriod = 2000, maxTrackedRequests = 500;
 
     if (!config || !config.membersArray || config.membersArray.length == 0) {
         alert('Cannot ascertain any configuration at all');
@@ -18,13 +18,14 @@
             self.IsMaster = ko.observable('Unknown');
             self.UpTime = ko.observable(0);
             self.Strength = ko.observable('Unknown');
+            self.InEligibleForElection = ko.observable(null);
             self.address = 'http://' + n + ':' + port + '/';
             self.kill = function () {
-                $.post(self.address, '{"TypeHint": "DeathState" }', function (d) {
+                $.post(self.address, '{"TypeHint": "AbdicationState" }', function (d) {
                 });
             };
             self.elect = function () {
-                $.post(self.address, '{"TypeHint": "MasterState" }', function (d) {
+                $.post(self.address, '{"TypeHint": "PretenderState" }', function (d) {
                 });
             };
             self.showingHardwareDetails = ko.observable(false);
@@ -41,6 +42,10 @@
             self.successfulRequests = ko.observable(0);
             self.minimumResponseTime = ko.observable(0);
             self.maximumResponseTime = ko.observable(0);
+            self.totalResponseTimes = ko.observable(0);
+            self.averageResponseTime = ko.computed(function () {
+                return self.successfulRequests() == 0 ? 0 : self.totalResponseTimes() / self.successfulRequests();
+            });
         };
     };
 
@@ -85,6 +90,7 @@
                         bundle.vm.minimumResponseTime(elapsed);
                     else if (elapsed > bundle.vm.maximumResponseTime())
                         bundle.vm.maximumResponseTime(elapsed);
+                    bundle.vm.totalResponseTimes(bundle.vm.totalResponseTimes() + elapsed);
                 })
                 .fail(function (xr, text, err) {
                     bundle.vm.IsMaster('Unknown');
@@ -93,6 +99,7 @@
                     bundle.vm.alive('No');
                     bundle.vm.showingHardwareDetails(false);
                     bundle.vm.failedRequests(bundle.vm.failedRequests() + 1);
+                    bundle.vm.InEligibleForElection(null);
                 })
             });
         }, period);
