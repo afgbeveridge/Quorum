@@ -94,6 +94,9 @@
                     <tr data-bind="visible: $data.showingEventHistory" style="background-color: yellow;">
                         <td colspan="9">
                             <div class="row">
+                                <div class="col-xs-4" style='color: blue;' data-bind="text: 'Work units executed: ' + ($data.WorkUnitsExecuted ? $data.WorkUnitsExecuted() : 'Unknown')"></div>
+                            </div>
+                            <div class="row">
                                 <div class="col-xs-4"><strong>Name</strong></div>
                                 <div class="col-xs-4"><strong>Occurrences</strong></div>
                                 <div class="col-xs-4"><strong>Handled?</strong></div>

@@ -23,6 +23,8 @@ namespace Quorum {
         IDictionary<Guid, object> StateStore { get; }
 
         bool InEligibleForElection { get; set; }
+
+        long WorkerExecutionUnits { get; set; }
     }
 
 }

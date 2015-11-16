@@ -7,10 +7,14 @@ window.qcc.serialize = function (members, port, responseLimit) {
     return [members, port, responseLimit].join("|");
 };
 
-window.qcc.deserialize = function () {
+window.qcc.withLocalStorage = function (f) {
     if (typeof (Storage) === "undefined")
         alert('This browser does not support local storage');
-    else {
+    else return f();
+};
+
+window.qcc.deserialize = function () {
+    return window.qcc.withLocalStorage(function () {
         var stored = localStorage.getItem('qcc'), result;
         if (!stored)
             result = {
@@ -28,13 +32,11 @@ window.qcc.deserialize = function () {
             result.membersArray = result.members.split(',');
         }
         return result;
-    }
+    });
 };
 
 window.qcc.save = function (cfg) {
-    if (typeof (Storage) === "undefined")
-        alert('This browser does not support local storage');
-    else {
+    window.qcc.withLocalStorage(function () {
         localStorage.setItem('qcc', window.qcc.serialize(cfg.members, cfg.port, cfg.responseLimit));
-    }
+    });
 };

@@ -35,6 +35,8 @@ namespace Quorum.Payloads {
 
         public IEnumerable<IEventSummary> HandledEvents { get; set; }
 
+        public long WorkUnitsExecuted { get; set; }
+
         public static Neighbour Fabricate(IStateMachineContext<IExecutionContext> context) {
                 var strength = new Configuration().Get<string>(Constants.Configuration.MachineStrength);
                 var actualStrength = String.IsNullOrEmpty(strength) ? MachineStrength.Compute : (MachineStrength)Enum.Parse(typeof(MachineStrength), strength, true);
@@ -46,7 +48,8 @@ namespace Quorum.Payloads {
                     Hardware = new HardwareDetails(),
                     InEligibleForElection = context.ExecutionContext.InEligibleForElection,
                     PendingEvents = context.EnclosingMachine.PendingEvents.Select(e => new PendingEvent {  Id = e.Id, Name = e.EventName, CreatedOn = e.CreatedOn }).ToArray(),
-                    HandledEvents = context.EnclosingMachine.StatisticsHandler.HandledEventsInNameOrder.ToArray()
+                    HandledEvents = context.EnclosingMachine.StatisticsHandler.HandledEventsInNameOrder.ToArray(),
+                    WorkUnitsExecuted = context.ExecutionContext.WorkerExecutionUnits
                 };
         }
 

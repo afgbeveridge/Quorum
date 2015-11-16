@@ -16,10 +16,14 @@ namespace ConsoleQuorum {
         public async Task Activated() {
             Finish = false;
             while (!Finish) {
-                await Task.Delay(5000);
+                await Task.Delay(2000);
                 Finish
                     .IfTrue(() => Console.WriteLine("Won't continue....."))
-                    .IfFalse(() => Console.WriteLine("Working....."));
+                    .IfFalse(() => { 
+                        Console.WriteLine("Working.....");
+                        if (WorkUnitExecuted.IsNotNull())
+                            WorkUnitExecuted();
+                    });
             }
         }
 
@@ -28,5 +32,7 @@ namespace ConsoleQuorum {
             await Task.Delay(20);
             Console.WriteLine("Stopping.....");
         }
+
+        public Action WorkUnitExecuted { get; set; }
     }
 }

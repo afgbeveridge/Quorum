@@ -36,6 +36,8 @@ namespace Quorum {
 
         public string HostName { get; set; }
 
+        public long WorkerExecutionUnits { get; set; }
+
         public IDictionary<Guid, object> StateStore { get; private set; }
 
     }

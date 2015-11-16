@@ -16,14 +16,15 @@ namespace Quorum.States {
         public IMasterWorkAdapter Worker { get; set; }
 
         protected void EnsureWorkerActive(IExecutionContext ctx) {
-            var worker = GetWorker(ctx) ?? new WorkerContainer { Processor = Worker };
+            var worker = GetWorker(ctx) ?? new WorkerContainer { Processor = Worker, ExecutionContext = ctx };
             if (worker.ProcessingTask.IsNull() || worker.ProcessingTask.Status != TaskStatus.Running) {
+                worker.Processor.WorkUnitExecuted = worker.WorkerExecutes;
                 worker.CancellationToken = new CancellationTokenSource();
                 var token = worker.CancellationToken.Token;
                 worker.ProcessingTask = Task.Factory.StartNew(() => {
                     worker.Processor.Activated();
                     while (!token.IsCancellationRequested)
-                        Task.Delay(500).Wait();
+                        Task.Delay(100).Wait();
                 }, token);
                 SetWorker(ctx, worker);
             }
@@ -42,6 +43,10 @@ namespace Quorum.States {
             catch { }
         }
 
+        private void WorkerExecutes() {
+
+        }
+
         private WorkerContainer GetWorker(IExecutionContext ctx) {
             return (ctx.StateStore.ContainsKey(Constants.Local.MasterStateTaskKey) ? ctx.StateStore[Constants.Local.MasterStateTaskKey] : null) as WorkerContainer;
         }
@@ -57,6 +62,12 @@ namespace Quorum.States {
             internal CancellationTokenSource CancellationToken { get; set; }
 
             internal IMasterWorkAdapter Processor { get; set; }
+
+            internal IExecutionContext ExecutionContext { get; set; }
+
+            internal void WorkerExecutes() {
+                ExecutionContext.WorkerExecutionUnits += 1;
+            }
         }
 
     }

@@ -26,7 +26,7 @@ namespace FSM {
             // TODO: Config
             StateChangeAtomiser = new SemaphoreSlim(1, 1);
             // TODO: Configuration
-            QueueTimer = new System.Timers.Timer(20);
+            QueueTimer = new System.Timers.Timer(500);
             QueueTimer.Elapsed += (src, args) => { 
                 if (!InQueueCheckMode)
                     CheckQueuedEvents(); 
