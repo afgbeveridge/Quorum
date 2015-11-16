@@ -10,7 +10,7 @@ namespace Quorum.Integration {
     public class JsonPayloadBuilder : IPayloadBuilder {
 
         public string Create<TType>(TType obj) {
-            return JsonConvert.SerializeObject(obj);
+            return JsonConvert.SerializeObject(obj, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto });
         }
     }
 }

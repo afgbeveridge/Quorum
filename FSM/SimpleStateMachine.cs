@@ -26,8 +26,11 @@ namespace FSM {
             // TODO: Config
             StateChangeAtomiser = new SemaphoreSlim(1, 1);
             // TODO: Configuration
-            QueueTimer = new System.Timers.Timer(1000);
-            QueueTimer.Elapsed += (src, args) => { CheckQueuedEvents(); };
+            QueueTimer = new System.Timers.Timer(20);
+            QueueTimer.Elapsed += (src, args) => { 
+                if (!InQueueCheckMode)
+                    CheckQueuedEvents(); 
+            };
             QueueTimer.AutoReset = true;
             QueueTimer.Enabled = true;
         }
@@ -154,14 +157,24 @@ namespace FSM {
         }
 
         private async Task CheckQueuedEvents() {
-            if (ActiveState.State.Interruptable && QueueHandler.Any()) {
-                IEventInstance anEvent = QueueHandler.Dequeue();
-                if (anEvent.IsNotNull()) {
-                    anEvent.NoQueue = true;
-                    await Trigger(anEvent);
+            if (!InQueueCheckMode) {
+                InQueueCheckMode = true;
+                try {
+                    if (ActiveState.State.Interruptable && QueueHandler.Any()) {
+                        IEventInstance anEvent = QueueHandler.Dequeue();
+                        if (anEvent.IsNotNull()) {
+                            anEvent.NoQueue = true;
+                            await Trigger(anEvent);
+                        }
+                    }
+                }
+                finally {
+                    InQueueCheckMode = false;
                 }
             }
         }
+
+        private bool InQueueCheckMode { get; set; }
 
         public async Task RevertToPreviousState() {
             LogFacade.Instance.LogInfo("Revert to previous state: " + PreviousState.StateType.Name);

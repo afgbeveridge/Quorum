@@ -29,7 +29,7 @@ namespace Quorum.States {
 
         private StateResult AnalyzeDiscovery(IStateMachineContext<IExecutionContext> ctx) {
             Neighbour choice = Adjudicator.Choose(ctx.ExecutionContext.Network.Neighbours, Neighbour.Fabricate(ctx));
-            var selfElected = choice.IsNull() || choice.Name == ctx.ExecutionContext.HostName;
+            var selfElected = (choice.IsNull() || choice.Name == ctx.ExecutionContext.HostName) && !ctx.ExecutionContext.InEligibleForElection;
             return StateResult.Create(nextState: selfElected ? EventNames.Elected : EventNames.Quiescent);
         }
 

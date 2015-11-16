@@ -22,15 +22,22 @@
             self.address = 'http://' + n + ':' + port + '/';
             self.kill = function () {
                 $.post(self.address, '{"TypeHint": "AbdicationState" }', function (d) {
+                })
+                .fail(function (xr, text, err) {
+                    alert('Failed to make ' + self.address + ' ineligible for election');
                 });
             };
             self.elect = function () {
                 $.post(self.address, '{"TypeHint": "PretenderState" }', function (d) {
+                })
+                .fail(function (xr, text, err) {
+                    alert('Failed to make ' + self.address + ' eligible for election');
                 });
             };
             self.showingHardwareDetails = ko.observable(false);
-            self.hideDetail = function () { self.showingHardwareDetails(false); }
-            self.showDetail = function () { self.showingHardwareDetails(true); }
+            self.showingEventHistory = ko.observable(false);
+            self.toggleDetail = function () { self.showingHardwareDetails(!self.showingHardwareDetails()); }
+            self.toggleEventHistory = function () { self.showingEventHistory(!self.showingEventHistory()); }
             self.Hardware = {
                 PhysicalMemory: ko.observable(),
                 CPUManufacturer: ko.observable(),
@@ -46,12 +53,17 @@
             self.averageResponseTime = ko.computed(function () {
                 return self.successfulRequests() == 0 ? 0 : self.totalResponseTimes() / self.successfulRequests();
             });
+            self.HandledEvents = ko.observableArray([]);
+            self.stateIcon = ko.computed(function () {
+                var root = '/Content/Images/';
+                return self.alive() == 'Yes' ? root + 'traffic-lights-' + (self.InEligibleForElection() || !self.IsMaster() ? 'yellow' : 'green') + '-icon.png' : root + 'traffic-lights-red-icon.png';
+            });
         };
     };
 
     var vm = { 
         members: config.membersArray.map(function (m) { return new member(m, config.port, config.responseLimit); }),
-        responseLimit: ko.observable(defaultDiscoveryPeriod),
+        discoPeriod: ko.observable(defaultDiscoveryPeriod),
         queries: ko.observable(0)
     };
 
@@ -63,7 +75,12 @@
         return active > 1;
     });
 
-    vm.responseLimit.extend({ rateLimit: { timeout: 100, method: "notifyWhenChangesStop" } });
+    vm.discoPeriod.extend({ rateLimit: { timeout: 100, method: "notifyWhenChangesStop" } });
+
+    $.ajaxSetup({
+        type: 'POST',
+        timeout: config.responseLimit
+    });
 
     ko.applyBindings(vm, $('#monitorSection')[0]);
 
@@ -77,8 +94,11 @@
             contactAddresses.forEach(function (bundle) {
                 bundle.start = Date.now();
                 $.post(bundle.address, '{"TypeHint": "QueryRequest" }', function (d) {
+                    bundle.vm.HandledEvents.removeAll();
                     bundle.vm.lastContact(moment(Date.now()).format("MMM Do YYYY, HH:mm:ss:SS"));
                     ko.mapping.fromJSON(d, null, bundle.vm);
+                    // TODO: This is awkward. Interfaces, concrete types, JSON.Net etc etc
+                    bundle.vm.HandledEvents(JSON.parse(d).HandledEvents.$values);
                     bundle.vm.alive('Yes');
                     bundle.vm.successfulRequests(bundle.vm.successfulRequests() + 1);
                     var elapsed = Date.now() - bundle.start;
@@ -105,13 +125,9 @@
         }, period);
     };
 
-    vm.responseLimit.subscribe(function (val) {
+    vm.discoPeriod.subscribe(function (val) {
         if (timer) 
             clearInterval(timer);
-        $.ajaxSetup({
-            type: 'POST',
-            timeout: val
-        });
         setTimer(val);
     });
 
