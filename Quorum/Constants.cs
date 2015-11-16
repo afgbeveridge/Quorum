@@ -15,7 +15,7 @@ namespace Quorum {
             public static readonly ConfigurationItem<int> HttpListenerPort = ConfigurationItem<int>.Create("quorum.http.listenerPort", 9999);
             public static readonly ConfigurationItem<string> MachineStrength = ConfigurationItem<string>.Create("quorum.machine.strength");
             public static readonly ConfigurationItem<int> DiscoveryPeriodMs = ConfigurationItem<int>.Create("quorum.discoveryPeriodMs", 10000);
-            public static readonly ConfigurationItem<int> ResponseLimit = ConfigurationItem<int>.Create("quorum.http.responseLimit", 5000);
+            public static readonly ConfigurationItem<int> ResponseLimit = ConfigurationItem<int>.Create("quorum.http.responseLimit", 10000);
 
         }
 

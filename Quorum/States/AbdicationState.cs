@@ -20,7 +20,7 @@ namespace Quorum.States {
         }
 
         protected override void PostObit(IStateMachineContext<IExecutionContext> context) {
-            ChannelPrototype.Respond(context.CurrentEvent.ResponseContainer, "Accepted", Configuration.Get<int>(Constants.Configuration.ResponseLimit));
+            //ChannelPrototype.Respond(context.CurrentEvent.ResponseContainer, "Accepted", Configuration.Get<int>(Constants.Configuration.ResponseLimit));
             context.ExecutionContext.InEligibleForElection = true;
             LogFacade.Instance.LogInfo("Marking self as IN-eligible for election");
         }

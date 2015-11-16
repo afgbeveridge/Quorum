@@ -98,6 +98,8 @@ namespace FSM {
                     if (!anEvent.NoQueue) {
                         QueueHandler.Enqueue(anEvent);
                     }
+                    else
+                        LogFacade.Instance.LogInfo("Ah, this event will be discarded - " + anEvent.EventName);
                 }
                 else {
                     var type = ActiveState.EventReceived(anEvent.EventName, IgnoreUnknownEvents);
