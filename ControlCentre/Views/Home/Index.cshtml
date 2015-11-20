@@ -79,22 +79,30 @@
                             </div>
                         </td>
                     </tr>
-                    <!--
-                    <tr data-bind="visible: $data.showingHardwareDetails" style="background-color: yellow;">
-                        <td colspan="9">
-                            <div class="row">
-                                <div class="col-xs-2"><em>Physical memory</em>: <span data-bind="text: $data.Hardware.PhysicalMemory"></span></div>
-                                <div class="col-xs-2"><em>CPU Manufacturer</em>: <span data-bind="text: $data.Hardware.CPUManufacturer"></span></div>
-                                <div class="col-xs-2"><em>CPU Speed (GHz)</em>: <span data-bind="text: $data.Hardware.CPUSpeed"></span></div>
-                                <div class="col-xs-6"><em>OS</em>: <span data-bind="text: $data.Hardware.OS"></span></div>
-                            </div>
-                        </td>
-                    </tr>
-                        -->
                     <tr data-bind="visible: $data.showingEventHistory" style="background-color: yellow;">
                         <td colspan="9">
                             <div class="row">
                                 <div class="col-xs-4" style='color: blue;' data-bind="text: 'Work units executed: ' + ($data.WorkUnitsExecuted ? $data.WorkUnitsExecuted() : 'Unknown')"></div>
+                            </div>
+                            <!-- ko if: alive() === 'Yes' && PendingEvents().length > 0 -->
+                            <div class="row">
+                                <div class="col-xs-12 text-center">Pending events</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-4"><strong>Name</strong></div>
+                                <div class="col-xs-4"><strong>Created on</strong></div>
+                                <div class="col-xs-4"><strong>Age</strong></div>
+                            </div>
+                            <div data-bind="foreach: PendingEvents">
+                                <div class="row">
+                                    <div class="col-xs-4" data-bind="text: $data.name"></div>
+                                    <div class="col-xs-4" data-bind="text: $data.prettyDate"></div>
+                                    <div class="col-xs-4" data-bind="text: $data.age"></div>
+                                </div>
+                            </div>
+                            <!-- /ko -->
+                            <div class="row">
+                                <div class="col-xs-12 text-center">Event statistics</div>
                             </div>
                             <div class="row">
                                 <div class="col-xs-4"><strong>Name</strong></div>

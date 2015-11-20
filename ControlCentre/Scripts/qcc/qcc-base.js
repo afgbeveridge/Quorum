@@ -9,7 +9,7 @@ window.qcc.serialize = function (members, port, responseLimit) {
 
 window.qcc.withLocalStorage = function (f) {
     if (typeof (Storage) === "undefined")
-        alert('This browser does not support local storage');
+        alert('Browser local storage is required to use this web app');
     else return f();
 };
 

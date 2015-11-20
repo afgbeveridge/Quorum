@@ -59,6 +59,7 @@
                 return self.alive() == 'Yes' ? root + 'traffic-lights-' + (self.InEligibleForElection() || !self.IsMaster() ? 'yellow' : 'green') + '-icon.png' : root + 'traffic-lights-red-icon.png';
             });
             self.WorkUnitsExecuted = ko.observable(0);
+            self.PendingEvents = ko.observableArray([]);
         };
 
 
@@ -96,10 +97,15 @@
                     bundle.start = Date.now();
                     $.post(bundle.address, '{"TypeHint": "QueryRequest" }', function (d) {
                         bundle.vm.HandledEvents.removeAll();
+                        bundle.vm.PendingEvents.removeAll();
                         bundle.vm.lastContact(moment(Date.now()).format("MMM Do YYYY, HH:mm:ss:SS"));
                         ko.mapping.fromJSON(d, null, bundle.vm);
                         // TODO: This is awkward. Interfaces, concrete types, JSON.Net etc etc
-                        bundle.vm.HandledEvents(JSON.parse(d).HandledEvents.$values);
+                        var parsed = JSON.parse(d);
+                        bundle.vm.HandledEvents(parsed.HandledEvents.$values);
+                        bundle.vm.PendingEvents(parsed.PendingEvents.$values.map(function (e) {
+                            return { name: e.Name, id: e.Id, prettyDate: e.CreatedOn, age: e.AgeInSeconds };
+                        }));
                         bundle.vm.alive('Yes');
                         bundle.vm.successfulRequests(bundle.vm.successfulRequests() + 1);
                         var elapsed = Date.now() - bundle.start;

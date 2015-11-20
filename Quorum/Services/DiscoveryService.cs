@@ -44,16 +44,26 @@ namespace Quorum.Services {
                 var task = ChannelPrototype.NewInstance().Write(name.ToString(), Builder.Create(new QueryRequest { Requester = "Me" }), Configuration.Get<int>(Constants.Configuration.ResponseLimit));
                 task.Wait();
                 result = task.IsFaulted ? null : task.Result;
-                LogFacade.Instance.LogInfo("Neighbour (" + name + ") queried, with result '" + result + "'");
+                LogFacade.Instance.LogInfo("Neighbour (" + name + ") queried, with result '" + result + "'. Faulted? " + task.IsFaulted);
 
             }
             catch (AggregateException ex) {
-                LogFacade.Instance.LogInfo("Neighbour (" + name + ") queried, aggregated exception abend '" + ex.InnerException.Message + "'");
+                LogFacade.Instance.LogInfo("Neighbour (" + name + ") queried, aggregated exception abend '" + RecurseException(ex) + "'");
             }
             catch (Exception ex) {
-                LogFacade.Instance.LogInfo("Neighbour (" + name + ") queried, general exception abend '" + ex.Message + "'");
+                LogFacade.Instance.LogInfo("Neighbour (" + name + ") queried, general exception abend '" + RecurseException(ex) + "'");
             }
             return result.IsNull() ? null : Parser.As<Neighbour>(result); ;
+        }
+
+        private string RecurseException(Exception ex) {
+            string msg = String.Empty;
+            Exception e = ex;
+            while (e.IsNotNull()) {
+                msg = msg + e.Message + " - ";
+                e = e.InnerException;
+            }
+            return msg;
         }
     }
 }

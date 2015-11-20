@@ -47,7 +47,7 @@ namespace Quorum.Payloads {
                     Strength = actualStrength,
                     Hardware = new HardwareDetails(),
                     InEligibleForElection = context.ExecutionContext.InEligibleForElection,
-                    PendingEvents = context.EnclosingMachine.PendingEvents.Select(e => new PendingEvent {  Id = e.Id, Name = e.EventName, CreatedOn = e.CreatedOn }).ToArray(),
+                    PendingEvents = context.EnclosingMachine.PendingEvents.Select(e => new PendingEvent {  Id = e.Id, Name = e.EventName, CreatedOn = e.CreatedOn, AgeInSeconds = (DateTime.Now  - e.CreatedOn).TotalSeconds}).ToArray(),
                     HandledEvents = context.EnclosingMachine.StatisticsHandler.HandledEventsInNameOrder.ToArray(),
                     WorkUnitsExecuted = context.ExecutionContext.WorkerExecutionUnits
                 };

@@ -14,5 +14,7 @@ namespace Quorum.Payloads {
 
         public DateTime CreatedOn { get; set; }
 
+        public double AgeInSeconds { get; set; }
+
     }
 }
