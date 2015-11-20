@@ -22,8 +22,8 @@ namespace Quorum.States {
         public override async Task<StateResult> OnEntry(IStateMachineContext<IExecutionContext> context) {
             try {
                 Interruptable = false;
+                await DeActivateWorker(context.ExecutionContext);
                 context.ExecutionContext.IsMaster = false;
-                DeActivateWorker(context.ExecutionContext);
                 ContactNeighbours(context.ExecutionContext);
                 PostObit(context);
             }

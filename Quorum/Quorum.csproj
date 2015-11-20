@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AOP\LoggingInterceptor.cs" />
+    <Compile Include="BaseMasterWorkAdapter.cs" />
     <Compile Include="Builder.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="EventInterpreter.cs" />

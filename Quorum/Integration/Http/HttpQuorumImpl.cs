@@ -17,6 +17,9 @@ namespace Quorum.Integration.Http {
     
     public class HttpQuorumImpl {
 
+        private const int MaxDeathCycles = 100;
+        private const int DeathWait = 100;
+
         public HttpQuorumImpl Start<TWorker>() where TWorker : IMasterWorkAdapter {
             return this.Fluently(_ => {
                 Configure();
@@ -29,12 +32,17 @@ namespace Quorum.Integration.Http {
             });
         }
 
-        public void Stop() {
+        public async Task Stop() {
             DiscoveryTimer.Stop();
             DiscoveryTimer.Dispose();
             Listener.UnInitialize();
-            Machine.Trigger(EventInstance.Create(EventNames.Die)).Wait();
-            MachineTask.Wait();
+            await Machine.Trigger(EventInstance.Create(EventNames.Die));
+            // As the mere triggering of an event does not imply that it has been processed; we wait, within reason to ensure we are no longer master
+            var cycle = 0;
+            while (cycle < MaxDeathCycles && Machine.Context.ExecutionContext.IsMaster) {
+                await Task.Delay(DeathWait);
+                cycle++;
+            }
         }
 
         private void Configure() {

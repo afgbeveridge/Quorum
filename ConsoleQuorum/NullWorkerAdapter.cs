@@ -8,31 +8,25 @@ using System.Threading;
 using Infra;
 
 namespace ConsoleQuorum {
-    
-    public class NullWorkerAdapter : IMasterWorkAdapter {
 
-        private bool Finish { get; set; }
+    public class NullWorkerAdapter : BaseMasterWorkAdapter {
 
-        public async Task Activated() {
-            Finish = false;
-            while (!Finish) {
-                await Task.Delay(2000);
-                Finish
-                    .IfTrue(() => Console.WriteLine("Won't continue....."))
-                    .IfFalse(() => { 
-                        Console.WriteLine("Working.....");
-                        if (WorkUnitExecuted.IsNotNull())
-                            WorkUnitExecuted();
-                    });
-            }
+        protected override async Task<bool> Work() {
+            await Task.Delay(2000);
+            Console.WriteLine("Working.....");
+            if (WorkUnitExecuted.IsNotNull())
+                WorkUnitExecuted();
+            return false;
         }
 
-        public async Task DeActivated() {
-            Finish = true;
-            await Task.Delay(20);
+        protected override async Task Stopping() {
+            await Task.Delay(10);
             Console.WriteLine("Stopping.....");
         }
 
-        public Action WorkUnitExecuted { get; set; }
+        protected override void Stopped() {
+            Console.WriteLine("Stopped.");
+        }
+
     }
 }

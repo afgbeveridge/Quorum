@@ -37,13 +37,13 @@ namespace ConsoleQuorum {
             finally {
                 "Guard".GuardedExecution(() => {
                     if (Adapter.IsNotNull())
-                        Adapter.Stop();
+                        Adapter.Stop().Wait();
                 });
             }
         }
 
         private static bool Query() {
-            Adapter.Machine.Trigger(EventInstance.Create(EventNames.Query, "{ \"TypeHint\": \"QueryRequest\", \"Requester\": \"localhost\" }"));
+            Adapter.Machine.Trigger(EventInstance.Create(EventNames.Query, "{ \"TypeHint\": \"QueryRequest\" }"));
             return true;
         }
 

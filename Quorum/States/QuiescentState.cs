@@ -10,7 +10,7 @@ namespace Quorum.States {
     public class QuiescentState : BaseQuorumState {
 
         public override async Task<StateResult> OnEntry(IStateMachineContext<IExecutionContext> context) {
-            DeActivateWorker(context.ExecutionContext);
+            await DeActivateWorker(context.ExecutionContext);
             context.ExecutionContext.IsMaster = false;
             return StateResult.None;
         }

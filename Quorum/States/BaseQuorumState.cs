@@ -30,12 +30,12 @@ namespace Quorum.States {
             }
         }
 
-        protected void DeActivateWorker(IExecutionContext ctx) {
+        protected async Task DeActivateWorker(IExecutionContext ctx) {
             try {
                 var worker = GetWorker(ctx);
                 if (worker.IsNotNull()) {
-                    worker.Processor.DeActivated();
                     worker.CancellationToken.Cancel();
+                    await worker.Processor.DeActivated();
                     worker.ProcessingTask.Wait();
                     SetWorker(ctx, null);
                 }

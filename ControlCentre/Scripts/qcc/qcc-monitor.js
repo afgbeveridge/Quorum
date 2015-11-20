@@ -125,6 +125,7 @@
                         bundle.vm.UpTime(0);
                         bundle.vm.alive('No');
                         bundle.vm.showingHardwareDetails(false);
+                        bundle.vm.showingEventHistory(false);
                         bundle.vm.failedRequests(bundle.vm.failedRequests() + 1);
                         bundle.vm.InEligibleForElection(null);
                     })
