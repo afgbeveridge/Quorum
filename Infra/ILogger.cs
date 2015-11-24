@@ -24,7 +24,7 @@ namespace Infra {
     public enum LogLevel { Info, Warning, Error, Exception, Debug }
 
     public interface ILogger {
-        ILogger Configure();
+        ILogger Configure(bool includeConsole = true);
         ILogger LogInfo(string message);
         ILogger LogWarning(string message, Exception ex = null);
         ILogger LogError(string message, Exception ex = null);

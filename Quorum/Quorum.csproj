@@ -41,6 +41,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -80,6 +81,7 @@
     <Compile Include="Integration\OldestCandidateAdjudicator.cs" />
     <Compile Include="Integration\SimpleNetworkEnvironment.cs" />
     <Compile Include="Payloads\BasePayload.cs" />
+    <Compile Include="Payloads\BasicMachine.cs" />
     <Compile Include="Payloads\DeathAnnouncement.cs" />
     <Compile Include="Payloads\Neighbour.cs" />
     <Compile Include="Payloads\Neighbourhood.cs" />

@@ -23,7 +23,7 @@ namespace Infra {
 
     public abstract class AbstractLogger : ILogger {
 
-        public abstract ILogger Configure();
+        public abstract ILogger Configure(bool includeConsole = true);
 
         public ILogger LogDebug(string message) {
             return Log(LogLevel.Debug, message);

@@ -1,0 +1,57 @@
+﻿@{
+    ViewBag.Title = "Probe";
+}
+
+<div class="jumbotron">
+    <h2>Quorum Control Centre - Network Probe</h2>
+</div>
+
+<div id="monitorSection">
+    <div class="container">
+        <div class="row" id="probeStart">
+            <div class="col-xs-8"><button id="startProbe" class="btn-primary">Start probe...</button>&nbsp;Discover visible computers in the local network</div>
+        </div>
+        <div class="row" id="probeWorking" style="display: none;">
+            <div class="col-xs-4">Probing network now...<img src="~/Content/Images/ajax-loader.gif" /></div>
+        </div>
+        <div class="row" id="queryWorking" style="display: none;">
+            <div class="col-xs-8">Querying discovered computers now&nbsp;<img src="~/Content/Images/ellipsis.gif" width="16" height="16"/></div>
+        </div>
+        <div id="bindableSection" style="display: none;">
+            <div class="row" id="machinesAsConfig">
+                <div class="col-xs-12 text-center"><h2>Visible machines</h2></div>
+            </div>
+            <div class="row" id="probeComplete">
+                <div class="col-xs-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="width:35%;">Name</th>
+                                <th style="width:25%;">IP v4</th>
+                                <th style="width:15%;">Quorum available?</th>
+                            </tr>
+                        </thead>
+                        <tbody data-bind="foreach: machines">
+                            <tr>
+                                <td data-bind="text: $data.name"></td>
+                                <td data-bind="text: $data.ipAddress"></td>
+                                <td data-bind="text: $data.available"></td>
+                            </tr>
+                    </table>
+                </div>
+            </div>
+            <!-- ko if: vm.machines().length > 0 -->
+            <div class="row" id="machinesAsConfig">
+                <div class="col-xs-12" data-bind="text: appConfigText"></div>
+            </div>
+            <div class="row" id="execQuery">
+                <div class="col-xs-12"><button id="executeQuery" class="btn-primary">Query discovered machines...</button></div>
+            </div>
+            <!-- /ko -->
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    @Scripts.Render("~/bundles/qcc-probe")
+}

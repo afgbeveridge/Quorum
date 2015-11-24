@@ -9,8 +9,10 @@ namespace Infra {
 
     public class Configuration : IConfiguration {
 
+        private static readonly Dictionary<string, object> LocalOverrides = new Dictionary<string, object>();
+
         public T Get<T>(string key, T defaultValue = default(T)) {
-            var setting = ConfigurationManager.AppSettings[key];
+            var setting = LocalOverrides.ContainsKey(key) ? LocalOverrides[key] : ConfigurationManager.AppSettings[key];
             return setting == null ? defaultValue : (T)Convert.ChangeType(setting, typeof(T));
         }
 
@@ -20,6 +22,10 @@ namespace Infra {
 
         public T Get<T>(ConfigurationItem<T> src) {
             return Get(src.Key, src.DefaultValue);
+        }
+
+        public void LocalSet<T>(string key, T value) {
+            LocalOverrides[key] = value;
         }
 
     }

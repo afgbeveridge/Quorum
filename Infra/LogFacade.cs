@@ -16,7 +16,7 @@ namespace Infra {
 
         public ILogger Adapter { get; set; }
 
-        public override ILogger Configure() {
+        public override ILogger Configure(bool includeConsole = true) {
             return this;
         }
 

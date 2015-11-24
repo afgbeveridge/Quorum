@@ -8,7 +8,7 @@ namespace Infra {
     
     public class ConsoleLogger : AbstractLogger {
 
-        public override ILogger Configure() {
+        public override ILogger Configure(bool includeConsole = true) {
             return this;
         }
 

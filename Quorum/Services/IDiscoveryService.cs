@@ -9,7 +9,11 @@ namespace Quorum.Services {
     
     public interface IDiscoveryService {
 
-        IEnumerable<Neighbour> Discover(string invokingHostName);
+        IEnumerable<Neighbour> DiscoverExcept(string invokingHostName);
+
+        IEnumerable<Neighbour> Query(IEnumerable<string> targets);
+
+        IEnumerable<BasicMachine> VisibleComputers(bool workgroupOnly = false);
 
     }
 }

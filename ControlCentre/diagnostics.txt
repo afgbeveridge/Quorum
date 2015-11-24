@@ -1,0 +1,844 @@
+2015-11-24 05:37:24.099 Diagnostics Default NLog log configuration established
+
+2015-11-24 05:38:09.204 Diagnostics Apparent neighbours/targets tony-pc
+
+2015-11-24 05:38:09.204 Diagnostics Wait for 1 task(s)
+
+2015-11-24 05:38:09.547 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 05:38:09.561 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 05:38:13.590 Diagnostics Neighbour (tony-pc) queried, aggregated exception abend 'One or more errors occurred. - An error occurred while sending the request. - Unable to connect to the remote server - No connection could be made because the target machine actively refused it [2001:0:9d38:6abd:1869:2a7c:24a6:e1a1]:9999 - '
+
+2015-11-24 05:38:44.056 Diagnostics Apparent neighbours/targets tony-pc
+
+2015-11-24 05:38:44.061 Diagnostics Wait for 1 task(s)
+
+2015-11-24 05:38:44.061 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 05:38:44.061 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 05:38:47.487 Diagnostics Neighbour (tony-pc) queried, with result '{"IsMaster":true,"InEligibleForElection":false,"Name":"Tony-PC","ContactAddress":null,"UpTime":13960.323900000001,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"16384MB","CPUManufacturer":"AuthenticAMD","CPUSpeed":"3.5","OS":"Microsoft Windows 10 Home, 10.0.10240, 64-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Elected","Occurrences":1,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":1,"Processed":true}]},"WorkUnitsExecuted":3,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 05:39:07.590 Diagnostics Apparent neighbours/targets tony-pc
+
+2015-11-24 05:39:07.590 Diagnostics Wait for 1 task(s)
+
+2015-11-24 05:39:07.590 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 05:39:07.590 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 05:39:10.746 Diagnostics Neighbour (tony-pc) queried, with result '{"IsMaster":true,"InEligibleForElection":false,"Name":"Tony-PC","ContactAddress":null,"UpTime":37364.4964,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"16384MB","CPUManufacturer":"AuthenticAMD","CPUSpeed":"3.5","OS":"Microsoft Windows 10 Home, 10.0.10240, 64-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Elected","Occurrences":1,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":2,"Processed":true}]},"WorkUnitsExecuted":14,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 05:40:01.323 Diagnostics Apparent neighbours/targets tony-pc
+
+2015-11-24 05:40:01.323 Diagnostics Wait for 1 task(s)
+
+2015-11-24 05:40:01.323 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 05:40:01.340 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 05:40:04.469 Diagnostics Neighbour (tony-pc) queried, with result '{"IsMaster":true,"InEligibleForElection":false,"Name":"Tony-PC","ContactAddress":null,"UpTime":91095.4111,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"16384MB","CPUManufacturer":"AuthenticAMD","CPUSpeed":"3.5","OS":"Microsoft Windows 10 Home, 10.0.10240, 64-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":1,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Elected","Occurrences":2,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":3,"Processed":true}]},"WorkUnitsExecuted":41,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 05:40:57.211 Diagnostics Apparent neighbours/targets tony-pc
+
+2015-11-24 05:40:57.215 Diagnostics Wait for 1 task(s)
+
+2015-11-24 05:40:57.215 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 05:40:57.215 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 05:41:00.365 Diagnostics Neighbour (tony-pc) queried, with result '{"IsMaster":true,"InEligibleForElection":false,"Name":"Tony-PC","ContactAddress":null,"UpTime":146976.8786,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"16384MB","CPUManufacturer":"AuthenticAMD","CPUSpeed":"3.5","OS":"Microsoft Windows 10 Home, 10.0.10240, 64-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":2,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Elected","Occurrences":3,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":4,"Processed":true}]},"WorkUnitsExecuted":69,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 05:41:57.117 Diagnostics Apparent neighbours/targets tony-pc
+
+2015-11-24 05:41:57.121 Diagnostics Wait for 1 task(s)
+
+2015-11-24 05:41:57.121 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 05:41:57.121 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 05:42:00.353 Diagnostics Neighbour (tony-pc) queried, with result '{"IsMaster":true,"InEligibleForElection":false,"Name":"Tony-PC","ContactAddress":null,"UpTime":206977.11750000002,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"16384MB","CPUManufacturer":"AuthenticAMD","CPUSpeed":"3.5","OS":"Microsoft Windows 10 Home, 10.0.10240, 64-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":3,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Elected","Occurrences":4,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":5,"Processed":true}]},"WorkUnitsExecuted":99,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 05:42:27.114 Diagnostics Apparent neighbours/targets tony-pc
+
+2015-11-24 05:42:27.114 Diagnostics Wait for 1 task(s)
+
+2015-11-24 05:42:27.114 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 05:42:27.132 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 05:42:30.242 Diagnostics Neighbour (tony-pc) queried, with result '{"IsMaster":true,"InEligibleForElection":false,"Name":"Tony-PC","ContactAddress":null,"UpTime":236882.0546,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"16384MB","CPUManufacturer":"AuthenticAMD","CPUSpeed":"3.5","OS":"Microsoft Windows 10 Home, 10.0.10240, 64-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":4,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Elected","Occurrences":4,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":6,"Processed":true}]},"WorkUnitsExecuted":114,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 05:43:28.400 Diagnostics Apparent neighbours/targets tony-pc
+
+2015-11-24 05:43:28.404 Diagnostics Wait for 1 task(s)
+
+2015-11-24 05:43:28.404 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 05:43:28.404 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 05:43:31.553 Diagnostics Neighbour (tony-pc) queried, with result '{"IsMaster":true,"InEligibleForElection":false,"Name":"Tony-PC","ContactAddress":null,"UpTime":298164.7807,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"16384MB","CPUManufacturer":"AuthenticAMD","CPUSpeed":"3.5","OS":"Microsoft Windows 10 Home, 10.0.10240, 64-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":5,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Elected","Occurrences":5,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":19,"Processed":true}]},"WorkUnitsExecuted":144,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 05:47:21.186 Diagnostics Apparent neighbours/targets tony-old-pc, tony-pc
+
+2015-11-24 05:47:21.186 Diagnostics Wait for 2 task(s)
+
+2015-11-24 05:47:26.397 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 05:47:26.397 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 05:47:26.397 Diagnostics Contact: http://tony-old-pc:9999/
+
+2015-11-24 05:47:26.397 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 05:47:29.575 Diagnostics Neighbour (tony-pc) queried, with result '{"IsMaster":true,"InEligibleForElection":false,"Name":"Tony-PC","ContactAddress":null,"UpTime":536155.714,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"16384MB","CPUManufacturer":"AuthenticAMD","CPUSpeed":"3.5","OS":"Microsoft Windows 10 Home, 10.0.10240, 64-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":8,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Elected","Occurrences":9,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"NeighbourDying","Occurrences":1,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":27,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"RequestElection","Occurrences":3,"Processed":true}]},"WorkUnitsExecuted":262,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 05:47:36.410 Diagnostics Neighbour (tony-old-pc) queried, aggregated exception abend 'One or more errors occurred. - A task was canceled. - '
+
+2015-11-24 05:47:58.572 Diagnostics Apparent neighbours/targets tony-old-pc, tony-pc
+
+2015-11-24 05:47:58.578 Diagnostics Wait for 2 task(s)
+
+2015-11-24 05:47:58.578 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 05:47:58.578 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 05:47:58.589 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 05:47:58.578 Diagnostics Contact: http://tony-old-pc:9999/
+
+2015-11-24 05:48:01.767 Diagnostics Neighbour (tony-pc) queried, with result '{"IsMaster":true,"InEligibleForElection":false,"Name":"Tony-PC","ContactAddress":null,"UpTime":568350.4654,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"16384MB","CPUManufacturer":"AuthenticAMD","CPUSpeed":"3.5","OS":"Microsoft Windows 10 Home, 10.0.10240, 64-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":9,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Elected","Occurrences":10,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"NeighbourDying","Occurrences":1,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":28,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"RequestElection","Occurrences":3,"Processed":true}]},"WorkUnitsExecuted":277,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 05:48:08.609 Diagnostics Neighbour (tony-old-pc) queried, aggregated exception abend 'One or more errors occurred. - A task was canceled. - '
+
+2015-11-24 05:48:54.187 Diagnostics Apparent neighbours/targets tony-old-pc, tony-pc
+
+2015-11-24 05:48:54.187 Diagnostics Wait for 2 task(s)
+
+2015-11-24 05:48:54.187 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 05:48:54.202 Diagnostics Contact: http://tony-old-pc:9999/
+
+2015-11-24 05:48:54.187 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 05:48:54.202 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 05:48:57.385 Diagnostics Neighbour (tony-pc) queried, with result '{"IsMaster":true,"InEligibleForElection":false,"Name":"Tony-PC","ContactAddress":null,"UpTime":623972.9124,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"16384MB","CPUManufacturer":"AuthenticAMD","CPUSpeed":"3.5","OS":"Microsoft Windows 10 Home, 10.0.10240, 64-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":10,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Elected","Occurrences":11,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"NeighbourDying","Occurrences":1,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":44,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"RequestElection","Occurrences":4,"Processed":true}]},"WorkUnitsExecuted":305,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 05:48:58.011 Diagnostics Neighbour (tony-old-pc) queried, with result '{"IsMaster":false,"InEligibleForElection":false,"Name":"tony-old-PC","ContactAddress":null,"UpTime":31886.456000000002,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"4096MB","CPUManufacturer":"GenuineIntel","CPUSpeed":"0.785","OS":"Microsoft Windows 7 Ultimate N, 6.1.7601, 32-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":9,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Quiescent","Occurrences":1,"Processed":true}]},"WorkUnitsExecuted":0,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 05:50:09.610 Diagnostics Apparent neighbours/targets tony-old-pc, tony-pc
+
+2015-11-24 05:50:09.610 Diagnostics Wait for 2 task(s)
+
+2015-11-24 05:50:09.610 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 05:50:09.610 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 05:50:09.629 Diagnostics Contact: http://tony-old-pc:9999/
+
+2015-11-24 05:50:09.629 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 05:50:12.844 Diagnostics Neighbour (tony-pc) queried, with result '{"IsMaster":true,"InEligibleForElection":false,"Name":"Tony-PC","ContactAddress":null,"UpTime":699396.18540000007,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"16384MB","CPUManufacturer":"AuthenticAMD","CPUSpeed":"3.5","OS":"Microsoft Windows 10 Home, 10.0.10240, 64-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":11,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Elected","Occurrences":12,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"NeighbourDying","Occurrences":1,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":46,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"RequestElection","Occurrences":5,"Processed":true}]},"WorkUnitsExecuted":342,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 05:50:13.562 Diagnostics Neighbour (tony-old-pc) queried, with result '{"IsMaster":false,"InEligibleForElection":false,"Name":"tony-old-PC","ContactAddress":null,"UpTime":107421.7887,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"4096MB","CPUManufacturer":"GenuineIntel","CPUSpeed":"0.785","OS":"Microsoft Windows 7 Ultimate N, 6.1.7601, 32-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":1,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":11,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Quiescent","Occurrences":1,"Processed":true}]},"WorkUnitsExecuted":0,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 05:52:00.970 Diagnostics Apparent neighbours/targets tony-old-pc, tony-pc
+
+2015-11-24 05:52:00.970 Diagnostics Wait for 2 task(s)
+
+2015-11-24 05:52:00.970 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 05:52:00.970 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 05:52:00.970 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 05:52:00.980 Diagnostics Contact: http://tony-old-pc:9999/
+
+2015-11-24 05:52:04.105 Diagnostics Neighbour (tony-pc) queried, with result '{"IsMaster":true,"InEligibleForElection":false,"Name":"Tony-PC","ContactAddress":null,"UpTime":810732.1154,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"16384MB","CPUManufacturer":"AuthenticAMD","CPUSpeed":"3.5","OS":"Microsoft Windows 10 Home, 10.0.10240, 64-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":13,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Elected","Occurrences":14,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"NeighbourDying","Occurrences":1,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":49,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"RequestElection","Occurrences":7,"Processed":true}]},"WorkUnitsExecuted":398,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 05:52:04.803 Diagnostics Neighbour (tony-old-pc) queried, with result '{"IsMaster":false,"InEligibleForElection":false,"Name":"tony-old-PC","ContactAddress":null,"UpTime":218665.5841,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"4096MB","CPUManufacturer":"GenuineIntel","CPUSpeed":"0.785","OS":"Microsoft Windows 7 Ultimate N, 6.1.7601, 32-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":3,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":14,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Quiescent","Occurrences":1,"Processed":true}]},"WorkUnitsExecuted":0,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 05:52:49.998 Diagnostics Apparent neighbours/targets tony-old-pc, tony-pc
+
+2015-11-24 05:52:49.998 Diagnostics Wait for 2 task(s)
+
+2015-11-24 05:52:49.998 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 05:52:49.998 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 05:52:50.018 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 05:52:50.018 Diagnostics Contact: http://tony-old-pc:9999/
+
+2015-11-24 05:52:53.195 Diagnostics Neighbour (tony-pc) queried, with result '{"IsMaster":true,"InEligibleForElection":false,"Name":"Tony-PC","ContactAddress":null,"UpTime":859776.47200000007,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"16384MB","CPUManufacturer":"AuthenticAMD","CPUSpeed":"3.5","OS":"Microsoft Windows 10 Home, 10.0.10240, 64-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":14,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Elected","Occurrences":15,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"NeighbourDying","Occurrences":1,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":51,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"RequestElection","Occurrences":8,"Processed":true}]},"WorkUnitsExecuted":422,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 05:52:53.915 Diagnostics Neighbour (tony-old-pc) queried, with result '{"IsMaster":false,"InEligibleForElection":false,"Name":"tony-old-PC","ContactAddress":null,"UpTime":267743.27030000003,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"4096MB","CPUManufacturer":"GenuineIntel","CPUSpeed":"0.785","OS":"Microsoft Windows 7 Ultimate N, 6.1.7601, 32-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":4,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":16,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Quiescent","Occurrences":1,"Processed":true}]},"WorkUnitsExecuted":0,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 05:53:06.131 Diagnostics Apparent neighbours/targets tony-old-pc, tony-pc
+
+2015-11-24 05:53:06.143 Diagnostics Wait for 2 task(s)
+
+2015-11-24 05:53:06.143 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 05:53:06.143 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 05:53:06.152 Diagnostics Contact: http://tony-old-pc:9999/
+
+2015-11-24 05:53:06.152 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 05:53:09.328 Diagnostics Neighbour (tony-pc) queried, with result '{"IsMaster":true,"InEligibleForElection":false,"Name":"Tony-PC","ContactAddress":null,"UpTime":875913.08850000007,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"16384MB","CPUManufacturer":"AuthenticAMD","CPUSpeed":"3.5","OS":"Microsoft Windows 10 Home, 10.0.10240, 64-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":14,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Elected","Occurrences":15,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"NeighbourDying","Occurrences":1,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":52,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"RequestElection","Occurrences":8,"Processed":true}]},"WorkUnitsExecuted":430,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 05:53:10.028 Diagnostics Neighbour (tony-old-pc) queried, with result '{"IsMaster":false,"InEligibleForElection":false,"Name":"tony-old-PC","ContactAddress":null,"UpTime":283826.8985,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"4096MB","CPUManufacturer":"GenuineIntel","CPUSpeed":"0.785","OS":"Microsoft Windows 7 Ultimate N, 6.1.7601, 32-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":4,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":17,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Quiescent","Occurrences":1,"Processed":true}]},"WorkUnitsExecuted":0,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 05:53:25.129 Diagnostics Apparent neighbours/targets tony-old-pc, tony-pc
+
+2015-11-24 05:53:25.140 Diagnostics Wait for 2 task(s)
+
+2015-11-24 05:53:25.140 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 05:53:25.140 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 05:53:25.157 Diagnostics Contact: http://tony-old-pc:9999/
+
+2015-11-24 05:53:25.157 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 05:53:28.450 Diagnostics Neighbour (tony-pc) queried, with result '{"IsMaster":true,"InEligibleForElection":false,"Name":"Tony-PC","ContactAddress":null,"UpTime":894960.1058,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"16384MB","CPUManufacturer":"AuthenticAMD","CPUSpeed":"3.5","OS":"Microsoft Windows 10 Home, 10.0.10240, 64-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":14,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Elected","Occurrences":15,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"NeighbourDying","Occurrences":1,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":54,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"RequestElection","Occurrences":8,"Processed":true}]},"WorkUnitsExecuted":440,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 05:53:29.425 Diagnostics Neighbour (tony-old-pc) queried, with result '{"IsMaster":false,"InEligibleForElection":false,"Name":"tony-old-PC","ContactAddress":null,"UpTime":302843.3319,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"4096MB","CPUManufacturer":"GenuineIntel","CPUSpeed":"0.785","OS":"Microsoft Windows 7 Ultimate N, 6.1.7601, 32-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":5,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":18,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Quiescent","Occurrences":1,"Processed":true}]},"WorkUnitsExecuted":0,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 05:53:39.624 Diagnostics Apparent neighbours/targets tony-old-pc, tony-pc
+
+2015-11-24 05:53:39.624 Diagnostics Wait for 2 task(s)
+
+2015-11-24 05:53:39.624 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 05:53:39.643 Diagnostics Contact: http://tony-old-pc:9999/
+
+2015-11-24 05:53:39.624 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 05:53:39.643 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 05:53:42.851 Diagnostics Neighbour (tony-pc) queried, with result '{"IsMaster":true,"InEligibleForElection":false,"Name":"Tony-PC","ContactAddress":null,"UpTime":909452.2844,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"16384MB","CPUManufacturer":"AuthenticAMD","CPUSpeed":"3.5","OS":"Microsoft Windows 10 Home, 10.0.10240, 64-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":15,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Elected","Occurrences":16,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"NeighbourDying","Occurrences":2,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":55,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"RequestElection","Occurrences":8,"Processed":true}]},"WorkUnitsExecuted":447,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 05:53:49.654 Diagnostics Neighbour (tony-old-pc) queried, aggregated exception abend 'One or more errors occurred. - A task was canceled. - '
+
+2015-11-24 05:54:14.117 Diagnostics Apparent neighbours/targets tony-old-pc, tony-pc
+
+2015-11-24 05:54:14.125 Diagnostics Wait for 2 task(s)
+
+2015-11-24 05:54:14.125 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 05:54:14.125 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 05:54:14.140 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 05:54:14.140 Diagnostics Contact: http://tony-old-pc:9999/
+
+2015-11-24 05:54:17.347 Diagnostics Neighbour (tony-pc) queried, with result '{"IsMaster":true,"InEligibleForElection":false,"Name":"Tony-PC","ContactAddress":null,"UpTime":943904.32480000006,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"16384MB","CPUManufacturer":"AuthenticAMD","CPUSpeed":"3.5","OS":"Microsoft Windows 10 Home, 10.0.10240, 64-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":15,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Elected","Occurrences":16,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"NeighbourDying","Occurrences":2,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":56,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"RequestElection","Occurrences":8,"Processed":true}]},"WorkUnitsExecuted":464,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 05:54:24.163 Diagnostics Neighbour (tony-old-pc) queried, aggregated exception abend 'One or more errors occurred. - A task was canceled. - '
+
+2015-11-24 05:56:44.435 Diagnostics Apparent neighbours/targets tony-old-pc, tony-pc
+
+2015-11-24 05:56:44.435 Diagnostics Wait for 2 task(s)
+
+2015-11-24 05:56:44.435 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 05:56:44.435 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 05:56:44.435 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 05:56:44.449 Diagnostics Contact: http://tony-old-pc:9999/
+
+2015-11-24 05:56:47.590 Diagnostics Neighbour (tony-pc) queried, with result '{"IsMaster":true,"InEligibleForElection":false,"Name":"Tony-PC","ContactAddress":null,"UpTime":1094205.3585,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"16384MB","CPUManufacturer":"AuthenticAMD","CPUSpeed":"3.5","OS":"Microsoft Windows 10 Home, 10.0.10240, 64-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":18,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Elected","Occurrences":19,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"NeighbourDying","Occurrences":2,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":57,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"RequestElection","Occurrences":8,"Processed":true}]},"WorkUnitsExecuted":538,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 05:56:54.458 Diagnostics Neighbour (tony-old-pc) queried, aggregated exception abend 'One or more errors occurred. - A task was canceled. - '
+
+2015-11-24 05:56:57.602 Diagnostics Apparent neighbours/targets tony-old-pc, tony-pc
+
+2015-11-24 05:56:57.610 Diagnostics Wait for 2 task(s)
+
+2015-11-24 05:56:57.610 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 05:56:57.610 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 05:56:57.610 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 05:56:57.610 Diagnostics Contact: http://tony-old-pc:9999/
+
+2015-11-24 05:57:00.754 Diagnostics Neighbour (tony-pc) queried, with result '{"IsMaster":true,"InEligibleForElection":false,"Name":"Tony-PC","ContactAddress":null,"UpTime":1107376.441,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"16384MB","CPUManufacturer":"AuthenticAMD","CPUSpeed":"3.5","OS":"Microsoft Windows 10 Home, 10.0.10240, 64-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":18,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Elected","Occurrences":19,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"NeighbourDying","Occurrences":2,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":58,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"RequestElection","Occurrences":8,"Processed":true}]},"WorkUnitsExecuted":545,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 05:57:07.627 Diagnostics Neighbour (tony-old-pc) queried, aggregated exception abend 'One or more errors occurred. - A task was canceled. - '
+
+2015-11-24 05:58:43.433 Diagnostics Apparent neighbours/targets tony-old-pc, tony-pc
+
+2015-11-24 05:58:43.433 Diagnostics Wait for 2 task(s)
+
+2015-11-24 05:58:43.433 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 05:58:43.433 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 05:58:43.433 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 05:58:43.433 Diagnostics Contact: http://tony-old-pc:9999/
+
+2015-11-24 05:58:46.589 Diagnostics Neighbour (tony-pc) queried, with result '{"IsMaster":true,"InEligibleForElection":false,"Name":"Tony-PC","ContactAddress":null,"UpTime":1213193.3222,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"16384MB","CPUManufacturer":"AuthenticAMD","CPUSpeed":"3.5","OS":"Microsoft Windows 10 Home, 10.0.10240, 64-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":20,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Elected","Occurrences":21,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"NeighbourDying","Occurrences":2,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":59,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"RequestElection","Occurrences":8,"Processed":true}]},"WorkUnitsExecuted":597,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 05:58:47.193 Diagnostics Apparent neighbours/targets tony-old-pc, tony-pc
+
+2015-11-24 05:58:47.193 Diagnostics Wait for 2 task(s)
+
+2015-11-24 05:58:47.193 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 05:58:47.193 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 05:58:47.193 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 05:58:47.193 Diagnostics Contact: http://tony-old-pc:9999/
+
+2015-11-24 05:58:50.289 Diagnostics Neighbour (tony-pc) queried, with result '{"IsMaster":true,"InEligibleForElection":false,"Name":"Tony-PC","ContactAddress":null,"UpTime":1216945.4856,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"16384MB","CPUManufacturer":"AuthenticAMD","CPUSpeed":"3.5","OS":"Microsoft Windows 10 Home, 10.0.10240, 64-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":20,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Elected","Occurrences":21,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"NeighbourDying","Occurrences":2,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":60,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"RequestElection","Occurrences":8,"Processed":true}]},"WorkUnitsExecuted":599,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 05:58:53.469 Diagnostics Neighbour (tony-old-pc) queried, aggregated exception abend 'One or more errors occurred. - A task was canceled. - '
+
+2015-11-24 05:58:53.584 Diagnostics Apparent neighbours/targets tony-old-pc, tony-pc
+
+2015-11-24 05:58:53.584 Diagnostics Wait for 2 task(s)
+
+2015-11-24 05:58:53.584 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 05:58:53.584 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 05:58:53.594 Diagnostics Contact: http://tony-old-pc:9999/
+
+2015-11-24 05:58:53.594 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 05:58:56.728 Diagnostics Neighbour (tony-pc) queried, with result '{"IsMaster":true,"InEligibleForElection":false,"Name":"Tony-PC","ContactAddress":null,"UpTime":1223354.4143,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"16384MB","CPUManufacturer":"AuthenticAMD","CPUSpeed":"3.5","OS":"Microsoft Windows 10 Home, 10.0.10240, 64-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":20,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Elected","Occurrences":21,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"NeighbourDying","Occurrences":2,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":61,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"RequestElection","Occurrences":8,"Processed":true}]},"WorkUnitsExecuted":602,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 05:58:57.201 Diagnostics Neighbour (tony-old-pc) queried, aggregated exception abend 'One or more errors occurred. - A task was canceled. - '
+
+2015-11-24 05:59:03.608 Diagnostics Neighbour (tony-old-pc) queried, aggregated exception abend 'One or more errors occurred. - A task was canceled. - '
+
+2015-11-24 05:59:13.112 Diagnostics Apparent neighbours/targets tony-old-pc, tony-pc
+
+2015-11-24 05:59:13.112 Diagnostics Wait for 2 task(s)
+
+2015-11-24 05:59:13.112 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 05:59:13.112 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 05:59:13.128 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 05:59:13.128 Diagnostics Contact: http://tony-old-pc:9999/
+
+2015-11-24 05:59:21.154 Diagnostics Neighbour (tony-pc) queried, aggregated exception abend 'One or more errors occurred. - An error occurred while sending the request. - Unable to connect to the remote server - No connection could be made because the target machine actively refused it [2001:0:9d38:6abd:1869:2a7c:24a6:e1a1]:9999 - '
+
+2015-11-24 05:59:23.145 Diagnostics Neighbour (tony-old-pc) queried, aggregated exception abend 'One or more errors occurred. - A task was canceled. - '
+
+2015-11-24 05:59:48.164 Diagnostics Apparent neighbours/targets tony-old-pc, tony-pc
+
+2015-11-24 05:59:48.166 Diagnostics Wait for 2 task(s)
+
+2015-11-24 05:59:48.166 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 05:59:48.166 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 05:59:48.166 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 05:59:48.166 Diagnostics Contact: http://tony-old-pc:9999/
+
+2015-11-24 05:59:52.189 Diagnostics Neighbour (tony-pc) queried, aggregated exception abend 'One or more errors occurred. - An error occurred while sending the request. - Unable to connect to the remote server - No connection could be made because the target machine actively refused it [2001:0:9d38:6abd:1869:2a7c:24a6:e1a1]:9999 - '
+
+2015-11-24 05:59:58.189 Diagnostics Neighbour (tony-old-pc) queried, aggregated exception abend 'One or more errors occurred. - A task was canceled. - '
+
+2015-11-24 06:00:56.327 Diagnostics Apparent neighbours/targets tony-old-pc, tony-pc
+
+2015-11-24 06:00:56.327 Diagnostics Wait for 2 task(s)
+
+2015-11-24 06:00:56.327 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 06:00:56.327 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 06:00:56.342 Diagnostics Contact: http://tony-old-pc:9999/
+
+2015-11-24 06:00:56.342 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 06:00:59.717 Diagnostics Neighbour (tony-pc) queried, with result '{"IsMaster":true,"InEligibleForElection":false,"Name":"Tony-PC","ContactAddress":null,"UpTime":12238.8147,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"16384MB","CPUManufacturer":"AuthenticAMD","CPUSpeed":"3.5","OS":"Microsoft Windows 10 Home, 10.0.10240, 64-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Elected","Occurrences":1,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":1,"Processed":true}]},"WorkUnitsExecuted":2,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 06:01:06.360 Diagnostics Neighbour (tony-old-pc) queried, aggregated exception abend 'One or more errors occurred. - A task was canceled. - '
+
+2015-11-24 06:01:14.471 Diagnostics Apparent neighbours/targets tony-old-pc, tony-pc
+
+2015-11-24 06:01:14.471 Diagnostics Wait for 2 task(s)
+
+2015-11-24 06:01:14.471 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 06:01:14.471 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 06:01:14.487 Diagnostics Contact: http://tony-old-pc:9999/
+
+2015-11-24 06:01:14.487 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 06:01:22.532 Diagnostics Neighbour (tony-pc) queried, aggregated exception abend 'One or more errors occurred. - An error occurred while sending the request. - Unable to connect to the remote server - No connection could be made because the target machine actively refused it [2001:0:9d38:6abd:1869:2a7c:24a6:e1a1]:9999 - '
+
+2015-11-24 06:01:24.502 Diagnostics Neighbour (tony-old-pc) queried, aggregated exception abend 'One or more errors occurred. - A task was canceled. - '
+
+2015-11-24 06:01:34.961 Diagnostics Apparent neighbours/targets tony-old-pc, tony-pc
+
+2015-11-24 06:01:34.971 Diagnostics Wait for 2 task(s)
+
+2015-11-24 06:01:34.971 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 06:01:34.971 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 06:01:34.971 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 06:01:34.971 Diagnostics Contact: http://tony-old-pc:9999/
+
+2015-11-24 06:01:39.000 Diagnostics Neighbour (tony-pc) queried, aggregated exception abend 'One or more errors occurred. - An error occurred while sending the request. - Unable to connect to the remote server - No connection could be made because the target machine actively refused it [2001:0:9d38:6abd:1869:2a7c:24a6:e1a1]:9999 - '
+
+2015-11-24 06:01:44.981 Diagnostics Neighbour (tony-old-pc) queried, aggregated exception abend 'One or more errors occurred. - A task was canceled. - '
+
+2015-11-24 06:01:47.290 Diagnostics Apparent neighbours/targets tony-old-pc, tony-pc
+
+2015-11-24 06:01:47.293 Diagnostics Wait for 2 task(s)
+
+2015-11-24 06:01:47.293 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 06:01:47.293 Diagnostics Contact: http://tony-old-pc:9999/
+
+2015-11-24 06:01:47.293 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 06:01:47.308 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 06:01:50.663 Diagnostics Neighbour (tony-pc) queried, with result '{"IsMaster":true,"InEligibleForElection":false,"Name":"Tony-PC","ContactAddress":null,"UpTime":17727.6447,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"16384MB","CPUManufacturer":"AuthenticAMD","CPUSpeed":"3.5","OS":"Microsoft Windows 10 Home, 10.0.10240, 64-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Elected","Occurrences":1,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":1,"Processed":true}]},"WorkUnitsExecuted":5,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 06:01:57.309 Diagnostics Neighbour (tony-old-pc) queried, aggregated exception abend 'One or more errors occurred. - A task was canceled. - '
+
+2015-11-24 06:02:03.770 Diagnostics Apparent neighbours/targets tony-old-pc, tony-pc
+
+2015-11-24 06:02:03.770 Diagnostics Wait for 2 task(s)
+
+2015-11-24 06:02:03.770 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 06:02:03.770 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 06:02:03.785 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 06:02:03.785 Diagnostics Contact: http://tony-old-pc:9999/
+
+2015-11-24 06:02:11.813 Diagnostics Neighbour (tony-pc) queried, aggregated exception abend 'One or more errors occurred. - An error occurred while sending the request. - Unable to connect to the remote server - No connection could be made because the target machine actively refused it [2001:0:9d38:6abd:1869:2a7c:24a6:e1a1]:9999 - '
+
+2015-11-24 06:02:13.796 Diagnostics Neighbour (tony-old-pc) queried, aggregated exception abend 'One or more errors occurred. - A task was canceled. - '
+
+2015-11-24 06:02:52.968 Diagnostics Apparent neighbours/targets tony-old-pc, tony-pc
+
+2015-11-24 06:02:52.968 Diagnostics Wait for 2 task(s)
+
+2015-11-24 06:02:52.968 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 06:02:52.968 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 06:02:52.985 Diagnostics Contact: http://tony-old-pc:9999/
+
+2015-11-24 06:02:52.985 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 06:02:56.120 Diagnostics Neighbour (tony-pc) queried, with result '{"IsMaster":true,"InEligibleForElection":false,"Name":"Tony-PC","ContactAddress":null,"UpTime":23261.0157,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"16384MB","CPUManufacturer":"AuthenticAMD","CPUSpeed":"3.5","OS":"Microsoft Windows 10 Home, 10.0.10240, 64-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Elected","Occurrences":1,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":5,"Processed":true}]},"WorkUnitsExecuted":7,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 06:03:02.999 Diagnostics Neighbour (tony-old-pc) queried, aggregated exception abend 'One or more errors occurred. - A task was canceled. - '
+
+2015-11-24 06:03:10.640 Diagnostics Apparent neighbours/targets tony-old-pc, tony-pc
+
+2015-11-24 06:03:10.640 Diagnostics Wait for 2 task(s)
+
+2015-11-24 06:03:10.640 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 06:03:10.640 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 06:03:10.640 Diagnostics Contact: http://tony-old-pc:9999/
+
+2015-11-24 06:03:10.653 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 06:03:18.678 Diagnostics Neighbour (tony-pc) queried, aggregated exception abend 'One or more errors occurred. - An error occurred while sending the request. - Unable to connect to the remote server - No connection could be made because the target machine actively refused it [2001:0:9d38:6abd:1869:2a7c:24a6:e1a1]:9999 - '
+
+2015-11-24 06:03:20.659 Diagnostics Neighbour (tony-old-pc) queried, aggregated exception abend 'One or more errors occurred. - A task was canceled. - '
+
+2015-11-24 17:52:18.985 Diagnostics Apparent neighbours/targets tony-pc
+
+2015-11-24 17:52:18.985 Diagnostics Wait for 1 task(s)
+
+2015-11-24 17:52:18.985 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 17:52:19.005 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 17:52:23.022 Diagnostics Neighbour (tony-pc) queried, aggregated exception abend 'One or more errors occurred. - An error occurred while sending the request. - Unable to connect to the remote server - No connection could be made because the target machine actively refused it [2001:0:5ef5:79fb:cb6:23ed:24a6:e1a1]:9999 - '
+
+2015-11-24 17:52:27.923 Diagnostics Apparent neighbours/targets tony-pc
+
+2015-11-24 17:52:27.923 Diagnostics Wait for 1 task(s)
+
+2015-11-24 17:52:27.923 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 17:52:27.937 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 17:52:31.946 Diagnostics Neighbour (tony-pc) queried, aggregated exception abend 'One or more errors occurred. - An error occurred while sending the request. - Unable to connect to the remote server - No connection could be made because the target machine actively refused it [2001:0:5ef5:79fb:cb6:23ed:24a6:e1a1]:9999 - '
+
+2015-11-24 17:52:33.915 Diagnostics Apparent neighbours/targets tony-pc
+
+2015-11-24 17:52:33.918 Diagnostics Wait for 1 task(s)
+
+2015-11-24 17:52:33.918 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 17:52:33.933 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 17:52:37.941 Diagnostics Neighbour (tony-pc) queried, aggregated exception abend 'One or more errors occurred. - An error occurred while sending the request. - Unable to connect to the remote server - No connection could be made because the target machine actively refused it [2001:0:5ef5:79fb:cb6:23ed:24a6:e1a1]:9999 - '
+
+2015-11-24 17:55:57.530 Diagnostics Apparent neighbours/targets tony-pc
+
+2015-11-24 17:55:57.530 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 17:55:57.530 Diagnostics Wait for 1 task(s)
+
+2015-11-24 17:55:57.543 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 17:56:01.551 Diagnostics Neighbour (tony-pc) queried, aggregated exception abend 'One or more errors occurred. - An error occurred while sending the request. - Unable to connect to the remote server - No connection could be made because the target machine actively refused it [2001:0:5ef5:79fb:cb6:23ed:24a6:e1a1]:9999 - '
+
+2015-11-24 17:56:05.062 Diagnostics Apparent neighbours/targets tony-pc
+
+2015-11-24 17:56:05.062 Diagnostics Wait for 1 task(s)
+
+2015-11-24 17:56:05.062 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 17:56:05.075 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 17:56:09.084 Diagnostics Neighbour (tony-pc) queried, aggregated exception abend 'One or more errors occurred. - An error occurred while sending the request. - Unable to connect to the remote server - No connection could be made because the target machine actively refused it [2001:0:5ef5:79fb:cb6:23ed:24a6:e1a1]:9999 - '
+
+2015-11-24 17:57:11.939 Diagnostics Apparent neighbours/targets tony-pc
+
+2015-11-24 17:57:11.939 Diagnostics Wait for 1 task(s)
+
+2015-11-24 17:57:11.939 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 17:57:11.956 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 17:57:15.977 Diagnostics Neighbour (tony-pc) queried, aggregated exception abend 'One or more errors occurred. - An error occurred while sending the request. - Unable to connect to the remote server - No connection could be made because the target machine actively refused it [2001:0:5ef5:79fb:cb6:23ed:24a6:e1a1]:9999 - '
+
+2015-11-24 17:58:35.927 Diagnostics Apparent neighbours/targets tony-pc
+
+2015-11-24 17:58:35.927 Diagnostics Wait for 1 task(s)
+
+2015-11-24 17:58:35.927 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 17:58:35.942 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 17:58:39.960 Diagnostics Neighbour (tony-pc) queried, aggregated exception abend 'One or more errors occurred. - An error occurred while sending the request. - Unable to connect to the remote server - No connection could be made because the target machine actively refused it [2001:0:5ef5:79fb:cb6:23ed:24a6:e1a1]:9999 - '
+
+2015-11-24 17:59:35.163 Diagnostics Apparent neighbours/targets tony-pc
+
+2015-11-24 17:59:35.167 Diagnostics Wait for 1 task(s)
+
+2015-11-24 17:59:35.167 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 17:59:35.167 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 17:59:39.187 Diagnostics Neighbour (tony-pc) queried, aggregated exception abend 'One or more errors occurred. - An error occurred while sending the request. - Unable to connect to the remote server - No connection could be made because the target machine actively refused it [2001:0:5ef5:79fb:cb6:23ed:24a6:e1a1]:9999 - '
+
+2015-11-24 17:59:41.477 Diagnostics Apparent neighbours/targets tony-pc
+
+2015-11-24 17:59:41.483 Diagnostics Wait for 1 task(s)
+
+2015-11-24 17:59:41.483 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 17:59:41.497 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 17:59:45.507 Diagnostics Neighbour (tony-pc) queried, aggregated exception abend 'One or more errors occurred. - An error occurred while sending the request. - Unable to connect to the remote server - No connection could be made because the target machine actively refused it [2001:0:5ef5:79fb:cb6:23ed:24a6:e1a1]:9999 - '
+
+2015-11-24 18:01:43.855 Diagnostics Apparent neighbours/targets tony-pc
+
+2015-11-24 18:01:43.855 Diagnostics Wait for 1 task(s)
+
+2015-11-24 18:01:43.855 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 18:01:43.873 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 18:01:47.884 Diagnostics Neighbour (tony-pc) queried, aggregated exception abend 'One or more errors occurred. - An error occurred while sending the request. - Unable to connect to the remote server - No connection could be made because the target machine actively refused it [2001:0:5ef5:79fb:cb6:23ed:24a6:e1a1]:9999 - '
+
+2015-11-24 18:01:55.993 Diagnostics Apparent neighbours/targets tony-pc
+
+2015-11-24 18:01:55.998 Diagnostics Wait for 1 task(s)
+
+2015-11-24 18:01:55.998 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 18:01:56.015 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 18:02:00.026 Diagnostics Neighbour (tony-pc) queried, aggregated exception abend 'One or more errors occurred. - An error occurred while sending the request. - Unable to connect to the remote server - No connection could be made because the target machine actively refused it [2001:0:5ef5:79fb:cb6:23ed:24a6:e1a1]:9999 - '
+
+2015-11-24 18:02:22.611 Diagnostics Apparent neighbours/targets tony-pc
+
+2015-11-24 18:02:22.611 Diagnostics Wait for 1 task(s)
+
+2015-11-24 18:02:22.611 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 18:02:22.625 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 18:02:26.050 Diagnostics Neighbour (tony-pc) queried, with result '{"IsMaster":true,"InEligibleForElection":false,"Name":"Tony-PC","ContactAddress":null,"UpTime":18465.9694,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"16384MB","CPUManufacturer":"AuthenticAMD","CPUSpeed":"3.5","OS":"Microsoft Windows 10 Home, 10.0.10240, 64-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Elected","Occurrences":1,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":1,"Processed":true}]},"WorkUnitsExecuted":5,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 18:02:54.273 Diagnostics Apparent neighbours/targets tony-pc
+
+2015-11-24 18:02:54.273 Diagnostics Wait for 1 task(s)
+
+2015-11-24 18:02:54.273 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 18:02:54.287 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 18:02:57.415 Diagnostics Neighbour (tony-pc) queried, with result '{"IsMaster":true,"InEligibleForElection":false,"Name":"Tony-PC","ContactAddress":null,"UpTime":49999.939300000005,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"16384MB","CPUManufacturer":"AuthenticAMD","CPUSpeed":"3.5","OS":"Microsoft Windows 10 Home, 10.0.10240, 64-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Elected","Occurrences":1,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":7,"Processed":true}]},"WorkUnitsExecuted":21,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 18:03:08.146 Diagnostics Apparent neighbours/targets tony-pc
+
+2015-11-24 18:03:08.151 Diagnostics Wait for 1 task(s)
+
+2015-11-24 18:03:08.151 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 18:03:08.151 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 18:03:11.311 Diagnostics Neighbour (tony-pc) queried, with result '{"IsMaster":true,"InEligibleForElection":false,"Name":"Tony-PC","ContactAddress":null,"UpTime":63870.592800000006,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"16384MB","CPUManufacturer":"AuthenticAMD","CPUSpeed":"3.5","OS":"Microsoft Windows 10 Home, 10.0.10240, 64-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":1,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Elected","Occurrences":1,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":8,"Processed":true}]},"WorkUnitsExecuted":27,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 18:03:45.595 Diagnostics Apparent neighbours/targets tony-pc
+
+2015-11-24 18:03:45.595 Diagnostics Wait for 1 task(s)
+
+2015-11-24 18:03:45.595 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 18:03:45.610 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 18:03:48.763 Diagnostics Neighbour (tony-pc) queried, with result '{"IsMaster":true,"InEligibleForElection":false,"Name":"Tony-PC","ContactAddress":null,"UpTime":101322.95270000001,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"16384MB","CPUManufacturer":"AuthenticAMD","CPUSpeed":"3.5","OS":"Microsoft Windows 10 Home, 10.0.10240, 64-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":1,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Elected","Occurrences":2,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":10,"Processed":true}]},"WorkUnitsExecuted":46,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 18:04:37.123 Diagnostics Apparent neighbours/targets tony-old-pc, tony-pc
+
+2015-11-24 18:04:37.123 Diagnostics Wait for 2 task(s)
+
+2015-11-24 18:04:37.123 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 18:04:37.139 Diagnostics Contact: http://tony-old-pc:9999/
+
+2015-11-24 18:04:37.123 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 18:04:37.139 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 18:04:40.293 Diagnostics Neighbour (tony-pc) queried, with result '{"IsMaster":true,"InEligibleForElection":false,"Name":"Tony-PC","ContactAddress":null,"UpTime":152864.16210000002,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"16384MB","CPUManufacturer":"AuthenticAMD","CPUSpeed":"3.5","OS":"Microsoft Windows 10 Home, 10.0.10240, 64-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":2,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Elected","Occurrences":3,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"NeighbourDying","Occurrences":1,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":15,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"RequestElection","Occurrences":1,"Processed":true}]},"WorkUnitsExecuted":72,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 18:04:47.153 Diagnostics Neighbour (tony-old-pc) queried, aggregated exception abend 'One or more errors occurred. - A task was canceled. - '
+
+2015-11-24 18:05:02.291 Diagnostics Apparent neighbours/targets tony-old-pc, tony-pc
+
+2015-11-24 18:05:02.293 Diagnostics Wait for 2 task(s)
+
+2015-11-24 18:05:02.293 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 18:05:02.293 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 18:05:02.293 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 18:05:02.311 Diagnostics Contact: http://tony-old-pc:9999/
+
+2015-11-24 18:05:05.462 Diagnostics Neighbour (tony-pc) queried, with result '{"IsMaster":true,"InEligibleForElection":false,"Name":"Tony-PC","ContactAddress":null,"UpTime":178027.2233,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"16384MB","CPUManufacturer":"AuthenticAMD","CPUSpeed":"3.5","OS":"Microsoft Windows 10 Home, 10.0.10240, 64-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":3,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Elected","Occurrences":3,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"NeighbourDying","Occurrences":1,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":17,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"RequestElection","Occurrences":1,"Processed":true}]},"WorkUnitsExecuted":84,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 18:05:06.183 Diagnostics Neighbour (tony-old-pc) queried, with result '{"IsMaster":false,"InEligibleForElection":false,"Name":"tony-old-PC","ContactAddress":null,"UpTime":10514.4184,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"4096MB","CPUManufacturer":"GenuineIntel","CPUSpeed":"0.785","OS":"Microsoft Windows 7 Ultimate N, 6.1.7601, 32-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":2,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Quiescent","Occurrences":1,"Processed":true}]},"WorkUnitsExecuted":0,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 18:08:22.670 Diagnostics Default NLog log configuration established
+
+2015-11-24 18:08:35.737 Diagnostics Apparent neighbours/targets tony-old-pc, tony-pc
+
+2015-11-24 18:08:35.737 Diagnostics Wait for 2 task(s)
+
+2015-11-24 18:08:35.982 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 18:08:35.982 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 18:08:35.997 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 18:08:35.997 Diagnostics Contact: http://tony-old-pc:9999/
+
+2015-11-24 18:08:39.151 Diagnostics Neighbour (tony-pc) queried, with result '{"IsMaster":true,"InEligibleForElection":false,"Name":"Tony-PC","ContactAddress":null,"UpTime":391723.9338,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"16384MB","CPUManufacturer":"AuthenticAMD","CPUSpeed":"3.5","OS":"Microsoft Windows 10 Home, 10.0.10240, 64-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":6,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Elected","Occurrences":7,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"NeighbourDying","Occurrences":1,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":21,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"RequestElection","Occurrences":5,"Processed":true}]},"WorkUnitsExecuted":191,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 18:08:39.829 Diagnostics Neighbour (tony-old-pc) queried, with result '{"IsMaster":false,"InEligibleForElection":false,"Name":"tony-old-PC","ContactAddress":null,"UpTime":224016.3934,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"4096MB","CPUManufacturer":"GenuineIntel","CPUSpeed":"0.785","OS":"Microsoft Windows 7 Ultimate N, 6.1.7601, 32-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":3,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":6,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Quiescent","Occurrences":1,"Processed":true}]},"WorkUnitsExecuted":0,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 18:09:38.516 Diagnostics Apparent neighbours/targets tony-old-pc, tony-pc
+
+2015-11-24 18:09:38.516 Diagnostics Wait for 2 task(s)
+
+2015-11-24 18:09:38.516 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 18:09:38.516 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 18:09:38.533 Diagnostics Contact: http://tony-old-pc:9999/
+
+2015-11-24 18:09:38.533 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 18:09:41.651 Diagnostics Neighbour (tony-pc) queried, with result '{"IsMaster":true,"InEligibleForElection":false,"Name":"Tony-PC","ContactAddress":null,"UpTime":454249.1963,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"16384MB","CPUManufacturer":"AuthenticAMD","CPUSpeed":"3.5","OS":"Microsoft Windows 10 Home, 10.0.10240, 64-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":7,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Elected","Occurrences":8,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"NeighbourDying","Occurrences":1,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":23,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"RequestElection","Occurrences":6,"Processed":true}]},"WorkUnitsExecuted":222,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 18:09:42.385 Diagnostics Neighbour (tony-old-pc) queried, with result '{"IsMaster":false,"InEligibleForElection":false,"Name":"tony-old-PC","ContactAddress":null,"UpTime":286556.9033,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"4096MB","CPUManufacturer":"GenuineIntel","CPUSpeed":"0.785","OS":"Microsoft Windows 7 Ultimate N, 6.1.7601, 32-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":4,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":8,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Quiescent","Occurrences":1,"Processed":true}]},"WorkUnitsExecuted":0,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 18:10:03.529 Diagnostics Apparent neighbours/targets tony-old-pc, tony-pc
+
+2015-11-24 18:10:03.529 Diagnostics Wait for 2 task(s)
+
+2015-11-24 18:10:03.529 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 18:10:03.529 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 18:10:03.544 Diagnostics Contact: http://tony-old-pc:9999/
+
+2015-11-24 18:10:03.544 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 18:10:06.686 Diagnostics Neighbour (tony-pc) queried, with result '{"IsMaster":true,"InEligibleForElection":false,"Name":"Tony-PC","ContactAddress":null,"UpTime":479258.32460000005,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"16384MB","CPUManufacturer":"AuthenticAMD","CPUSpeed":"3.5","OS":"Microsoft Windows 10 Home, 10.0.10240, 64-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":8,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Elected","Occurrences":8,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"NeighbourDying","Occurrences":1,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":25,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"RequestElection","Occurrences":6,"Processed":true}]},"WorkUnitsExecuted":234,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 18:10:07.415 Diagnostics Neighbour (tony-old-pc) queried, with result '{"IsMaster":false,"InEligibleForElection":false,"Name":"tony-old-PC","ContactAddress":null,"UpTime":311563.74720000004,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"4096MB","CPUManufacturer":"GenuineIntel","CPUSpeed":"0.785","OS":"Microsoft Windows 7 Ultimate N, 6.1.7601, 32-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":5,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":10,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Quiescent","Occurrences":1,"Processed":true}]},"WorkUnitsExecuted":0,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 18:10:19.631 Diagnostics Apparent neighbours/targets tony-old-pc, tony-pc
+
+2015-11-24 18:10:19.631 Diagnostics Wait for 2 task(s)
+
+2015-11-24 18:10:19.631 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 18:10:19.631 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 18:10:19.642 Diagnostics Contact: http://tony-old-pc:9999/
+
+2015-11-24 18:10:19.642 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 18:10:22.780 Diagnostics Neighbour (tony-pc) queried, with result '{"IsMaster":true,"InEligibleForElection":false,"Name":"Tony-PC","ContactAddress":null,"UpTime":495355.55740000005,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"16384MB","CPUManufacturer":"AuthenticAMD","CPUSpeed":"3.5","OS":"Microsoft Windows 10 Home, 10.0.10240, 64-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":8,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Elected","Occurrences":9,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"NeighbourDying","Occurrences":1,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":26,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"RequestElection","Occurrences":7,"Processed":true}]},"WorkUnitsExecuted":242,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 18:10:23.476 Diagnostics Neighbour (tony-old-pc) queried, with result '{"IsMaster":false,"InEligibleForElection":false,"Name":"tony-old-PC","ContactAddress":null,"UpTime":327647.3754,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"4096MB","CPUManufacturer":"GenuineIntel","CPUSpeed":"0.785","OS":"Microsoft Windows 7 Ultimate N, 6.1.7601, 32-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":5,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":11,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Quiescent","Occurrences":1,"Processed":true}]},"WorkUnitsExecuted":0,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 18:10:38.249 Diagnostics Apparent neighbours/targets tony-old-pc, tony-pc
+
+2015-11-24 18:10:38.249 Diagnostics Wait for 2 task(s)
+
+2015-11-24 18:10:38.249 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 18:10:38.249 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 18:10:38.263 Diagnostics Contact: http://tony-old-pc:9999/
+
+2015-11-24 18:10:38.263 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 18:10:42.102 Diagnostics Neighbour (tony-old-pc) queried, with result '{"IsMaster":false,"InEligibleForElection":false,"Name":"tony-old-PC","ContactAddress":null,"UpTime":346273.8082,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"4096MB","CPUManufacturer":"GenuineIntel","CPUSpeed":"0.785","OS":"Microsoft Windows 7 Ultimate N, 6.1.7601, 32-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":5,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"NeighbourDying","Occurrences":1,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":12,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Quiescent","Occurrences":1,"Processed":true}]},"WorkUnitsExecuted":0,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 18:10:42.281 Diagnostics Neighbour (tony-pc) queried, aggregated exception abend 'One or more errors occurred. - An error occurred while sending the request. - Unable to connect to the remote server - No connection could be made because the target machine actively refused it [2001:0:5ef5:79fb:cb6:23ed:24a6:e1a1]:9999 - '
+
+2015-11-24 18:11:18.526 Diagnostics Apparent neighbours/targets tony-old-pc, tony-pc
+
+2015-11-24 18:11:18.526 Diagnostics Wait for 2 task(s)
+
+2015-11-24 18:11:18.526 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 18:11:18.526 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 18:11:18.547 Diagnostics Contact: http://tony-old-pc:9999/
+
+2015-11-24 18:11:18.547 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 18:11:22.303 Diagnostics Neighbour (tony-old-pc) queried, with result '{"IsMaster":true,"InEligibleForElection":false,"Name":"tony-old-PC","ContactAddress":null,"UpTime":386553.0789,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"4096MB","CPUManufacturer":"GenuineIntel","CPUSpeed":"0.785","OS":"Microsoft Windows 7 Ultimate N, 6.1.7601, 32-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":6,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Elected","Occurrences":1,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"NeighbourDying","Occurrences":1,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":13,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Quiescent","Occurrences":1,"Processed":true}]},"WorkUnitsExecuted":9,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 18:11:22.559 Diagnostics Neighbour (tony-pc) queried, aggregated exception abend 'One or more errors occurred. - An error occurred while sending the request. - Unable to connect to the remote server - No connection could be made because the target machine actively refused it [2001:0:5ef5:79fb:cb6:23ed:24a6:e1a1]:9999 - '
+
+2015-11-24 18:12:26.781 Diagnostics Apparent neighbours/targets tony-old-pc, tony-pc
+
+2015-11-24 18:12:26.781 Diagnostics Wait for 2 task(s)
+
+2015-11-24 18:12:26.781 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 18:12:26.781 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 18:12:26.800 Diagnostics Contact: http://tony-old-pc:9999/
+
+2015-11-24 18:12:26.800 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 18:12:30.663 Diagnostics Neighbour (tony-old-pc) queried, with result '{"IsMaster":true,"InEligibleForElection":false,"Name":"tony-old-PC","ContactAddress":null,"UpTime":454818.79880000005,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"4096MB","CPUManufacturer":"GenuineIntel","CPUSpeed":"0.785","OS":"Microsoft Windows 7 Ultimate N, 6.1.7601, 32-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":7,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Elected","Occurrences":2,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"NeighbourDying","Occurrences":1,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":32,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Quiescent","Occurrences":1,"Processed":true}]},"WorkUnitsExecuted":43,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 18:12:30.813 Diagnostics Neighbour (tony-pc) queried, aggregated exception abend 'One or more errors occurred. - An error occurred while sending the request. - Unable to connect to the remote server - No connection could be made because the target machine actively refused it [2001:0:5ef5:79fb:cb6:23ed:24a6:e1a1]:9999 - '
+
+2015-11-24 18:13:01.072 Diagnostics Apparent neighbours/targets tony-old-pc, tony-pc
+
+2015-11-24 18:13:01.080 Diagnostics Wait for 2 task(s)
+
+2015-11-24 18:13:01.080 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 18:13:01.080 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 18:13:01.090 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 18:13:01.090 Diagnostics Contact: http://tony-old-pc:9999/
+
+2015-11-24 18:13:04.892 Diagnostics Neighbour (tony-old-pc) queried, with result '{"IsMaster":true,"InEligibleForElection":false,"Name":"tony-old-PC","ContactAddress":null,"UpTime":489123.2591,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"4096MB","CPUManufacturer":"GenuineIntel","CPUSpeed":"0.785","OS":"Microsoft Windows 7 Ultimate N, 6.1.7601, 32-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":8,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Elected","Occurrences":3,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"NeighbourDying","Occurrences":1,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":33,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Quiescent","Occurrences":1,"Processed":true}]},"WorkUnitsExecuted":60,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 18:13:05.104 Diagnostics Neighbour (tony-pc) queried, aggregated exception abend 'One or more errors occurred. - An error occurred while sending the request. - Unable to connect to the remote server - No connection could be made because the target machine actively refused it [2001:0:5ef5:79fb:cb6:23ed:24a6:e1a1]:9999 - '
+
+2015-11-24 18:13:24.037 Diagnostics Apparent neighbours/targets tony-old-pc, tony-pc
+
+2015-11-24 18:13:24.042 Diagnostics Wait for 2 task(s)
+
+2015-11-24 18:13:24.042 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 18:13:24.042 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 18:13:24.042 Diagnostics Contact: http://tony-old-pc:9999/
+
+2015-11-24 18:13:24.042 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 18:13:27.883 Diagnostics Neighbour (tony-old-pc) queried, with result '{"IsMaster":true,"InEligibleForElection":false,"Name":"tony-old-PC","ContactAddress":null,"UpTime":512070.89940000005,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"4096MB","CPUManufacturer":"GenuineIntel","CPUSpeed":"0.785","OS":"Microsoft Windows 7 Ultimate N, 6.1.7601, 32-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":8,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Elected","Occurrences":3,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"NeighbourDying","Occurrences":1,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":38,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Quiescent","Occurrences":1,"Processed":true}]},"WorkUnitsExecuted":72,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 18:13:28.064 Diagnostics Neighbour (tony-pc) queried, aggregated exception abend 'One or more errors occurred. - An error occurred while sending the request. - Unable to connect to the remote server - No connection could be made because the target machine actively refused it [2001:0:5ef5:79fb:cb6:23ed:24a6:e1a1]:9999 - '
+
+2015-11-24 18:14:02.855 Diagnostics Default NLog log configuration established
+
+2015-11-24 18:14:18.862 Diagnostics Apparent neighbours/targets tony-old-pc, tony-pc
+
+2015-11-24 18:14:18.862 Diagnostics Wait for 2 task(s)
+
+2015-11-24 18:14:19.106 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 18:14:19.106 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 18:14:19.121 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 18:14:19.121 Diagnostics Contact: http://tony-old-pc:9999/
+
+2015-11-24 18:14:22.257 Diagnostics Neighbour (tony-pc) queried, with result '{"IsMaster":false,"InEligibleForElection":false,"Name":"Tony-PC","ContactAddress":null,"UpTime":29459.2837,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"16384MB","CPUManufacturer":"AuthenticAMD","CPUSpeed":"3.5","OS":"Microsoft Windows 10 Home, 10.0.10240, 64-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":5,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Quiescent","Occurrences":1,"Processed":true}]},"WorkUnitsExecuted":0,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 18:14:23.007 Diagnostics Neighbour (tony-old-pc) queried, with result '{"IsMaster":true,"InEligibleForElection":false,"Name":"tony-old-PC","ContactAddress":null,"UpTime":567154.59610000008,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"4096MB","CPUManufacturer":"GenuineIntel","CPUSpeed":"0.785","OS":"Microsoft Windows 7 Ultimate N, 6.1.7601, 32-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":9,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Elected","Occurrences":4,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"NeighbourDying","Occurrences":1,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":43,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Quiescent","Occurrences":1,"Processed":true}]},"WorkUnitsExecuted":99,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 18:14:32.720 Diagnostics Apparent neighbours/targets tony-old-pc, tony-pc
+
+2015-11-24 18:14:32.720 Diagnostics Wait for 2 task(s)
+
+2015-11-24 18:14:32.720 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 18:14:32.720 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 18:14:32.735 Diagnostics Contact: http://tony-old-pc:9999/
+
+2015-11-24 18:14:32.735 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 18:14:35.888 Diagnostics Neighbour (tony-pc) queried, with result '{"IsMaster":false,"InEligibleForElection":false,"Name":"Tony-PC","ContactAddress":null,"UpTime":43077.1944,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"16384MB","CPUManufacturer":"AuthenticAMD","CPUSpeed":"3.5","OS":"Microsoft Windows 10 Home, 10.0.10240, 64-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":6,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Quiescent","Occurrences":1,"Processed":true}]},"WorkUnitsExecuted":0,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 18:14:36.570 Diagnostics Neighbour (tony-old-pc) queried, with result '{"IsMaster":true,"InEligibleForElection":false,"Name":"tony-old-PC","ContactAddress":null,"UpTime":580742.22,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"4096MB","CPUManufacturer":"GenuineIntel","CPUSpeed":"0.785","OS":"Microsoft Windows 7 Ultimate N, 6.1.7601, 32-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":9,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Elected","Occurrences":4,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"NeighbourDying","Occurrences":1,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":44,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Quiescent","Occurrences":1,"Processed":true}]},"WorkUnitsExecuted":106,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 18:15:11.362 Diagnostics Apparent neighbours/targets tony-old-pc, tony-pc
+
+2015-11-24 18:15:11.362 Diagnostics Wait for 2 task(s)
+
+2015-11-24 18:15:11.362 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 18:15:11.362 Diagnostics Base http timeout set at ms = 10000
+
+2015-11-24 18:15:11.384 Diagnostics Contact: http://tony-old-pc:9999/
+
+2015-11-24 18:15:11.384 Diagnostics Contact: http://tony-pc:9999/
+
+2015-11-24 18:15:14.567 Diagnostics Neighbour (tony-pc) queried, with result '{"IsMaster":false,"InEligibleForElection":false,"Name":"Tony-PC","ContactAddress":null,"UpTime":81724.972300000009,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"16384MB","CPUManufacturer":"AuthenticAMD","CPUSpeed":"3.5","OS":"Microsoft Windows 10 Home, 10.0.10240, 64-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":1,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":8,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Quiescent","Occurrences":1,"Processed":true}]},"WorkUnitsExecuted":0,"TypeHint":"Neighbour"}'. Faulted? False
+
+2015-11-24 18:15:15.211 Diagnostics Neighbour (tony-old-pc) queried, with result '{"IsMaster":true,"InEligibleForElection":false,"Name":"tony-old-PC","ContactAddress":null,"UpTime":619399.0879,"TimeUntilRestart":null,"Strength":"Compute","Hardware":{"PhysicalMemory":"4096MB","CPUManufacturer":"GenuineIntel","CPUSpeed":"0.785","OS":"Microsoft Windows 7 Ultimate N, 6.1.7601, 32-bit"},"PendingEvents":{"$type":"Quorum.Payloads.PendingEvent[], Quorum","$values":[]},"HandledEvents":{"$type":"FSM.IEventSummary[], FSM","$values":[{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Disco","Occurrences":10,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Elected","Occurrences":5,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"NeighbourDying","Occurrences":1,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"QueryRequest","Occurrences":46,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"Quiescent","Occurrences":1,"Processed":true},{"$type":"FSM.EventStatistician+EventState, FSM","Name":"RequestElection","Occurrences":1,"Processed":true}]},"WorkUnitsExecuted":125,"TypeHint":"Neighbour"}'. Faulted? False
+

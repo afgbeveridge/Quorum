@@ -8,9 +8,11 @@ using Quorum.Integration;
 using Quorum.Payloads;
 using System.Configuration;
 using Infra;
+using System.DirectoryServices;
+using System.Net;
 
 namespace Quorum.Services {
-    
+
     public class DiscoveryService : IDiscoveryService {
 
         public IWriteableChannel ChannelPrototype { get; set; }
@@ -22,18 +24,42 @@ namespace Quorum.Services {
         public IPayloadBuilder Builder { get; set; }
 
         // Discover all neighbours, using the configured channel
-        public IEnumerable<Neighbour> Discover(string invokingHostName) {
+        public IEnumerable<Neighbour> DiscoverExcept(string invokingHostName) {
             var staticNeighbours = Configuration.Get<string>(Constants.Configuration.Nexus.Key);
-            var neighbours = !String.IsNullOrEmpty(staticNeighbours) ? staticNeighbours.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries).Except(new[] { invokingHostName }) : null;
+            var neighbours = !String.IsNullOrEmpty(staticNeighbours) ? staticNeighbours.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries).Except(new[] { invokingHostName }, StringComparer.InvariantCultureIgnoreCase) : null;
             var result = Enumerable.Empty<Neighbour>();
-            if (neighbours.IsNotNull()) {
-                LogFacade.Instance.LogInfo("Apparent neighbours " + String.Join(", ", neighbours));
-                IEnumerable<Task<Neighbour>> queries = neighbours.Select(s => Task.Factory.StartNew<Neighbour>(QueryNeighbour, s)).ToArray();
+            return Query(neighbours);
+        }
+
+        public IEnumerable<Neighbour> Query(IEnumerable<string> targets) {
+            var result = Enumerable.Empty<Neighbour>();
+            if (targets.IsNotNull()) {
+                LogFacade.Instance.LogInfo("Apparent neighbours/targets " + String.Join(", ", targets));
+                IEnumerable<Task<Neighbour>> queries = targets.Select(s => Task.Factory.StartNew<Neighbour>(QueryNeighbour, s)).ToArray();
                 LogFacade.Instance.LogInfo("Wait for " + queries.Count() + " task(s)");
                 Task.WaitAll(queries.ToArray());
                 result = queries.Where(t => !t.IsFaulted && t.Result.IsNotNull()).Select(t => t.Result);
             }
             return result;
+        }
+
+        public IEnumerable<BasicMachine> VisibleComputers(bool workgroupOnly = false) {
+            Func<string, IEnumerable<DirectoryEntry>> immediateChildren = key => new DirectoryEntry("WinNT:" + key)
+                    .Children
+                    .Cast<DirectoryEntry>();
+            Func<IEnumerable<DirectoryEntry>, IEnumerable<BasicMachine>> qualifyAndSelect = entries => entries.Where(c => c.SchemaClassName == "Computer")
+                    .Select(c => { 
+                        var addresses = Dns.GetHostAddresses(c.Name);
+                        var addr = addresses.IsNull() || !addresses.Any() ? "Unknown" : addresses.First(a => a.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork).ToString();
+                        return new BasicMachine { Name = c.Name, IpAddressV4 = addr }; 
+                    });
+            return (
+                !workgroupOnly ?
+                    qualifyAndSelect(immediateChildren(String.Empty)
+                        .SelectMany(d => d.Children.Cast<DirectoryEntry>())) 
+                    :
+                    qualifyAndSelect(immediateChildren("//WORKGROUP"))
+            ).ToArray();
         }
 
         // A null neighbour is returned if cannot be reached

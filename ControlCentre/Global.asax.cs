@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using Infra;
 
 namespace ControlCentre
 {
@@ -16,6 +17,9 @@ namespace ControlCentre
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            // Local
+            Builder.ConfigureInjections();
+            LogFacade.Instance.Adapter = new NLogLogger().Configure(false);
         }
     }
 }

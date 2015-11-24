@@ -20,7 +20,7 @@ namespace Quorum.States {
             StateResult result = StateResult.None;
             try {
                 Interruptable = AllowInterrupt;
-                var neighbours = DiscoveryService.Discover(context.ExecutionContext.HostName);
+                var neighbours = DiscoveryService.DiscoverExcept(context.ExecutionContext.HostName);
                 context.ExecutionContext.Network.Neighbours.Clear();
                 context.ExecutionContext.Network.Neighbours.AddRange(neighbours);
                 if (!neighbours.Any()) {

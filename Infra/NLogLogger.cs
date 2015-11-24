@@ -53,13 +53,13 @@ namespace Infra {
         private const string DefaultLayout = @"${date:format=yyyy-MM-dd HH\:mm\:ss.fff} ${logger} ${message}${newline}${exception:format=ToString,StackTrace}";
         private const string DiagnosticLoggerName = "Diagnostics";
 
-        public override ILOGGER Configure() {
+        public override ILOGGER Configure(bool includeConsole = true) {
             return this.Fluently(_ => {
                 if (Configuration.IsNull()) {
                     Configuration = new LoggingConfiguration();
                     CreateFileTarget(DiagnosticLoggerName, "${basedir}/diagnostics.txt", DefaultLayout);
                     CreateEventLogTarget();
-                    CreateConsoleTarget();
+                    includeConsole.IfTrue(() => CreateConsoleTarget());
                     LogManager.Configuration = Configuration;
                     Diagnostics.Info("Default NLog log configuration established");
                 }

@@ -11,10 +11,10 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Infra;
 using System.Timers;
-using Quorum.Integration.Http;
+using System.DirectoryServices;
 
 namespace ConsoleQuorum {
-    
+
     public class Program {
 
         private static Dictionary<string, Func<bool>> Handlers = new Dictionary<string, Func<bool>> { 
