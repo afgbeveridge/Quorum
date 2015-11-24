@@ -15,7 +15,7 @@
             <div class="col-xs-4">Probing network now...<img src="~/Content/Images/ajax-loader.gif" /></div>
         </div>
         <div class="row" id="queryWorking" style="display: none;">
-            <div class="col-xs-8">Querying discovered computers now&nbsp;<img src="~/Content/Images/ellipsis.gif" width="16" height="16"/></div>
+            <div class="col-xs-8">Querying discovered computers now&nbsp;<img src="~/Content/Images/ellipsis.gif" width="16" height="16" /></div>
         </div>
         <div id="bindableSection" style="display: none;">
             <div class="row" id="machinesAsConfig">
@@ -40,14 +40,20 @@
                     </table>
                 </div>
             </div>
-            <!-- ko if: vm.machines().length > 0 -->
-            <div class="row" id="machinesAsConfig">
-                <div class="col-xs-12" data-bind="text: appConfigText"></div>
+            <div data-bind="visible: machines().length > 0">
+                <div class="row">
+                    <div class="col-xs-12"><button id="executeQuery" class="btn-primary">Query discovered machines...</button></div>
+                </div>
+                <p></p>
+                <!-- ko if: responders().length > 0 -->
+                <div class="row">
+                    <div class="col-xs-12">Based on the current query result, this would be a suitable config setting:</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12" data-bind="html: appConfigText"></div>
+                </div>
+                <!-- /ko -->
             </div>
-            <div class="row" id="execQuery">
-                <div class="col-xs-12"><button id="executeQuery" class="btn-primary">Query discovered machines...</button></div>
-            </div>
-            <!-- /ko -->
         </div>
     </div>
 </div>

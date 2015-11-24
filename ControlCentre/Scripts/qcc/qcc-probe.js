@@ -1,5 +1,12 @@
 ﻿$(document).ready(function () {
 
+    var config = window.qcc.deserialize();
+
+    if (!config || !config.membersArray || config.membersArray.length == 0) {
+        alert('Cannot ascertain any configuration at all');
+        config = { port: 9999, responseLimit: 10000 };
+    }
+
     var machine = function (mc) {
         var self = this;
         self.ipAddress = ko.observable(mc.IpAddressV4);
@@ -11,13 +18,14 @@
 
     var vm = {
         machines: ko.observableArray([]),
-        appConfigText: ko.observable()
+        appConfigText: ko.observable(),
+        responders: ko.observableArray([])
     };
 
     $('#startProbe').click(function () {
         $('#bindableSection').hide();
-        $('#execQuery').hide();
         vm.machines.removeAll();
+        vm.responders.removeAll();
         vm.appConfigText('');
         $('#probeStart').hide();
         $('#probeWorking').show();
@@ -32,7 +40,6 @@
             .always(function () {
                 $('#probeWorking').hide();
                 $('#bindableSection').show();
-                $('#execQuery').show();
                 $('#probeStart').show();
                 $('#startProbe').text('Re-probe...');
             });
@@ -50,22 +57,21 @@
             $('#queryWorking').show();
             $('#startProbe').hide();
             var mcs = vm.machines().map(function (m) { return m.name(); });
+            vm.responders.removeAll();
             changeStatus('Waiting...'); 
-            // TODO: assocLookup[nm].available('Yes') -- make all known mcs Unknown in terms of availability
             $.ajax({
                 url: '/Discovery/QueryMachines',
                 type: 'POST',
-                data: JSON.stringify({ machines: mcs }),
+                data: JSON.stringify({ machines: mcs, port: config.port, timeout: config.responseLimit }),
                 contentType: 'application/json',
                 success: function (data, textStatus, jqXHR) {
-                    var accessible = [];
                     changeStatus('No');
                     data.machines.forEach(function (m) {
                         var nm = m.Name.toLowerCase();
                         assocLookup[nm].available('Yes');
-                        accessible.push(nm);
+                        vm.responders.push(nm);
                     });
-                    vm.appConfigText(accessible.join(','));
+                    vm.appConfigText('appSettings entry: &lt;add key="quorum.environment" value="' + vm.responders().join(',') + '"/&gt;');
                 }
             })
             .always(function () {

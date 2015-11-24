@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Quorum;
 using Quorum.Services;
+using Infra;
 
 namespace ControlCentre.Controllers {
 
@@ -18,7 +20,10 @@ namespace ControlCentre.Controllers {
         }
 
         [HttpPost]
-        public ActionResult QueryMachines(IEnumerable<string> machines) {
+        public ActionResult QueryMachines(IEnumerable<string> machines, int port, int timeout) {
+            var cfg = Builder.Resolve<IConfiguration>();
+            cfg.LocalSet(Constants.Configuration.HttpListenerPort.Key, port);
+            cfg.LocalSet(Constants.Configuration.ResponseLimit.Key, timeout);
             return this.Json(new { machines = Service.Query(machines) });
         }
 
