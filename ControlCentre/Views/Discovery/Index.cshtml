@@ -47,10 +47,15 @@
                 <p></p>
                 <!-- ko if: responders().length > 0 -->
                 <div class="row">
-                    <div class="col-xs-12">Based on the current query result, this would be a suitable config setting:</div>
+                    <div class="col-xs-12">Based on the current query result, these would be suitable config settings:</div>
                 </div>
                 <div class="row">
-                    <div class="col-xs-12" data-bind="html: appConfigText"></div>
+                    <div class="col-xs-4"><em>appSettings:</em></div>
+                    <div class="col-xs-8" data-bind="html: appConfigText"></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4"><em>Control centre:</em></div>
+                    <div class="col-xs-8" data-bind="html: ccConfigText"></div>
                 </div>
                 <!-- /ko -->
             </div>

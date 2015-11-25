@@ -19,6 +19,7 @@
     var vm = {
         machines: ko.observableArray([]),
         appConfigText: ko.observable(),
+        ccConfigText: ko.observable(),
         responders: ko.observableArray([])
     };
 
@@ -71,7 +72,9 @@
                         assocLookup[nm].available('Yes');
                         vm.responders.push(nm);
                     });
-                    vm.appConfigText('appSettings entry: &lt;add key="quorum.environment" value="' + vm.responders().join(',') + '"/&gt;');
+                    var activeMachineList = vm.responders().join(',');
+                    vm.appConfigText('&lt;add key="quorum.environment" value="' + activeMachineList + '"/&gt;');
+                    vm.ccConfigText(activeMachineList);
                 }
             })
             .always(function () {
