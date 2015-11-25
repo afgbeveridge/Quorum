@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleQuorum", "ConsoleQuo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControlCentre", "ControlCentre\ControlCentre.csproj", "{05AFC724-412C-4C87-9918-4CFA7F4BAD13}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuorumWindowsService", "QuorumWindowsService\QuorumWindowsService.csproj", "{7A6148D9-E30D-4BAC-BF8C-484EA1055EC5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,10 @@ Global
 		{05AFC724-412C-4C87-9918-4CFA7F4BAD13}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05AFC724-412C-4C87-9918-4CFA7F4BAD13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05AFC724-412C-4C87-9918-4CFA7F4BAD13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A6148D9-E30D-4BAC-BF8C-484EA1055EC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A6148D9-E30D-4BAC-BF8C-484EA1055EC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A6148D9-E30D-4BAC-BF8C-484EA1055EC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A6148D9-E30D-4BAC-BF8C-484EA1055EC5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
