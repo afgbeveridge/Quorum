@@ -18,7 +18,7 @@ namespace Quorum.Integration.Http {
         public HttpAddressingScheme(INetworkEnvironment network) {
             Network = network;
             Name = Network.LocalIPAddress.ToString();
-            Port = new Infra.Configuration().Get<int>(Constants.Configuration.HttpListenerPort).ToString();
+            Port = new Infra.Configuration().Get<int>(Constants.Configuration.ExternalEventListenerPort).ToString();
         }
 
         public string Port { get; set; }

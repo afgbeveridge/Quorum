@@ -1,11 +1,12 @@
 ﻿$(document).ready(function () {
 
-    var config = window.qcc.deserialize();
+    var config = window.qcc.deserializeWithCheck();
 
-    if (!config || !config.membersArray || config.membersArray.length == 0) {
-        alert('Cannot ascertain any configuration at all');
-        config = { port: 9999, responseLimit: 10000 };
+    if (!config || !config.members || config.members.length == 0) {
+        alert('Set up your configuration...will guess for now');
     }
+
+    window.qcc.ensureTransportTypeSet(config);
 
     var machine = function (mc) {
         var self = this;
@@ -30,7 +31,7 @@
         vm.appConfigText('');
         $('#probeStart').hide();
         $('#probeWorking').show();
-        $.getJSON('/Discovery/Neighbourhood', function (res) {
+        $.getJSON('/Neighbourhood/ApparentNeighbours', function (res) {
             assocLookup = [];
             res.machines.forEach(function (m) {
                 var v = new machine(m);
@@ -59,25 +60,22 @@
             $('#startProbe').hide();
             var mcs = vm.machines().map(function (m) { return m.name(); });
             vm.responders.removeAll();
-            changeStatus('Waiting...'); 
-            $.ajax({
-                url: '/Discovery/QueryMachines',
-                type: 'POST',
-                data: JSON.stringify({ machines: mcs, port: config.port, timeout: config.responseLimit }),
-                contentType: 'application/json',
-                success: function (data, textStatus, jqXHR) {
-                    changeStatus('No');
-                    data.machines.forEach(function (m) {
+            changeStatus('Waiting...');
+            window.qcc.queryMachines(mcs, config, function (machines) {
+                changeStatus('No');
+                machines.forEach(function (m) {
+                    if (m.IsValid) {
                         var nm = m.Name.toLowerCase();
                         assocLookup[nm].available('Yes');
                         vm.responders.push(nm);
-                    });
-                    var activeMachineList = vm.responders().join(',');
-                    vm.appConfigText('&lt;add key="quorum.environment" value="' + activeMachineList + '"/&gt;');
-                    vm.ccConfigText(activeMachineList);
-                }
-            })
-            .always(function () {
+                    }
+                });
+                var activeMachineList = vm.responders().join(',');
+                vm.appConfigText('&lt;add key="quorum.environment" value="' + activeMachineList + '"/&gt;');
+                vm.ccConfigText(activeMachineList);
+            },
+            null,
+            function () {
                 $('#executeQuery').removeAttr('disabled');
                 $('#probeStart').show();
                 $('#startProbe').show();

@@ -7,21 +7,24 @@ using System.Linq;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
-using Quorum.Integration.Http;
+using Quorum.Integration;
+using Quorum;
 using Infra;
 
 namespace QuorumWindowsService {
 
     public partial class QuorumAwareWindowsService : ServiceBase {
 
-        private HttpQuorumImpl Adapter { get; set; }
+        private QuorumImplFacade Adapter { get; set; }
 
         public QuorumAwareWindowsService() {
             InitializeComponent();
         }
 
         protected override void OnStart(string[] args) {
-            Adapter = new HttpQuorumImpl().Start<WorkerAdapter>();
+            Adapter = new QuorumImplFacade()
+                        .WithBuilder(new Builder())
+                        .Start<WorkerAdapter>();
         }
 
         protected override void OnStop() {

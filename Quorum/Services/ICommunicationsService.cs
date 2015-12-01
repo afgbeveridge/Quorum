@@ -7,13 +7,17 @@ using Quorum.Payloads;
 
 namespace Quorum.Services {
     
-    public interface IDiscoveryService {
+    public interface ICommunicationsService {
 
         IEnumerable<Neighbour> DiscoverExcept(string invokingHostName);
 
-        IEnumerable<Neighbour> Query(IEnumerable<string> targets);
+        IEnumerable<Neighbour> Query(IEnumerable<string> targets, bool includeNonResponders = false);
 
         IEnumerable<BasicMachine> VisibleComputers(bool workgroupOnly = false);
+
+        bool RenderEligible(string name);
+
+        bool RenderInEligible(string name);
 
     }
 }

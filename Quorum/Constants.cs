@@ -12,10 +12,12 @@ namespace Quorum {
         public static class Configuration {
 
             public static readonly ConfigurationItem<string> Nexus = ConfigurationItem<string>.Create("quorum.environment");
-            public static readonly ConfigurationItem<int> HttpListenerPort = ConfigurationItem<int>.Create("quorum.http.listenerPort", 9999);
+            public static readonly ConfigurationItem<int> ExternalEventListenerPort = ConfigurationItem<int>.Create("quorum.listenerPort", 9999);
             public static readonly ConfigurationItem<string> MachineStrength = ConfigurationItem<string>.Create("quorum.machine.strength");
-            public static readonly ConfigurationItem<int> DiscoveryPeriodMs = ConfigurationItem<int>.Create("quorum.discoveryPeriodMs", 10000);
-            public static readonly ConfigurationItem<int> ResponseLimit = ConfigurationItem<int>.Create("quorum.http.responseLimit", 10000);
+            public static readonly ConfigurationItem<int> DiscoveryPeriodMs = ConfigurationItem<int>.Create("quorum.discoveryPeriodMs", 30000);
+            public static readonly ConfigurationItem<int> ResponseLimit = ConfigurationItem<int>.Create("quorum.responseLimit", 5000);
+            public static readonly ConfigurationItem<int> TcpBacklogSize = ConfigurationItem<int>.Create("quorum.tcp.backlogSize", 5);
+            public static readonly ConfigurationItem<string> DefaultTransport = ConfigurationItem<string>.Create("quorum.transport", "http");
 
         }
 

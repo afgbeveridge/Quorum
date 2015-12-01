@@ -13,7 +13,7 @@ namespace Quorum.States {
     
     public class DiscoveryState : BaseState<IExecutionContext> {
 
-        public IDiscoveryService DiscoveryService { get; set; }
+        public ICommunicationsService DiscoveryService { get; set; }
 
         public override async Task<StateResult> OnEntry(IStateMachineContext<IExecutionContext> context) {
             bool reversionPossible = AllowInterrupt;

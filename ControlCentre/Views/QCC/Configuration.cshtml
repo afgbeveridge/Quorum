@@ -7,16 +7,28 @@
 </div>
 
 <div class="row">
-    <div class="col-xs-2">Quorum members (machine names, separated by commas)</div>
-    <div class="col-xs-10"><input id="members" type="text" style='min-width: 100%' maxlength="255"/></div>
+    <div class="col-xs-3">Communications transport type</div>
+    <div class="col-xs-9" id="transportType">
+        <input type="radio" name="transportGroup" value="http" data-bind="checked: transportType" /> Http
+        <input type="radio" name="transportGroup" value="tcp" data-bind="checked: transportType" /> Tcp
+    </div>
 </div>
 <p></p>
 <div class="row">
-    <div class="col-xs-2">Quorum port</div>
+    <div class="col-xs-3">Quorum members (machine names, separated by commas)</div>
+    <div class="col-xs-9"><input id="members" type="text" style='min-width: 100%' maxlength="255"/></div>
+</div>
+<p></p>
+<div class="row">
+    <div class="col-xs-3">Quorum port</div>
     <div class="col-xs-3"><input id="port" type="text"  maxlength="5" /></div>
-    <div class="col-xs-2">Response timeout (milliseconds)</div>
+</div>
+<p></p>
+<div class="row">
+    <div class="col-xs-3">Response timeout (milliseconds)</div>
     <div class="col-xs-3"><input id="responseLimit" type="text" maxlength="8" /></div>
 </div>
+<p></p>
 <div class="row">
     <div class="col-xs-4"><button id="save" class="btn-primary">Save</button>&nbsp;<button id="cancel" class="btn-primary">Cancel</button></div>
 </div>

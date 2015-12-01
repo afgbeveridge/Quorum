@@ -25,48 +25,30 @@ using Infra;
 using System.Threading;
 using System.IO;
 using FSM;
+using System.Net.WebSockets;
 
 namespace Quorum.Integration.Http {
 
-    public class HttpEventListener : IHttpEventListener<IExecutionContext> {
+    public class HttpExposedEventListener : BaseExposedEventListener {
 
-        private IConfiguration Config { get; set; }
-
-        private IEventInterpreter<IExecutionContext> Interpreter { get; set; }
-
-        public HttpEventListener(IConfiguration cfg, IEventInterpreter<IExecutionContext> interpreter) {
-            Config = cfg;
-            Interpreter = interpreter;
+        public HttpExposedEventListener(IConfiguration cfg, IEventInterpreter<IExecutionContext> interpreter)
+            : base(cfg, interpreter) {
         }
 
-        public IStateMachine<IExecutionContext> Machine { get; set; }
-
-        public void Initialize() {
+        protected override void StartListening() {
             Listener = new HttpListener();
-            var address = Config.Get<string>(Constants.Configuration.HttpListenerPort.Key);
+            var address = Config.Get<string>(Constants.Configuration.ExternalEventListenerPort.Key);
             Listener.Prefixes.Add(new HttpAddressingScheme { Name = Dns.GetHostName(), Port = address }.Address);
             Listener.Start();
-            CancellationToken = new CancellationTokenSource();
-            CancellationToken token = CancellationToken.Token;
-            ListenerTask = Task.Factory.StartNew(() => {
-                while (!token.IsCancellationRequested)
-                    ListenerImplementation();
-                Listener.Stop();
-            });
         }
 
-        public void UnInitialize() {
-            CancellationToken.Cancel();
+        protected override void StopListening() {
+            Listener.Stop();
         }
-
-
-        private CancellationTokenSource CancellationToken { get; set; }
 
         private HttpListener Listener { get; set; }
 
-        private Task ListenerTask { get; set; }
-
-        private void ListenerImplementation() {
+        protected override async Task ListenerImplementation() {
             var res = Listener.BeginGetContext(new AsyncCallback(ListenerCallback), Listener);
             if (!res.AsyncWaitHandle.WaitOne(400)) {
                 res.AsyncWaitHandle.Close();
@@ -83,26 +65,7 @@ namespace Quorum.Integration.Http {
                 AllowCORS(context);
                 using (Stream streamResponse = context.Request.InputStream) {
                     var content = new StreamReader(streamResponse).ReadToEnd();
-                    var action = Interpreter.TranslateToAction(content);
-                    if (action.IsNotNull() && action.EventName.IsNotNull()) {
-                        // TODO: Make payload include, the content of the request, and the status and the response (context.Response)
-                        EventInstance instance = new EventInstance {
-                            EventName = action.EventName,
-                            Payload = content,
-                            ResponseContainer = context.IsNotNull() ? new HttpResponseContainer { Response = context.Response, Status = status } : null
-                        };
-                        LogFacade.Instance.LogInfo("Received an external event " + action.EventName + "; pass to state machine? " + (action.ExecutableStateType.IsNull() ? "Yes" : "No"));
-                        if (action.ExecutableStateType.IsNull()) {
-                            ((HttpResponseContainer)instance.ResponseContainer).Write("Accepted");
-                            Machine.Trigger(instance);
-                        }
-                        else {
-                            Machine.StatisticsHandler.NoteEvent(action.EventName);
-                            var exec = Machine.Container.Resolve<IState<IExecutionContext>>(action.ExecutableStateType.Name);
-                            if (exec.IsNotNull())
-                                exec.Execute(Machine.Context, instance);
-                        }
-                    }
+                    ProcessRequest(content, new HttpResponseContainer { Response = context.Response, Status = status }, e => ((HttpResponseContainer)e.ResponseContainer).WriteAsync(AcceptedMessage).Wait());
                 }
             },
             ex => status = 500);

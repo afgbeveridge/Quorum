@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Quorum;
 using FSM;
-using Quorum.Integration.Http;
+using Quorum.Integration;
 using System.Net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -22,11 +22,14 @@ namespace ConsoleQuorum {
             { "x", Exit }
         };
 
-        private static HttpQuorumImpl Adapter { get; set; }
+        private static QuorumImplFacade Adapter { get; set; }
 
         public static void Main(string[] args) {
             try {
-                Adapter = new HttpQuorumImpl().Start<NullWorkerAdapter>();
+                ActiveDisposition.Initialise(args.Any() ? args.First() : null);
+                Adapter = new QuorumImplFacade()
+                    .WithBuilder(new Builder())
+                    .Start<NullWorkerAdapter>();
                 bool cont = true;
                 while (cont) {
                     var k = Console.ReadLine();

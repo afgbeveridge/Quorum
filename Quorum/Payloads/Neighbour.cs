@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FSM;
 using Infra;
+using System.Diagnostics;
 
 namespace Quorum.Payloads {
 
@@ -13,6 +14,12 @@ namespace Quorum.Payloads {
     public class Neighbour : BasePayload {
 
         public bool IsMaster { get; set; }
+
+        public bool IsValid { 
+            get {
+                return Hardware.IsNotNull();
+            } 
+        }
 
         public bool InEligibleForElection { get; set; }
 
@@ -26,6 +33,8 @@ namespace Quorum.Payloads {
         public double UpTime { get; set; }
 
         public double? TimeUntilRestart { get; set; }
+
+        public long? LastRequestElapsedTime { get; set; }
 
         public MachineStrength Strength { get; set; }
 
@@ -45,7 +54,7 @@ namespace Quorum.Payloads {
                     Name = context.ExecutionContext.HostName,
                     UpTime = context.EnclosingMachine.UpTime,
                     Strength = actualStrength,
-                    Hardware = new HardwareDetails(),
+                    Hardware = HardwareDetails.Instance,
                     InEligibleForElection = context.ExecutionContext.InEligibleForElection,
                     PendingEvents = context.EnclosingMachine.PendingEvents.Select(e => new PendingEvent {  Id = e.Id, Name = e.EventName, CreatedOn = e.CreatedOn, AgeInSeconds = (DateTime.Now  - e.CreatedOn).TotalSeconds}).ToArray(),
                     HandledEvents = context.EnclosingMachine.StatisticsHandler.HandledEventsInNameOrder.ToArray(),
@@ -53,19 +62,39 @@ namespace Quorum.Payloads {
                 };
         }
 
+        public static Neighbour NonRespondingNeighbour(string name) {
+            return new Neighbour { Name = name };
+        }
+
     }
 
     public class HardwareDetails {
-        public HardwareDetails() {
-            PhysicalMemory = HardwareInfo.GetPhysicalMemory();
-            CPUManufacturer = HardwareInfo.GetCPUManufacturer();
-            CPUSpeed = HardwareInfo.GetCpuSpeedInGHz().HasValue ? HardwareInfo.GetCpuSpeedInGHz().Value.ToString() : "Unknown";
-            OS = HardwareInfo.GetOSInformation();
+
+        public static HardwareDetails Instance { get; private set; }
+
+        private HardwareDetails() {
         }
+
         public string PhysicalMemory { get; set; }
+        
         public string CPUManufacturer { get; set; }
+        
         public string CPUSpeed { get; set; }
+        
         public string OS { get; set; }
+
+        public static HardwareDetails Interrogate() {
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
+            Instance = new HardwareDetails {
+                PhysicalMemory = HardwareInfo.GetPhysicalMemory(),
+                CPUManufacturer = HardwareInfo.GetCPUManufacturer(),
+                CPUSpeed = HardwareInfo.GetCpuSpeedInGHz().HasValue ? HardwareInfo.GetCpuSpeedInGHz().Value.ToString() : "Unknown",
+                OS = HardwareInfo.GetOSInformation()
+            };
+            LogFacade.Instance.LogInfo("Interrogated hardware in ms = " + watch.ElapsedMilliseconds);
+            return Instance;
+        }
     }
 
 }

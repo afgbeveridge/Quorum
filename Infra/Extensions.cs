@@ -12,6 +12,9 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Drawing;
+using System.Net;
+using System.Net.Sockets;
+using System.Threading.Tasks;
 
 namespace Infra {
 
@@ -94,5 +97,25 @@ namespace Infra {
         }
 
 	}
+
+    public static class NetworkStreamExtensions {
+
+        private const int ReadSize = 512;
+
+        public static async Task<string> ReadAll(this NetworkStream stream) {
+            byte[] readBuffer = new byte[ReadSize];
+            string result = null;
+            using (var writer = new MemoryStream()) {
+                do {
+                    int numberOfBytesRead = await stream.ReadAsync(readBuffer, 0, readBuffer.Length);
+                    if (numberOfBytesRead > 0) 
+                        writer.Write(readBuffer, 0, numberOfBytesRead);
+                } while (stream.DataAvailable);
+                result = Encoding.UTF8.GetString(writer.ToArray());
+            }
+            return result;
+        }
+
+    }
 
 }

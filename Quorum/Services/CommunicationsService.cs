@@ -10,10 +10,11 @@ using System.Configuration;
 using Infra;
 using System.DirectoryServices;
 using System.Net;
+using System.Diagnostics;
 
 namespace Quorum.Services {
 
-    public class DiscoveryService : IDiscoveryService {
+    public class CommunicationsService : ICommunicationsService {
 
         public IWriteableChannel ChannelPrototype { get; set; }
 
@@ -31,14 +32,14 @@ namespace Quorum.Services {
             return Query(neighbours);
         }
 
-        public IEnumerable<Neighbour> Query(IEnumerable<string> targets) {
+        public IEnumerable<Neighbour> Query(IEnumerable<string> targets, bool includeNonResponders = false) {
             var result = Enumerable.Empty<Neighbour>();
             if (targets.IsNotNull()) {
                 LogFacade.Instance.LogInfo("Apparent neighbours/targets " + String.Join(", ", targets));
                 IEnumerable<Task<Neighbour>> queries = targets.Select(s => Task.Factory.StartNew<Neighbour>(QueryNeighbour, s)).ToArray();
                 LogFacade.Instance.LogInfo("Wait for " + queries.Count() + " task(s)");
                 Task.WaitAll(queries.ToArray());
-                result = queries.Where(t => !t.IsFaulted && t.Result.IsNotNull()).Select(t => t.Result);
+                result = queries.Where(t => !t.IsFaulted && t.Result.IsNotNull() && (t.Result.IsValid || includeNonResponders)).Select(t => t.Result);
             }
             return result;
         }
@@ -62,12 +63,32 @@ namespace Quorum.Services {
             ).ToArray();
         }
 
+        public bool RenderEligible(string name) {
+            return WriteNeighbour(name, "{\"TypeHint\": \"PretenderState\" }").IsNotNull();
+        }
+
+        public bool RenderInEligible(string name) {
+            return WriteNeighbour(name, "{\"TypeHint\": \"AbdicationState\" }").IsNotNull();
+        }
+
         // A null neighbour is returned if cannot be reached
         private Neighbour QueryNeighbour(object name) {
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
+            string result = WriteNeighbour(name.ToString(), Builder.Create(new QueryRequest { Requester = "Me", Timeout = Configuration.Get<int>(Constants.Configuration.ResponseLimit) }));
+            var neighbour = result.IsNull() ? Neighbour.NonRespondingNeighbour(name.ToString()) : Parser.As<Neighbour>(result);
+            neighbour.LastRequestElapsedTime = watch.ElapsedMilliseconds;
+            return neighbour;
+        }
+
+        private string WriteNeighbour(string name, string content) {
             string result = null;
             try {
+                LogFacade.Instance.LogInfo("Write to " + name + " with content: '" + content + "'");
                 // Timeout is config
-                var task = ChannelPrototype.NewInstance().Write(name.ToString(), Builder.Create(new QueryRequest { Requester = "Me" }), Configuration.Get<int>(Constants.Configuration.ResponseLimit));
+                var task = ChannelPrototype
+                            .NewInstance()
+                            .Write(name.ToString(), content, Configuration.Get<int>(Constants.Configuration.ResponseLimit));
                 task.Wait();
                 result = task.IsFaulted ? null : task.Result;
                 LogFacade.Instance.LogInfo("Neighbour (" + name + ") queried, with result '" + result + "'. Faulted? " + task.IsFaulted);
@@ -79,7 +100,7 @@ namespace Quorum.Services {
             catch (Exception ex) {
                 LogFacade.Instance.LogInfo("Neighbour (" + name + ") queried, general exception abend '" + RecurseException(ex) + "'");
             }
-            return result.IsNull() ? null : Parser.As<Neighbour>(result); ;
+            return result;
         }
 
         private string RecurseException(Exception ex) {

@@ -15,8 +15,9 @@ namespace Quorum.Integration.Http {
 
         public HttpListenerResponse Response { get; set; }
 
-        public void Write(string content) {
+        public async Task WriteAsync(string content) {
             if (Response.IsNotNull()) {
+                LogFacade.Instance.LogInfo("Response container dispatches: '" + content + "'");
                 // Now interpret response
                 // Construct a response. 
                 byte[] buffer = System.Text.Encoding.UTF8.GetBytes(content);
@@ -24,7 +25,7 @@ namespace Quorum.Integration.Http {
                 Response.ContentLength64 = buffer.Length;
                 Response.StatusCode = Status;
                 Stream output = Response.OutputStream;
-                output.Write(buffer, 0, buffer.Length);
+                await output.WriteAsync(buffer, 0, buffer.Length);
                 output.Close();
             }
         }

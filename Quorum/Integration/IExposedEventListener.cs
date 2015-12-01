@@ -1,9 +1,9 @@
 ﻿using System;
 using FSM;
 
-namespace Quorum.Integration.Http {
+namespace Quorum.Integration {
 
-    public interface IHttpEventListener<TContext> {
+    public interface IExposedEventListener<TContext> {
         void Initialize();
         IStateMachine<TContext> Machine { get; set; }
         void UnInitialize();

@@ -10,5 +10,7 @@ namespace Quorum.Payloads {
 
         public string Requester { get; set; }
 
+        public int? Timeout { get; set; }
+
     }
 }

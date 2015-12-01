@@ -8,6 +8,7 @@ using Quorum.Integration;
 using Quorum.Payloads;
 using System.Net;
 using Infra;
+using System.Diagnostics;
 
 namespace Quorum.States {
 
@@ -28,15 +29,26 @@ namespace Quorum.States {
         }
 
         public override StateResult Execute(IStateMachineContext<IExecutionContext> context, IEventInstance anEvent) {
+            Stopwatch watch = new Stopwatch();
             try {
                 Interruptable = false;
+                watch.Start();
                 var queryResponse = Neighbour.Fabricate(context);
+                LogFacade.Instance.LogInfo("Created response body in ms = " + watch.ElapsedMilliseconds);
                 /// Tell the world who we are
-                // context.ExecutionContext.ResultStore[context.CurrentEvent.Id] = Builder.Create(queryResponse);
                 var request = Parser.As<QueryRequest>(anEvent.Payload);
-                Channel.Respond(anEvent.ResponseContainer, Builder.Create(queryResponse), Configuration.Get<int>(Constants.Configuration.ResponseLimit));
+                int timeout = request.Timeout.HasValue ? request.Timeout.Value : Configuration.Get<int>(Constants.Configuration.ResponseLimit);
+                LogFacade.Instance.LogInfo("Query timeout set at ms = " + timeout);
+                Channel.Respond(anEvent.ResponseContainer, 
+                                Builder.Create(queryResponse), 
+                                timeout).Wait();
             }
-            catch { }
+            catch { 
+            }
+            finally {
+                watch.Stop();
+                LogFacade.Instance.LogInfo("Query response in ms = " + watch.ElapsedMilliseconds);
+            }
             // This is a bounce state, so we revert to the previous state
             return new StateResult { Revert = true };
         }

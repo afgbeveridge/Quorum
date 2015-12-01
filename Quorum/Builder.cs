@@ -8,9 +8,11 @@ using Quorum.States;
 using Quorum.AOP;
 using Castle.Windsor;
 using Castle.MicroKernel.Registration;
+using Castle.MicroKernel;
 using Castle.DynamicProxy;
 using Quorum.Integration;
 using Quorum.Integration.Http;
+using Quorum.Integration.Tcp;
 using Quorum.Services;
 using System.Reflection;
 using Infra;
@@ -20,6 +22,7 @@ namespace Quorum {
     public class Builder {
         
         public IStateMachine<IExecutionContext> Create() {
+            CreateBaseRegistrations();
             ConfigureInjections();
             return new SimpleStateMachine<IExecutionContext>(Container.Resolve<IEventQueue>(), Container.Resolve<IEventStatistician>())
                         // Bootstrapping
@@ -85,23 +88,36 @@ namespace Quorum {
             return new ContainerWrapper { Container = Container };
         }
 
-        protected virtual void ConfigureInjections() {
+        public void CreateBaseRegistrations() {
             Container = new WindsorContainer();
-            RegisterInterceptors();
             Register<IPayloadParser, JsonPayloadParser>();
             Register<IPayloadBuilder, JsonPayloadBuilder>();
-            Register<IExecutionContext, ExecutionContext>();
-            Register<IReadableChannel, HttpReadableChannel>();
-            Register<IWriteableChannel, HttpWriteableChannel>();
+            RegisterChannelsAndListener();
             Register<IConfiguration, Configuration>();
-            Register<IEventInterpreter<IExecutionContext>, EventInterpreter>();
-            Register<IHttpEventListener<IExecutionContext>, HttpEventListener>();
             Register<INetworkEnvironment, SimpleNetworkEnvironment>();
+            Register<ICommunicationsService, CommunicationsService>();
+            Container.Kernel.AddHandlerSelector(new WriteableChannelSelector());
+            Container.Kernel.AddHandlerSelector(new ReadableChannelSelector());
+            Container.Kernel.AddHandlerSelector(new EventListenerSelector());
+        }
+
+        protected virtual void ConfigureInjections() {
+            RegisterInterceptors();
+            Register<IExecutionContext, ExecutionContext>();
+            Register<IEventInterpreter<IExecutionContext>, EventInterpreter>();
             Register<IElectionAdjudicator, OldestCandidateAdjudicator>();
-            Register<IDiscoveryService, DiscoveryService>();
             Register<IEventQueue, ConcurrentEventQueue>();
             Register<IEventStatistician, EventStatistician>();
             RegisterStates();
+        }
+
+        protected virtual void RegisterChannelsAndListener() {
+            Register<IReadableChannel, HttpReadableChannel>();
+            Register<IWriteableChannel, HttpWriteableChannel>();
+            Register<IExposedEventListener<IExecutionContext>, HttpExposedEventListener>();
+            Register<IReadableChannel, TcpReadableChannel>();
+            Register<IWriteableChannel, TcpWriteableChannel>();
+            Register<IExposedEventListener<IExecutionContext>, TcpExposedEventListener>();
         }
 
         private void RegisterInterceptors() {
@@ -124,11 +140,11 @@ namespace Quorum {
                 .ForEach(t => register(t, t.Name));
         }
 
-        protected virtual TType Resolve<TType>() {
+        public virtual TType Resolve<TType>() {
             return Container.Resolve<TType>();
         }
 
-        private IWindsorContainer Container { get; set; }
+        public IWindsorContainer Container { get; private set; }
 
         private class ContainerWrapper : IContainer {
             internal IWindsorContainer Container { get; set; }

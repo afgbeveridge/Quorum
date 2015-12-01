@@ -11,22 +11,27 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Infra;
 using System.Timers;
+using Quorum.Payloads;
 
 
-namespace Quorum.Integration.Http {
+namespace Quorum.Integration {
     
-    public class HttpQuorumImpl {
+    public class QuorumImplFacade {
 
         private const int MaxDeathCycles = 100;
         private const int DeathWait = 100;
 
-        public HttpQuorumImpl Start<TWorker>() where TWorker : IMasterWorkAdapter {
+        public QuorumImplFacade WithBuilder(Builder bldr) {
+            return this.Fluently(_ => BuildHelper = bldr);
+        } 
+
+        public QuorumImplFacade Start<TWorker>() where TWorker : IMasterWorkAdapter {
             return this.Fluently(_ => {
+                Assert.False(BuildHelper.IsNull(), () => "You must call WithBuilder before Start()");
                 Configure();
-                var builder = new Builder();
-                Machine = builder.Create();
-                builder.Register<IMasterWorkAdapter, TWorker>();
-                Container = builder.AsContainer();
+                Machine = BuildHelper.Create();
+                BuildHelper.Register<IMasterWorkAdapter, TWorker>();
+                Container = BuildHelper.AsContainer();
                 MachineTask = Machine.Start();
                 SpinUpListener();
             });
@@ -45,13 +50,17 @@ namespace Quorum.Integration.Http {
             }
         }
 
+        private Builder BuildHelper { get; set; }
+
         private void Configure() {
+            LogFacade.Instance.Adapter = new NLogLogger().Configure();
+            // This is cached up front as the interrogation is quite slow, and the results are returned with any query
+            HardwareDetails.Interrogate();
             JsonConvert.DefaultSettings = (() => {
                 var settings = new JsonSerializerSettings();
                 settings.Converters.Add(new StringEnumConverter());
                 return settings;
             });
-            LogFacade.Instance.Adapter = new NLogLogger().Configure();
             DiscoveryTimer = new Timer(new Infra.Configuration().Get<int>(Constants.Configuration.DiscoveryPeriodMs));
             // Hook up the Elapsed event for the timer. 
             DiscoveryTimer.Elapsed += (src, args) => Machine.Trigger(EventInstance.Create(EventNames.Discovery));
@@ -62,7 +71,7 @@ namespace Quorum.Integration.Http {
         private Timer DiscoveryTimer { get; set; }
 
         private void SpinUpListener() {
-            Listener = Container.Resolve<IHttpEventListener<IExecutionContext>>();
+            Listener = Container.Resolve<IExposedEventListener<IExecutionContext>>();
             Listener.Machine = Machine;
             Listener.Initialize();
         }
@@ -71,7 +80,7 @@ namespace Quorum.Integration.Http {
 
         private IContainer Container { get; set; }
 
-        private IHttpEventListener<IExecutionContext> Listener { get; set; }
+        private IExposedEventListener<IExecutionContext> Listener { get; set; }
 
         private Task MachineTask { get; set; }
 
