@@ -64,6 +64,9 @@
         });
         self.WorkUnitsExecuted = ko.observable(0);
         self.PendingEvents = ko.observableArray([]);
+        self.formattedTime = function () {
+            return Number(self.UpTime().toFixed(4)).toLocaleString();
+        }
     };
 
 

@@ -36,7 +36,7 @@ namespace Quorum.Payloads {
 
         public long? LastRequestElapsedTime { get; set; }
 
-        public MachineStrength Strength { get; set; }
+        public string Strength { get; set; }
 
         public HardwareDetails Hardware { get; set; }
 
@@ -53,7 +53,7 @@ namespace Quorum.Payloads {
                     IsMaster = context.ExecutionContext.IsMaster,
                     Name = context.ExecutionContext.HostName,
                     UpTime = context.EnclosingMachine.UpTime,
-                    Strength = actualStrength,
+                    Strength = actualStrength.ToString(),
                     Hardware = HardwareDetails.Instance,
                     InEligibleForElection = context.ExecutionContext.InEligibleForElection,
                     PendingEvents = context.EnclosingMachine.PendingEvents.Select(e => new PendingEvent {  Id = e.Id, Name = e.EventName, CreatedOn = e.CreatedOn, AgeInSeconds = (DateTime.Now  - e.CreatedOn).TotalSeconds}).ToArray(),

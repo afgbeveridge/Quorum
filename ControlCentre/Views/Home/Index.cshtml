@@ -40,7 +40,7 @@
                         <td data-bind="text: $data.alive"></td>
                         <td data-bind="text: $data.IsMaster"></td>
                         <td data-bind="text: $data.Strength"></td>
-                        <td data-bind="text: $data.UpTime().toFixed(4)"></td>
+                        <td data-bind="text: $data.formattedTime()"></td>
                         <td>
                             <!-- ko if: InEligibleForElection() === false -->
                             <a href="#" data-bind="click: kill">Make ineligible</a>
