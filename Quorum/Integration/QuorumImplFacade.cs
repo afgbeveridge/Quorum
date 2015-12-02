@@ -23,7 +23,15 @@ namespace Quorum.Integration {
 
         public QuorumImplFacade WithBuilder(Builder bldr) {
             return this.Fluently(_ => BuildHelper = bldr);
-        } 
+        }
+
+        public QuorumImplFacade OnTransport(TransportType type) {
+            return this.Fluently(_ => ActiveDisposition.Current = type);
+        }
+
+        public QuorumImplFacade OnTransport(string type) {
+            return this.Fluently(_ => ActiveDisposition.Initialise(type));
+        }
 
         public QuorumImplFacade Start<TWorker>() where TWorker : IMasterWorkAdapter {
             return this.Fluently(_ => {

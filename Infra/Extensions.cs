@@ -107,7 +107,7 @@ namespace Infra {
             string result = null;
             using (var writer = new MemoryStream()) {
                 do {
-                    int numberOfBytesRead = await stream.ReadAsync(readBuffer, 0, readBuffer.Length);
+                    int numberOfBytesRead = await stream.ReadAsync(readBuffer, 0, readBuffer.Length).ConfigureAwait(false);
                     if (numberOfBytesRead > 0) 
                         writer.Write(readBuffer, 0, numberOfBytesRead);
                 } while (stream.DataAvailable);

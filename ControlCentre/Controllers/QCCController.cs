@@ -14,7 +14,7 @@ namespace ControlCentre.Controllers {
         }
 
         public ActionResult SetTransportType(string type) {
-            ActiveDisposition.AcceptTransportType(type);
+            ActiveDisposition.Initialise(type);
             return this.Json(new { success = true }, JsonRequestBehavior.AllowGet);
         }
 

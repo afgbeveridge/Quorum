@@ -26,9 +26,9 @@ namespace ConsoleQuorum {
 
         public static void Main(string[] args) {
             try {
-                ActiveDisposition.Initialise(args.Any() ? args.First() : null);
                 Adapter = new QuorumImplFacade()
                     .WithBuilder(new Builder())
+                    .OnTransport(args.Any() ? args.First() : null)
                     .Start<NullWorkerAdapter>();
                 bool cont = true;
                 while (cont) {

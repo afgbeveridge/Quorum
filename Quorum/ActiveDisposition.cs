@@ -14,12 +14,12 @@ namespace Quorum {
     public static class ActiveDisposition {
 
         static ActiveDisposition() {
-            Current = TransportType.Http;
+           Initialise();
         }
 
         public static TransportType Current { get; set; }
 
-        public static void AcceptTransportType(string type) {
+        private static void AcceptTransportType(string type) {
             Current = (TransportType)Enum.Parse(typeof(TransportType), type, true);
         }
 
