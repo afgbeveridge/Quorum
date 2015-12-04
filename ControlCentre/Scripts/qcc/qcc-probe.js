@@ -6,8 +6,6 @@
         alert('Set up your configuration...will guess for now');
     }
 
-    window.qcc.ensureTransportTypeSet(config);
-
     var machine = function (mc) {
         var self = this;
         self.ipAddress = ko.observable(mc.IpAddressV4);

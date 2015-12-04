@@ -49,13 +49,6 @@ window.qcc.save = function (cfg) {
     });
 };
 
-window.qcc.ensureTransportTypeSet = function (cfg, cb) {
-    $.getJSON("/QCC/SetTransportType?type=" + (ko.isObservable(cfg.transportType) ? cfg.transportType() : cfg.transportType), null, function () {
-        if (cb) cb();
-    })
-    .fail(function () { alert("Could not change transport type"); });
-};
-
 window.qcc.queryMachines = function (mcs, config, onSuccess, failed, always) {
     $.ajax({
         url: '/Neighbourhood/QueryMachines',

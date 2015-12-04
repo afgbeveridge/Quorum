@@ -4,7 +4,6 @@
 
     var config = window.qcc.deserializeWithCheck(), maxTrackedRequests = 500;
 
-    window.qcc.ensureTransportTypeSet(config);
     var member = function (n, port, limit) {
         var self = this;
         self.name = n;

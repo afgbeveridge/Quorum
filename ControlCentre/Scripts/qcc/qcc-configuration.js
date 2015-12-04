@@ -21,7 +21,7 @@
                 var cur = config[prop];
                 cfg[prop] = ko.isObservable(cur) ? cur() : $('#' + prop).val();
             }
-            window.qcc.ensureTransportTypeSet(cfg, function () { window.qcc.save(cfg); });
+            window.qcc.save(cfg); 
         });
         $('#cancel').click(function () { location.assign('/'); });
     }
