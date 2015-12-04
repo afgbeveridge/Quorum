@@ -91,7 +91,7 @@ namespace Quorum.Services {
                             .Write(name.ToString(), content, Configuration.Get<int>(Constants.Configuration.ResponseLimit));
                 task.Wait();
                 result = task.IsFaulted ? null : task.Result;
-                LogFacade.Instance.LogInfo("Neighbour (" + name + ") queried, with result '" + result + "'. Faulted? " + task.IsFaulted);
+                LogFacade.Instance.LogInfo("Neighbour (" + name + ") queried, with result '" + (result.IsNull() ? "<null>" : result) + "'. Faulted? " + task.IsFaulted);
 
             }
             catch (AggregateException ex) {

@@ -55,6 +55,7 @@ namespace Quorum.Integration {
         protected abstract Task ListenerImplementation();
 
         protected void ProcessRequest(string content, object responseContainer, Action<IEventInstance> onTrigger) {
+            LogFacade.Instance.LogInfo("Received a message for interpretation: " + content);
             var action = Interpreter.TranslateToAction(content);
             if (action.IsNotNull() && action.EventName.IsNotNull()) {
                 // TODO: Make payload include, the content of the request, and the status and the response (context.Response)

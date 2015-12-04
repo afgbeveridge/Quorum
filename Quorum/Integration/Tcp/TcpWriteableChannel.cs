@@ -13,41 +13,54 @@ namespace Quorum.Integration.Tcp {
     public class TcpWriteableChannel : IWriteableChannel {
 
         private const int ReadBufferSize = 1024;
+        private const int ConnectTimeout = 1000;
 
         public TcpWriteableChannel(IConfiguration cfg) { 
             Configuration = cfg;
         }
 
         public async Task<string> Write(string address, string content, int timeoutMs) {
-            LogFacade.Instance.LogInfo("Base tcp timeout set at ms = " + timeoutMs);
             var splitTimeout = timeoutMs / 2;
-            var client = new TcpClient() { SendTimeout = splitTimeout, ReceiveTimeout = splitTimeout };//address, Configuration.Get<int>(Constants.Configuration.ExternalEventListenerPort)) { SendTimeout = splitTimeout, ReceiveTimeout = splitTimeout };
-            var res = client.BeginConnect(address, Configuration.Get<int>(Constants.Configuration.ExternalEventListenerPort), new AsyncCallback(ConnectionCallback), client);
-            if (!res.AsyncWaitHandle.WaitOne(1000)) {
-                res.AsyncWaitHandle.Close();
-            }
+            LogFacade.Instance.LogInfo("Base tcp timeout set at ms = " + timeoutMs + ", split for this transport: " + splitTimeout);
+            var client = new TcpClient() { SendTimeout = splitTimeout, ReceiveTimeout = splitTimeout };
             string result = null;
-            if (Connected) {
-                var stream = client.GetStream();
-                var bytes = Encoding.ASCII.GetBytes(content);
-                await stream.WriteAsync(bytes, 0, bytes.Length).ConfigureAwait(false);
-                result = await stream.ReadAll();
+            try {
+                var res = client.BeginConnect(address, Configuration.Get<int>(Constants.Configuration.ExternalEventListenerPort), new AsyncCallback(ConnectionCallback), new CallbackState { Client = client, Address = address });
+                LogFacade.Instance.LogInfo("Wait for connect with " + address + ", wait period: " + ConnectTimeout);
+                if (! await res.AsyncWaitHandle.WaitOneAsync(ConnectTimeout)) {
+                    LogFacade.Instance.LogInfo("Giving up waiting to connect with " + address);
+                    res.AsyncWaitHandle.Close();
+                }
+                if (!Connected)
+                    LogFacade.Instance.LogInfo("Deffo not connected to " + address);
+                else {
+                    LogFacade.Instance.LogInfo("Tcp connection established with " + address);
+                    var stream = client.GetStream();
+                    TcpBoundedFrame frame = new TcpBoundedFrame();
+                    int written = await frame.FrameAndWrite(stream, content);
+                    LogFacade.Instance.LogInfo("Written bytes to " + address + ", count " + written);
+                    result = await stream.ReadAll(TcpBoundedFrame.DetermineFrameSize);
+                    LogFacade.Instance.LogInfo("Read from " + address + ": '" + result + "'");
+                }
+            }
+            finally {
+                //client.Close();
             }
             return result;
         }
 
         private void ConnectionCallback(IAsyncResult result) {
+            CallbackState state = null;
             try {
-                TcpClient tcpclient = result.AsyncState as TcpClient;
-                if (tcpclient != null && tcpclient.Client != null) {
-                    tcpclient.EndConnect(result);
+                state = result.AsyncState as CallbackState;
+                if (state != null && state.Client != null) {
+                    state.Client.EndConnect(result);
                     Connected = true;
-                    LogFacade.Instance.LogInfo("Tcp connection established");
                 }
             }
             catch {
                 Connected = false;
-                LogFacade.Instance.LogInfo("Tcp connection NOT established");
+                LogFacade.Instance.LogInfo("Tcp connection NOT established with " + state.Address);
             }
         }
 
@@ -56,8 +69,7 @@ namespace Quorum.Integration.Tcp {
         public async Task Respond(object responseChannel, string content, int timeoutMs) {
             var response = responseChannel as NetworkStream;
             if (response.IsNotNull()) {
-                var payload = Encoding.ASCII.GetBytes(content);
-                await response.WriteAsync(payload, 0, payload.Length).ConfigureAwait(false);
+                await new TcpBoundedFrame().FrameAndWrite(response, content).ConfigureAwait(false);
             }
         }
 
@@ -66,6 +78,11 @@ namespace Quorum.Integration.Tcp {
         }
 
         private IConfiguration Configuration { get; set; }
+
+        private class CallbackState {
+            internal TcpClient Client { get; set; }
+            internal string Address { get; set; }
+        }
     }
 
 }

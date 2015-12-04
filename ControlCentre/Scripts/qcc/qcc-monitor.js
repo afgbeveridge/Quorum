@@ -22,7 +22,12 @@
             $.ajax({
                 url: '/Neighbourhood/Render' + stateName,
                 type: 'POST',
-                data: JSON.stringify({ Name: self.name, Port: config.port, Timeout: config.responseLimit }),
+                data: JSON.stringify({
+                    Name: self.name,
+                    Port: config.port,
+                    Timeout: config.responseLimit,
+                    TransportType: (ko.isObservable(config.transportType) ? config.transportType() : config.transportType)
+                }),
                 contentType: 'application/json',
                 timeout: config.responseLimit * 5,
                 success: function (data, textStatus, jqXHR) {

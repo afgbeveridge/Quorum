@@ -26,6 +26,7 @@ namespace ConsoleQuorum {
 
         public static void Main(string[] args) {
             try {
+                Test();
                 Adapter = new QuorumImplFacade()
                     .WithBuilder(new Builder())
                     .OnTransport(args.Any() ? args.First() : null)
@@ -43,6 +44,16 @@ namespace ConsoleQuorum {
                         Adapter.Stop().Wait();
                 });
             }
+        }
+
+        private static void Test() {
+            int len = 5;
+            string s = "Any old shite";
+            s = len + s.Length.ToString().PadLeft(len, '0') + s;
+            var b = ASCIIEncoding.Default.GetBytes(s);
+            var q = ASCIIEncoding.Default.GetString(b);
+            var m = (char)b[0] - '0';
+            var f = int.Parse("00004");
         }
 
         private static bool Query() {

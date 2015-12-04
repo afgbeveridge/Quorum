@@ -83,6 +83,7 @@
     <Compile Include="Integration\JsonPayloadParser.cs" />
     <Compile Include="Integration\OldestCandidateAdjudicator.cs" />
     <Compile Include="Integration\SimpleNetworkEnvironment.cs" />
+    <Compile Include="Integration\Tcp\TcpBoundedFrame.cs" />
     <Compile Include="Integration\Tcp\TcpEventListener.cs" />
     <Compile Include="Integration\Tcp\TcpReadableChannel.cs" />
     <Compile Include="Integration\Tcp\TcpWriteableChannel.cs" />

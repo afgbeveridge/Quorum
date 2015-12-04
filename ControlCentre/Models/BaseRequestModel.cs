@@ -8,5 +8,6 @@ namespace ControlCentre.Models {
     public class BaseRequestModel {
         public int Port { get; set; }
         public int Timeout { get; set; }
+        public string TransportType { get; set; }
     }
 }

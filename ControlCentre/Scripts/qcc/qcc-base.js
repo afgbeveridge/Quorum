@@ -60,7 +60,12 @@ window.qcc.queryMachines = function (mcs, config, onSuccess, failed, always) {
     $.ajax({
         url: '/Neighbourhood/QueryMachines',
         type: 'POST',
-        data: JSON.stringify({ Machines: mcs, Port: config.port, Timeout: config.responseLimit }),
+        data: JSON.stringify({
+            Machines: mcs,
+            Port: config.port,
+            Timeout: config.responseLimit,
+            TransportType: (ko.isObservable(config.transportType) ? config.transportType() : config.transportType)
+        }),
         contentType: 'application/json',
         success: function (data, textStatus, jqXHR) {
             console.log('Proceed...');

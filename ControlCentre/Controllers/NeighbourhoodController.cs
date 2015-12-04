@@ -45,6 +45,7 @@ namespace ControlCentre.Controllers {
             var cfg = Builder.Resolve<IConfiguration>();
             cfg.LocalSet(Constants.Configuration.ExternalEventListenerPort.Key, model.Port);
             cfg.LocalSet(Constants.Configuration.ResponseLimit.Key, model.Timeout);
+            ActiveDisposition.Initialise(model.TransportType);
         }
 
     }

@@ -30,12 +30,17 @@ namespace Quorum.Integration.Tcp {
         }
 
         protected override async Task ListenerImplementation() {
-            if (Listener.Pending()) {
-                var client = Listener.AcceptTcpClient();
-                var stream = client.GetStream();
-                var content = await stream.ReadAll();
-                ProcessRequest(content, stream, e => ((NetworkStream) e).Write(AcceptedMessageBytes, 0, AcceptedMessageBytes.Length));
-                stream.Dispose();
+            try {
+                if (Listener.Pending()) {
+                    LogFacade.Instance.LogInfo("Processing a Tcp connection request");
+                    var client = Listener.AcceptTcpClient();
+                    var stream = client.GetStream();
+                    var content = await stream.ReadAll(TcpBoundedFrame.DetermineFrameSize);
+                    ProcessRequest(content, stream, e => ((NetworkStream)e).Write(AcceptedMessageBytes, 0, AcceptedMessageBytes.Length));
+                }
+            }
+            catch (Exception ex) {
+                LogFacade.Instance.LogWarning("Failed when processing a Tcp connection request", ex);
             }
         }
 
