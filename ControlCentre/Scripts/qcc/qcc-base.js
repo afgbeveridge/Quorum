@@ -22,7 +22,7 @@ window.qcc.deserialize = function () {
             result = {
                 members: null,
                 port: 9999,
-                responseLimit: 6000,
+                responseLimit: 3000,
                 transportType: ko.observable('http')
             };
         else {

@@ -190,4 +190,6 @@
             clearInterval(vm.timer());
     });
 
+    $('#monitorSection').show();
+
 });
