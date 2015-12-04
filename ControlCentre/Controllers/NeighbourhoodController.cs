@@ -17,8 +17,10 @@ namespace ControlCentre.Controllers {
             return View();
         }
 
-        public ActionResult ApparentNeighbours() {
-            return this.Json(new { machines = Service.VisibleComputers(true) }, JsonRequestBehavior.AllowGet);
+        [HttpPost]
+        public ActionResult ApparentNeighbours(BaseRequestModel model) {
+            EstablishContext(model);
+            return this.Json(new { machines = Service.VisibleComputers(true) });
         }
 
         [HttpPost]
