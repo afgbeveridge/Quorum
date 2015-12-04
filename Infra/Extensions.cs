@@ -129,7 +129,6 @@ namespace Infra {
             int requested = numBytes, cycles = Cycle;
             LogFacade.Instance.LogInfo("Asked to read exactly " + numBytes + " byte(s)");
             LogFacade.Instance.LogInfo("Stream, DA? " + stream.DataAvailable + ", readable? " + stream.CanRead);
-            LogFacade.Instance.LogInfo("Asked to read exactly " + numBytes + " byte(s)");
             do {
                 int numberOfBytesRead = await stream.ReadAsync(readBuffer, requested - numBytes, numBytes).ConfigureAwait(false);
                 if (numberOfBytesRead > 0)
