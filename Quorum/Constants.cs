@@ -17,6 +17,8 @@ namespace Quorum {
             public static readonly ConfigurationItem<int> DiscoveryPeriodMs = ConfigurationItem<int>.Create("quorum.discoveryPeriodMs", 30000);
             public static readonly ConfigurationItem<int> ResponseLimit = ConfigurationItem<int>.Create("quorum.responseLimit", 5000);
             public static readonly ConfigurationItem<int> TcpBacklogSize = ConfigurationItem<int>.Create("quorum.tcp.backlogSize", 5);
+            public static readonly ConfigurationItem<int> TcpFrameSizeSpecificationLength = ConfigurationItem<int>.Create("quorum.tcp.frameSizeSpecificationLength", 6);
+            public static readonly ConfigurationItem<int> TcpConnectionTimeout = ConfigurationItem<int>.Create("quorum.tcp.connectionTimeout", 1000);
             public static readonly ConfigurationItem<string> DefaultTransport = ConfigurationItem<string>.Create("quorum.transport", "http");
 
         }

@@ -10,7 +10,11 @@ namespace Quorum.Integration.Tcp {
 
     public class TcpBoundedFrame {
 
-        private const int LengthBytes = 6;
+        static TcpBoundedFrame() {
+            LengthBytes = new Configuration().Get(Constants.Configuration.TcpFrameSizeSpecificationLength);
+        }
+
+        public static int LengthBytes { get; set; }
 
         public async Task<int> FrameAndWrite(NetworkStream stream, string content) {
             return await FrameAndWrite(stream, SizeUp(content));

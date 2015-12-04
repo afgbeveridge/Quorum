@@ -18,6 +18,7 @@ namespace ControlCentre
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             // Local
+            Quorum.ActiveDisposition.Shared = true;
             Builder.ConfigureInjections();
             LogFacade.Instance.Adapter = new NLogLogger().Configure(false);
         }

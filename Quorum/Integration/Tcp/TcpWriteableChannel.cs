@@ -13,7 +13,6 @@ namespace Quorum.Integration.Tcp {
     public class TcpWriteableChannel : IWriteableChannel {
 
         private const int ReadBufferSize = 1024;
-        private const int ConnectTimeout = 1000;
 
         public TcpWriteableChannel(IConfiguration cfg) { 
             Configuration = cfg;
@@ -26,8 +25,9 @@ namespace Quorum.Integration.Tcp {
             string result = null;
             try {
                 var res = client.BeginConnect(address, Configuration.Get<int>(Constants.Configuration.ExternalEventListenerPort), new AsyncCallback(ConnectionCallback), new CallbackState { Client = client, Address = address });
-                LogFacade.Instance.LogInfo("Wait for connect with " + address + ", wait period: " + ConnectTimeout);
-                if (! await res.AsyncWaitHandle.WaitOneAsync(ConnectTimeout)) {
+                var connectTimeout = Configuration.Get(Constants.Configuration.TcpConnectionTimeout);
+                LogFacade.Instance.LogInfo("Wait for connect with " + address + ", wait period: " + connectTimeout);
+                if (!await res.AsyncWaitHandle.WaitOneAsync(connectTimeout)) {
                     LogFacade.Instance.LogInfo("Giving up waiting to connect with " + address);
                     res.AsyncWaitHandle.Close();
                 }
