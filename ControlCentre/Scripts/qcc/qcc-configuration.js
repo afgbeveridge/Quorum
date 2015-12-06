@@ -41,11 +41,8 @@
             $('#scanWorking').show();
             window.qcc.scanNetworkLite(config,
             function (machines) {
-                var content = [];
-                machines.forEach(function (m) {
-                    content.push(m.Name.toLowerCase());
-                });
-                obsForm.members(content.join(','));
+                var content = machines.map(function(m) { return m.Name.toLowerCase(); }).join(',');
+                obsForm.members(content);
             },
             function () {
                 $('#scanDiv').show();
