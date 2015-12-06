@@ -30,6 +30,7 @@ namespace Quorum.Integration {
         public IStateMachine<IExecutionContext> Machine { get; set; }
 
         public void Initialize() {
+            LogFacade.Instance.LogInfo("Listener will be active on port " + Config.Get<int>(Constants.Configuration.ExternalEventListenerPort));
             StartListening();
             CancellationToken = new CancellationTokenSource();
             CancellationToken token = CancellationToken.Token;

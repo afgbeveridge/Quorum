@@ -54,7 +54,8 @@ namespace Quorum.Payloads {
                     Name = context.ExecutionContext.HostName,
                     UpTime = context.EnclosingMachine.UpTime,
                     Strength = actualStrength.ToString(),
-                    Hardware = HardwareDetails.Instance,
+                    // Could be null if not yet interrogated
+                    Hardware = HardwareDetails.Instance ?? new HardwareDetails(),
                     InEligibleForElection = context.ExecutionContext.InEligibleForElection,
                     PendingEvents = context.EnclosingMachine.PendingEvents.Select(e => new PendingEvent {  Id = e.Id, Name = e.EventName, CreatedOn = e.CreatedOn, AgeInSeconds = (DateTime.Now  - e.CreatedOn).TotalSeconds}).ToArray(),
                     HandledEvents = context.EnclosingMachine.StatisticsHandler.HandledEventsInNameOrder.ToArray(),
@@ -72,7 +73,7 @@ namespace Quorum.Payloads {
 
         public static HardwareDetails Instance { get; private set; }
 
-        private HardwareDetails() {
+        internal HardwareDetails() {
         }
 
         public string PhysicalMemory { get; set; }

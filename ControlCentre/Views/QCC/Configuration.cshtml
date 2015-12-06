@@ -6,33 +6,44 @@
     <h2>Quorum Control Centre - Configuration</h2>
 </div>
 
-<div class="row">
-    <div class="col-xs-3">Communications transport type</div>
-    <div class="col-xs-9" id="transportType">
-        <input type="radio" name="transportGroup" value="http" data-bind="checked: transportType" /> Http
-        <input type="radio" name="transportGroup" value="tcp" data-bind="checked: transportType" /> Tcp
+<div id="cfgBindingSection" style="display: none;">
+    <div class="row">
+        <div class="col-xs-3">Communications transport type</div>
+        <div class="col-xs-9">
+            <input type="radio" name="transportGroup" value="http" data-bind="checked: transportType" /> Http
+            <input type="radio" name="transportGroup" value="tcp" data-bind="checked: transportType" /> Tcp
+        </div>
+    </div>
+    <p></p>
+    <div class="row">
+        <div class="col-xs-3">Quorum members (machine names, separated by commas)</div>
+        <div class="col-xs-9"><input id="members" data-bind="textInput: members" type="text" style='min-width: 100%' maxlength="255" /></div>
+    </div>
+    <div class="row" data-bind="visible: membersInvalid">
+        <div class="col-xs-6" style="color:red;">You must specify at least one quorum member</div>
+    </div>
+    <p></p>
+    <div class="row">
+        <div class="col-xs-3">Quorum port</div>
+        <div class="col-xs-3"><input id="port" data-bind="textInput: port" type="text" maxlength="5" /></div>
+    </div>
+    <div class="row" data-bind="visible: portInvalid">
+        <div class="col-xs-6" style="color:red;">Port must be between 1025 and 65535</div>
+    </div>
+    <p></p>
+    <div class="row">
+        <div class="col-xs-3">Response timeout (milliseconds)</div>
+        <div class="col-xs-3"><input id="responseLimit" data-bind="textInput: responseLimit" type="text" maxlength="8" /></div>
+    </div>
+    <div class="row" data-bind="visible: responseLimitInvalid">
+        <div class="col-xs-6" style="color:red;">Response limit must be between 1000 and 30000</div>
+    </div>
+    <p></p>
+    <div class="row">
+        <div class="col-xs-4"><button data-bind="enable: isValid" id="save" class="btn-primary">Save</button>&nbsp;<button id="cancel" class="btn-primary">Cancel</button></div>
     </div>
 </div>
-<p></p>
-<div class="row">
-    <div class="col-xs-3">Quorum members (machine names, separated by commas)</div>
-    <div class="col-xs-9"><input id="members" type="text" style='min-width: 100%' maxlength="255"/></div>
-</div>
-<p></p>
-<div class="row">
-    <div class="col-xs-3">Quorum port</div>
-    <div class="col-xs-3"><input id="port" type="text"  maxlength="5" /></div>
-</div>
-<p></p>
-<div class="row">
-    <div class="col-xs-3">Response timeout (milliseconds)</div>
-    <div class="col-xs-3"><input id="responseLimit" type="text" maxlength="8" /></div>
-</div>
-<p></p>
-<div class="row">
-    <div class="col-xs-4"><button id="save" class="btn-primary">Save</button>&nbsp;<button id="cancel" class="btn-primary">Cancel</button></div>
-</div>
 
-@section scripts { 
+@section scripts {
     @Scripts.Render("~/bundles/qccconfiguration")
 }

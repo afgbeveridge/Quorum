@@ -2,10 +2,6 @@
 
     var config = window.qcc.deserializeWithCheck();
 
-    if (!config || !config.members || config.members.length == 0) {
-        alert('Set up your configuration...will guess for now');
-    }
-
     var machine = function (mc) {
         var self = this;
         self.ipAddress = ko.observable(mc.IpAddressV4);

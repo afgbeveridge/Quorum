@@ -36,12 +36,13 @@ namespace Quorum.Integration {
         public QuorumImplFacade Start<TWorker>() where TWorker : IMasterWorkAdapter {
             return this.Fluently(_ => {
                 Assert.False(BuildHelper.IsNull(), () => "You must call WithBuilder before Start()");
-                Configure();
+                ConfigureLogging();
                 Machine = BuildHelper.Create();
-                BuildHelper.Register<IMasterWorkAdapter, TWorker>();
                 Container = BuildHelper.AsContainer();
-                MachineTask = Machine.Start();
                 SpinUpListener();
+                Configure();
+                BuildHelper.Register<IMasterWorkAdapter, TWorker>();
+                MachineTask = Machine.Start();
             });
         }
 
@@ -60,8 +61,11 @@ namespace Quorum.Integration {
 
         private Builder BuildHelper { get; set; }
 
-        private void Configure() {
+        private void ConfigureLogging() {
             LogFacade.Instance.Adapter = new NLogLogger().Configure();
+        }
+
+        private void Configure() {
             // This is cached up front as the interrogation is quite slow, and the results are returned with any query
             HardwareDetails.Interrogate();
             JsonConvert.DefaultSettings = (() => {

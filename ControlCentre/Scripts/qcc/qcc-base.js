@@ -18,18 +18,19 @@ window.qcc.withLocalStorage = function (f) {
 window.qcc.deserialize = function () {
     return window.qcc.withLocalStorage(function () {
         var stored = localStorage.getItem('qcc'), result;
-        if (!stored)
+        if (stored)
+            result = JSON.parse(stored);
+        else {
             result = {
-                members: null,
+                members: '',
                 port: 9999,
                 responseLimit: 3000,
-                transportType: ko.observable('http')
+                transportType: 'http'
             };
-        else {
-            result = JSON.parse(stored);
-            result.transportType = ko.observable(result.transportType);
-            result.members = result.members.split(',');
         }
+        // TODO: Make an observableForm property mapped from JS to etc using ko mapping
+        result.observableForm = ko.mapping.fromJS(result);
+        result.members = result.members.split(',');
         return result;
     });
 };
