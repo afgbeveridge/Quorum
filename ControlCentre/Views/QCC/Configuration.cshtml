@@ -19,6 +19,14 @@
         <div class="col-xs-3">Quorum members (machine names, separated by commas)</div>
         <div class="col-xs-9"><input id="members" data-bind="textInput: members" type="text" style='min-width: 100%' maxlength="255" /></div>
     </div>
+    <div class="row" id="scanDiv">
+        <div class="col-xs-3"></div>
+        <div class="col-xs-9"><button id="scanLite" class="btn-primary">Shallow scan</button>&nbsp;Scan the network and insert discovered machine names into the quorum member text box</div>
+    </div>
+    <div class="row" id="scanWorking" style="display: none;">
+        <div class="col-xs-3"></div>
+        <div class="col-xs-4">Probing network now...<img src="~/Content/Images/ajax-loader.gif" /></div>
+    </div>
     <div class="row" data-bind="visible: membersInvalid">
         <div class="col-xs-6" style="color:red;">You must specify at least one quorum member</div>
     </div>

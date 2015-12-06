@@ -25,33 +25,22 @@
         vm.appConfigText('');
         $('#probeStart').hide();
         $('#probeWorking').show();
-        $.ajax({
-            url: '/Neighbourhood/ApparentNeighbours',
-            type: 'POST',
-            data: JSON.stringify({
-                Port: config.port,
-                Timeout: config.responseLimit,
-                TransportType: (ko.isObservable(config.transportType) ? config.transportType() : config.transportType)
-            }),
-            contentType: 'application/json',
-            success: function (data, textStatus, jqXHR) {
+        window.qcc.scanNetworkLite(config,
+            function (machines) {
                 assocLookup = [];
-                data.machines.forEach(function (m) {
+                machines.forEach(function (m) {
                     var v = new machine(m);
                     vm.machines.push(v);
                     assocLookup[v.name()] = v;
                 });
+            },
+            function () {
+                $('#probeWorking').hide();
+                $('#bindableSection').show();
+                $('#probeStart').show();
+                $('#startProbe').text('Re-probe...');
             }
-        })
-        .fail(function () {
-            alert('Probe attempt failed');
-        })
-        .always(function () {
-            $('#probeWorking').hide();
-            $('#bindableSection').show();
-            $('#probeStart').show();
-            $('#startProbe').text('Re-probe...');
-        });
+        );
     });
 
     function changeStatus(status) {

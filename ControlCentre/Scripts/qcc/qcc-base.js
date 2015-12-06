@@ -74,6 +74,28 @@ window.qcc.queryMachines = function (mcs, config, onSuccess, failed, always) {
         });
 };
 
+window.qcc.scanNetworkLite = function (config, success, always) {
+    $.ajax({
+        url: '/Neighbourhood/ApparentNeighbours',
+        type: 'POST',
+        data: JSON.stringify({
+            Port: config.port,
+            Timeout: config.responseLimit,
+            TransportType: (ko.isObservable(config.transportType) ? config.transportType() : config.transportType)
+        }),
+        contentType: 'application/json',
+        success: function (data, textStatus, jqXHR) {
+                success(data.machines);
+            }
+        })
+        .fail(function () {
+            alert('Probe attempt failed');
+        })
+        .always(function () {
+            always && always();
+        });
+};
+
 window.qcc.findWithIndex = function (arr, fn) {
     var result;
     for (var i = 0; i < arr.length && !result; i++) {

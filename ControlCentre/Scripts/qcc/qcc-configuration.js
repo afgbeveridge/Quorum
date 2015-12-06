@@ -33,9 +33,28 @@
             }
             window.qcc.save(cfg); 
         });
+
         $('#cancel').click(function () { location.assign('/'); });
 
-        $('#cfgBindingSection').show();
+        $('#scanLite').click(function () {
+            $('#scanDiv').hide();
+            $('#scanWorking').show();
+            window.qcc.scanNetworkLite(config,
+            function (machines) {
+                var content = [];
+                machines.forEach(function (m) {
+                    content.push(m.Name.toLowerCase());
+                });
+                obsForm.members(content.join(','));
+            },
+            function () {
+                $('#scanDiv').show();
+                $('#scanWorking').hide();
+            }
+        );
+        });
+
+        $('#cfgBindingSection').show('slidein');
     }
 
 });
