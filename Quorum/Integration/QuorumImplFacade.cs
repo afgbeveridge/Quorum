@@ -34,6 +34,10 @@ namespace Quorum.Integration {
         }
 
         public QuorumImplFacade Start<TWorker>() where TWorker : IMasterWorkAdapter {
+            return Start(typeof(TWorker));
+        }
+
+        public QuorumImplFacade Start(Type impl) {
             return this.Fluently(_ => {
                 Assert.False(BuildHelper.IsNull(), () => "You must call WithBuilder before Start()");
                 ConfigureLogging();
@@ -41,7 +45,7 @@ namespace Quorum.Integration {
                 Container = BuildHelper.AsContainer();
                 SpinUpListener();
                 Configure();
-                BuildHelper.Register<IMasterWorkAdapter, TWorker>();
+                BuildHelper.Register<IMasterWorkAdapter>(impl);
                 MachineTask = Machine.Start();
             });
         }
@@ -61,8 +65,9 @@ namespace Quorum.Integration {
 
         private Builder BuildHelper { get; set; }
 
-        private void ConfigureLogging() {
-            LogFacade.Instance.Adapter = new NLogLogger().Configure();
+        public static void ConfigureLogging() {
+            if (LogFacade.Instance.Adapter.IsNull())
+                LogFacade.Instance.Adapter = new NLogLogger().Configure();
         }
 
         private void Configure() {

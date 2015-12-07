@@ -13,8 +13,7 @@ namespace QuorumWindowsService {
         /// </summary>
         static void Main() {
             ServiceBase[] ServicesToRun;
-            ServicesToRun = new ServiceBase[] 
-            { 
+            ServicesToRun = new ServiceBase[] { 
                 new QuorumAwareWindowsService() 
             };
             ServiceBase.Run(ServicesToRun);

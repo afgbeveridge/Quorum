@@ -129,6 +129,11 @@ namespace Quorum {
             Container.Register(Component.For<TInterface>().ImplementedBy<TConcrete>().LifeStyle.Transient);
         }
 
+        public void Register<TInterface>(Type t)
+            where TInterface : class {
+            Container.Register(Component.For<TInterface>().ImplementedBy(t).LifeStyle.Transient);
+        }
+
         private void RegisterStates() {
             Action<Type, string> register = (t, n) => Container.Register(Component.For<IState<IExecutionContext>>().ImplementedBy(t).Named(n).Interceptors<LoggingInterceptor>());
             //Container.Register(AllTypes.FromThisAssembly().)

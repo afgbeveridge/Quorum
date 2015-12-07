@@ -37,8 +37,8 @@ namespace Quorum.Integration.Http {
 
         protected override void StartListening() {
             Listener = new HttpListener();
-            var address = Config.Get<string>(Constants.Configuration.ExternalEventListenerPort.Key);
-            Listener.Prefixes.Add(new HttpAddressingScheme { Name = Dns.GetHostName(), Port = address }.Address);
+            var address = Config.Get(Constants.Configuration.ExternalEventListenerPort);
+            Listener.Prefixes.Add(new HttpAddressingScheme { Name = Dns.GetHostName(), Port = address.ToString() }.Address);
             Listener.Start();
         }
 
