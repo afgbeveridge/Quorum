@@ -10,7 +10,7 @@
     else {
         var obsForm = config.observableForm;
         obsForm.isInRange = function (val, min, max) {
-            return /^\d+$/.test(val) && parseInt(val) >= min && parseInt(val) <= max;
+            return window.qcc.isPositiveNumeric(val) && parseInt(val) >= min && parseInt(val) <= max;
         };
         obsForm.membersInvalid = ko.computed(function () {
             return !obsForm.members() || obsForm.members().length == 0 || $.trim(obsForm.members()) == '';

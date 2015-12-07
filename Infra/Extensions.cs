@@ -179,4 +179,14 @@ namespace Infra {
 
     }
 
+    public static class DateTimeExtensions {
+
+        private static readonly DateTime _1970 = new DateTime(1970, 1, 1);
+
+        public static double AsUNIXEpochMilliseconds(this DateTime src) {
+            return (src - _1970).TotalMilliseconds;
+        }
+
+    }
+
 }

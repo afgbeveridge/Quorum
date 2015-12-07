@@ -105,7 +105,7 @@ namespace Quorum {
             RegisterInterceptors();
             Register<IExecutionContext, ExecutionContext>();
             Register<IEventInterpreter<IExecutionContext>, EventInterpreter>();
-            Register<IElectionAdjudicator, OldestCandidateAdjudicator>();
+            Register<IElectionAdjudicator, EarliestBootCandidateAdjudicator>();
             Register<IEventQueue, ConcurrentEventQueue>();
             Register<IEventStatistician, EventStatistician>();
             RegisterStates();

@@ -32,6 +32,8 @@ namespace Quorum.Payloads {
 
         public double UpTime { get; set; }
 
+        public double AbsoluteBootTime { get; set; }
+
         public double? TimeUntilRestart { get; set; }
 
         public long? LastRequestElapsedTime { get; set; }
@@ -53,6 +55,7 @@ namespace Quorum.Payloads {
                     IsMaster = context.ExecutionContext.IsMaster,
                     Name = context.ExecutionContext.HostName,
                     UpTime = context.EnclosingMachine.UpTime,
+                    AbsoluteBootTime = context.EnclosingMachine.AbsoluteBootTime,
                     Strength = actualStrength.ToString(),
                     // Could be null if not yet interrogated
                     Hardware = HardwareDetails.Instance ?? new HardwareDetails(),

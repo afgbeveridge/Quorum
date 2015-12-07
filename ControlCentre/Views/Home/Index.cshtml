@@ -10,10 +10,14 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-2"><span data-bind="html: 'Active transport:<strong>' + transport + '</strong>'"></span></div>
-            <div class="col-xs-3">Poll period:&nbsp;<input type="text" maxlength="8" data-bind="textinput: discoPeriod" /></div>
-            <div class="col-xs-2"><span data-bind="text: 'Queries:' + queries()"></span></div>
+            <div class="col-xs-3">Poll period:&nbsp;<input type="text" maxlength="8" data-bind="textinput: gatedDiscoPeriod" /></div>
+            <div class="col-xs-2"><span data-bind="text: 'Queries:' + queries()"></span>&nbsp;<img data-bind="visible: querying" src="~/Content/Images/ajax-loader.gif" /></div>
             <div class="col-xs-3"><span data-bind="text: 'Quorum viable:' + (viable() ? 'Yes' : 'No')"></span></div>
             <div class="col-xs-2"><button id="stopStart" class="btn-primary pull-right" data-bind="text: timer() ? 'Stop' : 'Start', click: stopOrStart, css: timer() ? 'btn-danger' : 'btn-success'"></button></div>
+        </div>
+        <div class="row" id="invalidPollPeriod" style="color: red; display: none;">
+            <div class="col-xs-2"></div>
+            <div class="col-xs-6">Poll period cannot be less than configured timeout of <span data-bind="text: baseTimeout"></span> milliseconds</div>
         </div>
         <p></p>
         <div class="row">

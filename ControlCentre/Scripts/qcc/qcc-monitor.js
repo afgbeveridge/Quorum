@@ -76,18 +76,34 @@
 
     var vm = {
         members: config.members.map(function (m) { return new member(m, config.port, config.responseLimit); }),
-        discoPeriod: ko.observable(parseInt(config.responseLimit) * 2),
         queries: ko.observable(0),
         transport: config.transportType,
+        discoPeriod: ko.observable(parseInt(config.responseLimit) * 2),
         timer: ko.observable(),
+        baseTimeout: config.responseLimit,
         stopOrStart: function () {
             console.log('Starting or stopping monitor timer');
             if (vm.timer())
                 stop();
             else
-                start(vm.discoPeriod());
-        }
+                start(vm.gatedDiscoPeriod());
+        },
+        querying: ko.observable(false)
     };
+
+    vm.gatedDiscoPeriod = ko.computed({
+        read: function () {
+            return vm.discoPeriod();
+        },
+        write: function (value) {
+            var valid = window.qcc.isPositiveNumeric(value) && parseInt(value) >= parseInt(config.responseLimit);
+            if (valid)
+                vm.discoPeriod(value);
+            $('#invalidPollPeriod')[valid ? 'hide' : 'show']();
+        },
+        owner: this
+    })
+    
 
     vm.viable = ko.computed(function () {
         var active = 0;
@@ -97,12 +113,12 @@
         return active > 1;
     });
 
-    vm.discoPeriod.extend({ rateLimit: { timeout: 100, method: "notifyWhenChangesStop" } });
+    vm.gatedDiscoPeriod.extend({ rateLimit: { timeout: 175, method: "notifyWhenChangesStop" } });
 
     function modifyAjaxTimeout() {
         $.ajaxSetup({
             type: 'POST',
-            timeout: vm.discoPeriod() - 500
+            timeout: vm.gatedDiscoPeriod() - 500
         });
     };
 
@@ -110,7 +126,7 @@
 
     function setTimer(period) {
         vm.timer(setInterval(function () {
-            vm.queries(vm.queries() + vm.members.length);
+            vm.querying(true);
             function invalidate(target) {
                 target.IsMaster('Unknown');
                 target.Strength('Unknown');
@@ -162,6 +178,10 @@
                 mcs.forEach(function (m) {
                     invalidate(getObservable(m));
                 });
+            },
+            function () {
+                vm.queries(vm.queries() + vm.members.length);
+                vm.querying(false);
             });
         }, period));
     };
@@ -177,12 +197,12 @@
         modifyAjaxTimeout();
     };
 
-    vm.discoPeriod.subscribe(function (val) {
+    vm.gatedDiscoPeriod.subscribe(function (val) {
         stop();
         start(val);
     });
 
-    start(vm.discoPeriod());
+    start(vm.gatedDiscoPeriod());
 
     $(window).unload(function () {
         console.log('Clean up');

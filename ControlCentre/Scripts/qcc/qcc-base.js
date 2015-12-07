@@ -96,10 +96,15 @@ window.qcc.scanNetworkLite = function (config, success, always) {
         });
 };
 
+// Util
 window.qcc.findWithIndex = function (arr, fn) {
     var result;
     for (var i = 0; i < arr.length && !result; i++) {
         result = fn(arr[i], i) ? { element: arr[i], index: i } : null;
     }
     return result;
+};
+
+window.qcc.isPositiveNumeric = function (val) {
+    return /^\d+$/.test(val);
 };

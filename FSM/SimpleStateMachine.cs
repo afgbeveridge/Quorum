@@ -22,7 +22,7 @@ namespace FSM {
         public SimpleStateMachine(IEventQueue queueHandler, IEventStatistician stats) {
             QueueHandler = queueHandler;
             StatisticsHandler = stats;
-            CreationDateTime = DateTime.Now;
+            AbsoluteBootTime = DateTime.Now.AsUNIXEpochMilliseconds();
             // TODO: Config
             StateChangeAtomiser = new SemaphoreSlim(1, 1);
             // TODO: Configuration
@@ -127,11 +127,11 @@ namespace FSM {
 
         public double UpTime { 
             get {
-                return (DateTime.Now - CreationDateTime).TotalMilliseconds;
+                return DateTime.Now.AsUNIXEpochMilliseconds() - AbsoluteBootTime;
             }
         }
 
-        private DateTime CreationDateTime { get; set; }
+        public double AbsoluteBootTime { get; private set; }
 
         private async Task DispatchEvent(IEventInstance anEvent, Type type) {
             LogFacade.Instance.LogInfo("Dispatch " + anEvent.EventName);
