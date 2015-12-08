@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FSM;
 using Quorum.States;
 using Quorum.AOP;
 using Castle.Windsor;
 using Castle.MicroKernel.Registration;
-using Castle.MicroKernel;
 using Castle.DynamicProxy;
 using Quorum.Integration;
 using Quorum.Integration.Http;

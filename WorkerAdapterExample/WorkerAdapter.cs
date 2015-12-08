@@ -15,6 +15,7 @@ namespace WorkerAdapterExample {
 
         protected override async Task<bool> Work() {
             await Task.Delay(10);
+            WorkUnitExecuted();
             return false;
         }
 
