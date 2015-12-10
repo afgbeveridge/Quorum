@@ -219,3 +219,4 @@ pip-log.txt
 # Debug logs
 diagnostics.txt
 ControlCentre/diagnostics.txt
+.vs/config/applicationhost.config
