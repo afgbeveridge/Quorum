@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
+﻿#region License
+//
+// Copyright Tony Beveridge 2015. All rights reserved. 
+// MIT license applies.
+//
+#endregion
+using System;
 using System.Linq;
 using System.ServiceProcess;
-using System.Text;
-using System.Threading.Tasks;
 using Quorum.Integration;
 using Quorum;
 using Infra;
@@ -25,9 +25,9 @@ namespace QuorumWindowsService {
         }
 
         protected override void OnStart(string[] args) {
-            // Do this early to log any assembly load issues
-            QuorumImplFacade.ConfigureLogging();
+            // Configure logging early to log any worker type load issues
             Adapter = new QuorumImplFacade()
+                        .ConfigureLogging(new LoggingOptions { RequireConsoleSink = false })
                         .WithBuilder(new Builder())
                         .Start(GetWorkerImplementation());
         }

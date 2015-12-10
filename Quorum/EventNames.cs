@@ -1,4 +1,10 @@
-﻿namespace Quorum {
+﻿#region License
+//
+// Copyright Tony Beveridge 2015. All rights reserved. 
+// MIT license applies.
+//
+#endregion
+namespace Quorum {
 
     public static class EventNames {
 

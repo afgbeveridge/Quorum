@@ -1,4 +1,10 @@
-﻿using System;
+﻿#region License
+//
+// Copyright Tony Beveridge 2015. All rights reserved. 
+// MIT license applies.
+//
+#endregion
+using System;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;

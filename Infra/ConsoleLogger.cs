@@ -1,4 +1,10 @@
-﻿using System;
+﻿#region License
+//
+// Copyright Tony Beveridge 2015. All rights reserved. 
+// MIT license applies.
+//
+#endregion
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +14,7 @@ namespace Infra {
     
     public class ConsoleLogger : AbstractLogger {
 
-        public override ILogger Configure(bool includeConsole = true) {
+        public override ILogger Configure(LoggingOptions options = null) {
             return this;
         }
 

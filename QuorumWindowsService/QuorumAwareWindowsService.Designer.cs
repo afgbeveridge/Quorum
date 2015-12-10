@@ -1,4 +1,10 @@
-﻿namespace QuorumWindowsService {
+﻿#region License
+//
+// Copyright Tony Beveridge 2015. All rights reserved. 
+// MIT license applies.
+//
+#endregion
+namespace QuorumWindowsService {
     partial class QuorumAwareWindowsService {
         /// <summary> 
         /// Required designer variable.

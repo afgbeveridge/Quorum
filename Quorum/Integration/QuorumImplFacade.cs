@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿#region License
+//
+// Copyright Tony Beveridge 2015. All rights reserved. 
+// MIT license applies.
+//
+#endregion
+using System;
 using System.Threading.Tasks;
-using Quorum;
 using FSM;
-using Quorum.Integration.Http;
-using System.Net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Infra;
@@ -15,7 +15,7 @@ using Quorum.Payloads;
 
 
 namespace Quorum.Integration {
-    
+
     public class QuorumImplFacade {
 
         private const int MaxDeathCycles = 100;
@@ -31,6 +31,10 @@ namespace Quorum.Integration {
 
         public QuorumImplFacade OnTransport(string type) {
             return this.Fluently(_ => ActiveDisposition.Initialise(type));
+        }
+
+        public QuorumImplFacade WithLogOptions(LoggingOptions options) {
+            return this.Fluently(_ => LogOptions = options);
         }
 
         public QuorumImplFacade Start<TWorker>() where TWorker : IMasterWorkAdapter {
@@ -65,9 +69,11 @@ namespace Quorum.Integration {
 
         private Builder BuildHelper { get; set; }
 
-        public static void ConfigureLogging() {
-            if (LogFacade.Instance.Adapter.IsNull())
-                LogFacade.Instance.Adapter = new NLogLogger().Configure();
+        public QuorumImplFacade ConfigureLogging(LoggingOptions options = null) {
+            return this.Fluently(_ => {
+                if (LogFacade.Instance.Adapter.IsNull())
+                    LogFacade.Instance.Adapter = new NLogLogger().Configure(options ?? LogOptions);
+            });
         }
 
         private void Configure() {
@@ -100,6 +106,8 @@ namespace Quorum.Integration {
         private IExposedEventListener<IExecutionContext> Listener { get; set; }
 
         private Task MachineTask { get; set; }
+
+        private LoggingOptions LogOptions { get; set; }
 
     }
 }

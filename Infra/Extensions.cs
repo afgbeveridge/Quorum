@@ -1,7 +1,7 @@
 ﻿#region License
 //
-// Copyright Tony Beveridge 2013-2015. All rights reserved. 
-// This source code and any derivations can only be used with the express written permission of the author.
+// Copyright Tony Beveridge 2015. All rights reserved. 
+// MIT license applies.
 //
 #endregion
 using System;

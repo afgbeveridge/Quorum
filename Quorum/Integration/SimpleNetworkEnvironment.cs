@@ -1,13 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region License
+//
+// Copyright Tony Beveridge 2015. All rights reserved. 
+// MIT license applies.
+//
+#endregion
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Infra;
 using System.Net;
 
 namespace Quorum.Integration {
-    
+
     public class SimpleNetworkEnvironment : INetworkEnvironment {
 
         public IPAddress LocalIPAddress {

@@ -1,17 +1,8 @@
 ﻿#region License
-/*
-Copyright (c) 2015 Tony Beveridge
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without 
-restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to 
-whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE 
-AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, 
-ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
+//
+// Copyright Tony Beveridge 2015. All rights reserved. 
+// MIT license applies.
+//
 #endregion
 using System;
 using System.Collections.Generic;
@@ -53,13 +44,14 @@ namespace Infra {
         private const string DefaultLayout = @"${date:format=yyyy-MM-dd HH\:mm\:ss.fff} ${logger} ${message}${newline}${exception:format=ToString,StackTrace}";
         private const string DiagnosticLoggerName = "Diagnostics";
 
-        public override ILOGGER Configure(bool includeConsole = true) {
+        public override ILOGGER Configure(LoggingOptions options = null) {
             return this.Fluently(_ => {
                 if (Configuration.IsNull()) {
+                    var opts = options ?? new LoggingOptions();
                     Configuration = new LoggingConfiguration();
-                    CreateFileTarget(DiagnosticLoggerName, "${basedir}/diagnostics.txt", DefaultLayout);
-                    CreateEventLogTarget();
-                    includeConsole.IfTrue(() => CreateConsoleTarget());
+                    opts.RequireFileSink.IfTrue(() => CreateFileTarget(DiagnosticLoggerName, "${basedir}/diagnostics.txt", DefaultLayout));
+                    opts.RequireEventLogSink.IfTrue(() => CreateEventLogTarget());
+                    opts.RequireConsoleSink.IfTrue(() => CreateConsoleTarget());
                     LogManager.Configuration = Configuration;
                     Diagnostics.Info("Default NLog log configuration established");
                 }

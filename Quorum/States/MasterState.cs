@@ -1,4 +1,10 @@
-﻿using System;
+﻿#region License
+//
+// Copyright Tony Beveridge 2015. All rights reserved. 
+// MIT license applies.
+//
+#endregion
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +17,7 @@ namespace Quorum.States {
 
         public override async Task<StateResult> OnEntry(IStateMachineContext<IExecutionContext> context) {
             context.ExecutionContext.IsMaster = true;
-            EnsureWorkerActive(context.ExecutionContext);
+            await EnsureWorkerActive(context.ExecutionContext);
             return StateResult.None;
         }
 

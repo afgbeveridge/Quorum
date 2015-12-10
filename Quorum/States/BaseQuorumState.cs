@@ -1,4 +1,10 @@
-﻿using System;
+﻿#region License
+//
+// Copyright Tony Beveridge 2015. All rights reserved. 
+// MIT license applies.
+//
+#endregion
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,16 +21,16 @@ namespace Quorum.States {
 
         public IMasterWorkAdapter Worker { get; set; }
 
-        protected void EnsureWorkerActive(IExecutionContext ctx) {
+        protected async Task EnsureWorkerActive(IExecutionContext ctx) {
             var worker = GetWorker(ctx) ?? new WorkerContainer { Processor = Worker, ExecutionContext = ctx };
             if (worker.ProcessingTask.IsNull() || worker.ProcessingTask.Status != TaskStatus.Running) {
                 worker.Processor.WorkUnitExecuted = worker.WorkerExecutes;
                 worker.CancellationToken = new CancellationTokenSource();
                 var token = worker.CancellationToken.Token;
-                worker.ProcessingTask = Task.Factory.StartNew(() => {
-                    worker.Processor.Activated();
+                worker.ProcessingTask = Task.Factory.StartNew(async () => {
+                    await worker.Processor.Activated();
                     while (!token.IsCancellationRequested)
-                        Task.Delay(100).Wait();
+                        await Task.Delay(100);
                 }, token);
                 SetWorker(ctx, worker);
             }

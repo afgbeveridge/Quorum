@@ -1,4 +1,10 @@
-﻿using System;
+﻿#region License
+//
+// Copyright Tony Beveridge 2015. All rights reserved. 
+// MIT license applies.
+//
+#endregion
+using System;
 using System.Threading.Tasks;
 using System.Threading;
 
@@ -19,7 +25,7 @@ namespace Quorum {
             while (!Finish) {
                 await Region.WaitAsync();
                 if (!Finish)
-                    Finish = await Work();
+                    Finish = ! await Work();
                 Region.Release();
             }
             Stopped();
@@ -41,6 +47,8 @@ namespace Quorum {
         }
 
         public Action WorkUnitExecuted { get; set; }
+
+        protected bool ContinueExecuting {  get { return true; } }
     }
 
 }

@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿#region License
+//
+// Copyright Tony Beveridge 2015. All rights reserved. 
+// MIT license applies.
+//
+#endregion
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using Infra;
 
-namespace ControlCentre
-{
+namespace ControlCentre {
     public class MvcApplication : System.Web.HttpApplication
     {
         protected void Application_Start()
@@ -20,7 +21,7 @@ namespace ControlCentre
             // Local
             Quorum.ActiveDisposition.Shared = true;
             Builder.ConfigureInjections();
-            LogFacade.Instance.Adapter = new NLogLogger().Configure(false);
+            LogFacade.Instance.Adapter = new NLogLogger().Configure(new LoggingOptions { RequireConsoleSink = false });
         }
     }
 }

@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿#region License
+//
+// Copyright Tony Beveridge 2015. All rights reserved. 
+// MIT license applies.
+//
+#endregion
+using System;
 using Newtonsoft.Json;
 
 namespace Quorum.Integration {
-    
+
     public class JsonPayloadParser : IPayloadParser {
 
         public TType As<TType>(object payload) {
