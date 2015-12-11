@@ -49,10 +49,10 @@ namespace QuorumWindowsService {
             Type workerType = null;
             var assName = new Configuration().Get<string>("quorum.workerTypeAssembly");
             try {
-                Assert.False(assName.IsNull(), () => "You must specify an assembly name in quorum.workerTypeAssembly");
+                DBC.False(assName.IsNull(), () => "You must specify an assembly name in quorum.workerTypeAssembly");
                 Assembly assembly = Assembly.Load(assName);
                 workerType = assembly.GetExportedTypes().FirstOrDefault(t => t.GetInterfaces().Contains(typeof(IMasterWorkAdapter)) && !t.IsAbstract);
-                Assert.False(workerType.IsNull(), () => "No type in " + assName + " implements the worker interface");
+                DBC.False(workerType.IsNull(), () => "No type in " + assName + " implements the worker interface");
                 object instance = Activator.CreateInstance(workerType);
             }
             catch (Exception ex) {

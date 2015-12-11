@@ -4,16 +4,12 @@
 // MIT license applies.
 //
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Quorum;
 using Quorum.Services;
 using Infra;
 using ControlCentre.Models;
-using ControlCentre.Filters;
+using System.Threading.Tasks;
 
 namespace ControlCentre.Controllers {
 
@@ -30,9 +26,9 @@ namespace ControlCentre.Controllers {
         }
 
         [HttpPost]
-        public ActionResult QueryMachines(QueryModel model) {
+        public async Task<ActionResult> QueryMachines(QueryModel model) {
             EstablishContext(model);
-            return this.Json(new { machines = Service.Query(model.Machines, true) });
+            return this.Json(new { machines = await Service.Query(model.Machines, true) });
         }
 
         [HttpPost]

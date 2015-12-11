@@ -44,14 +44,16 @@ namespace Infra {
         private const string DefaultLayout = @"${date:format=yyyy-MM-dd HH\:mm\:ss.fff} ${logger} ${message}${newline}${exception:format=ToString,StackTrace}";
         private const string DiagnosticLoggerName = "Diagnostics";
 
+        private LoggingOptions LogOptions { get; set; }
+
         public override ILOGGER Configure(LoggingOptions options = null) {
             return this.Fluently(_ => {
                 if (Configuration.IsNull()) {
-                    var opts = options ?? new LoggingOptions();
+                    LogOptions = options ?? new LoggingOptions();
                     Configuration = new LoggingConfiguration();
-                    opts.RequireFileSink.IfTrue(() => CreateFileTarget(DiagnosticLoggerName, "${basedir}/diagnostics.txt", DefaultLayout));
-                    opts.RequireEventLogSink.IfTrue(() => CreateEventLogTarget());
-                    opts.RequireConsoleSink.IfTrue(() => CreateConsoleTarget());
+                    LogOptions.RequireFileSink.IfTrue(() => CreateFileTarget(DiagnosticLoggerName, "${basedir}/diagnostics.txt", DefaultLayout));
+                    LogOptions.RequireEventLogSink.IfTrue(() => CreateEventLogTarget());
+                    LogOptions.RequireConsoleSink.IfTrue(() => CreateConsoleTarget());
                     LogManager.Configuration = Configuration;
                     Diagnostics.Info("Default NLog log configuration established");
                 }
@@ -76,7 +78,7 @@ namespace Infra {
 
             Configuration.AddTarget("file", fileTarget);
 
-            LoggingRule rule = new LoggingRule(name, NLog.LogLevel.Debug, fileTarget);
+            LoggingRule rule = new LoggingRule(name, Mapping[LogOptions.MinimalLogLevel], fileTarget);
             Configuration.LoggingRules.Add(rule);
         }
 
@@ -96,7 +98,7 @@ namespace Infra {
                 Layout = DefaultLayout
             }; 
             Configuration.AddTarget("console", target);
-            Configuration.LoggingRules.Add(new LoggingRule("*", NLog.LogLevel.Debug, target));
+            Configuration.LoggingRules.Add(new LoggingRule("*", Mapping[LogOptions.MinimalLogLevel], target));
         }
     }
 }

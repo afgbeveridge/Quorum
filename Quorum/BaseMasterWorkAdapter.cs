@@ -7,6 +7,7 @@
 using System;
 using System.Threading.Tasks;
 using System.Threading;
+using Infra;
 
 namespace Quorum {
 
@@ -21,6 +22,7 @@ namespace Quorum {
         private bool Finish { get; set; }
 
         public async Task Activated() {
+            LogFacade.Instance.LogInfo("Activating worker adapter");
             Finish = false;
             while (!Finish) {
                 await Region.WaitAsync();
@@ -28,6 +30,7 @@ namespace Quorum {
                     Finish = ! await Work();
                 Region.Release();
             }
+            LogFacade.Instance.LogInfo("Finishing worker adapter");
             Stopped();
         }
 

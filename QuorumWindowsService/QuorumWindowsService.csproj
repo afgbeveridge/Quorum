@@ -89,7 +89,9 @@
     <None Include="..\TB.licenseheader">
       <Link>TB.licenseheader</Link>
     </None>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

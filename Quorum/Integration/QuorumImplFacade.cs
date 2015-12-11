@@ -43,7 +43,7 @@ namespace Quorum.Integration {
 
         public QuorumImplFacade Start(Type impl) {
             return this.Fluently(_ => {
-                Assert.False(BuildHelper.IsNull(), () => "You must call WithBuilder before Start()");
+                DBC.False(BuildHelper.IsNull(), () => "You must call WithBuilder before Start()");
                 ConfigureLogging();
                 Machine = BuildHelper.Create();
                 Container = BuildHelper.AsContainer();

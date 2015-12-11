@@ -4,11 +4,7 @@
 // MIT license applies.
 //
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Infra;
 
 namespace Infra {
 
@@ -16,6 +12,7 @@ namespace Infra {
 
         public LoggingOptions() {
             RequireConsoleSink = RequireEventLogSink = RequireFileSink = true;
+            MinimalLogLevel = LogLevel.Debug;
         }
 
         public bool RequireFileSink { get; set; }
@@ -23,6 +20,8 @@ namespace Infra {
         public bool RequireEventLogSink { get; set; }
 
         public bool RequireConsoleSink { get; set; }
+
+        public LogLevel MinimalLogLevel { get; set; }
 
     }
 }

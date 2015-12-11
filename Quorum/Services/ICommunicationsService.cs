@@ -15,9 +15,9 @@ namespace Quorum.Services {
     
     public interface ICommunicationsService {
 
-        IEnumerable<Neighbour> DiscoverExcept(string invokingHostName);
+        Task<IEnumerable<Neighbour>> DiscoverExcept(string invokingHostName);
 
-        IEnumerable<Neighbour> Query(IEnumerable<string> targets, bool includeNonResponders = false);
+        Task<IEnumerable<Neighbour>> Query(IEnumerable<string> targets, bool includeNonResponders = false);
 
         IEnumerable<BasicMachine> VisibleComputers(bool workgroupOnly = false);
 

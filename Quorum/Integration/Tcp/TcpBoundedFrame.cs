@@ -38,14 +38,14 @@ namespace Quorum.Integration.Tcp {
         public static async Task<int?> DetermineFrameSize(NetworkStream stream) {
             // First byte is size of length spec
             // Retained for possible future use
-            LogFacade.Instance.LogInfo("Request to determine frame size");
+            LogFacade.Instance.LogDebug("Request to determine frame size");
             int? remaining = null;
             var lenSpec = await stream.ReadExactly(1);
             var toRead = (char)lenSpec[0] - '0';
-            LogFacade.Instance.LogWarning("Reckoned length bytes to number " + toRead);
+            LogFacade.Instance.LogDebug("Reckoned length bytes to number " + toRead);
             var lenBytes = await stream.ReadExactly(toRead);
             remaining = int.Parse(Encoding.ASCII.GetString(lenBytes, 0, toRead));
-            LogFacade.Instance.LogInfo("Determined frame size to be: " + remaining);
+            LogFacade.Instance.LogDebug("Determined frame size to be: " + remaining);
             return remaining;
         }
 

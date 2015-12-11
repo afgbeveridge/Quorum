@@ -22,11 +22,15 @@ using Infra;
 namespace Quorum {
 
     public class Builder {
-        
-        public IStateMachine<IExecutionContext> Create() {
+
+        public IStateMachine<IExecutionContext> CreateEmpty() {
             CreateBaseRegistrations();
             ConfigureInjections();
-            return new SimpleStateMachine<IExecutionContext>(Container.Resolve<IEventQueue>(), Container.Resolve<IEventStatistician>())
+            return new SimpleStateMachine<IExecutionContext>(Container.Resolve<IEventQueue>(), Container.Resolve<IEventStatistician>());
+
+        }
+        public IStateMachine<IExecutionContext> Create() {
+            return CreateEmpty()
                         // Bootstrapping
                         .WithContext(Resolve<IExecutionContext>())
                         .DIContainer(AsContainer())
@@ -90,7 +94,7 @@ namespace Quorum {
             return new ContainerWrapper { Container = Container };
         }
 
-        public void CreateBaseRegistrations() {
+        public virtual void CreateBaseRegistrations() {
             Container = new WindsorContainer();
             Register<IPayloadParser, JsonPayloadParser>();
             Register<IPayloadBuilder, JsonPayloadBuilder>();
@@ -152,6 +156,11 @@ namespace Quorum {
         }
 
         public IWindsorContainer Container { get; private set; }
+
+        public void Destroy() {
+            if (Container.IsNotNull())
+                Container.Dispose();
+        }
 
         private class ContainerWrapper : IContainer {
             internal IWindsorContainer Container { get; set; }

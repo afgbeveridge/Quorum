@@ -4,34 +4,30 @@
 // MIT license applies.
 //
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using FSM;
 using Infra;
 
 namespace Quorum.States {
-    
+
     public abstract class BaseQuorumState : BaseState<IExecutionContext> {
 
-        private const int MiniPause = 25;
+        private const int MiniPause = 95;
 
         public IMasterWorkAdapter Worker { get; set; }
 
         protected async Task EnsureWorkerActive(IExecutionContext ctx) {
             var worker = GetWorker(ctx) ?? new WorkerContainer { Processor = Worker, ExecutionContext = ctx };
-            if (worker.ProcessingTask.IsNull() || worker.ProcessingTask.Status != TaskStatus.Running) {
+            if (worker.ProcessingTask.IsNull() || worker.ProcessingTask.IsCompleted) {
                 worker.Processor.WorkUnitExecuted = worker.WorkerExecutes;
                 worker.CancellationToken = new CancellationTokenSource();
                 var token = worker.CancellationToken.Token;
                 worker.ProcessingTask = Task.Factory.StartNew(async () => {
                     await worker.Processor.Activated();
                     while (!token.IsCancellationRequested)
-                        await Task.Delay(100);
-                }, token);
+                        await Task.Delay(MiniPause);
+                }, token).Unwrap();
                 SetWorker(ctx, worker);
             }
         }

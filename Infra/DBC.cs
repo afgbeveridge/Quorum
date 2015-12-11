@@ -5,13 +5,10 @@
 //
 #endregion
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Infra {
 
-	public static class Assert {
+    public static class DBC {
 		
 		public static void True(bool condition, Func<string> msg) {
 			if (!condition) Log(msg);

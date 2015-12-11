@@ -31,20 +31,20 @@ namespace Quorum.Services {
         public IPayloadBuilder Builder { get; set; }
 
         // Discover all neighbours, using the configured channel
-        public IEnumerable<Neighbour> DiscoverExcept(string invokingHostName) {
+        public async Task<IEnumerable<Neighbour>> DiscoverExcept(string invokingHostName) {
             var staticNeighbours = Configuration.Get<string>(Constants.Configuration.Nexus.Key);
             var neighbours = !String.IsNullOrEmpty(staticNeighbours) ? staticNeighbours.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries).Except(new[] { invokingHostName }, StringComparer.InvariantCultureIgnoreCase) : null;
             var result = Enumerable.Empty<Neighbour>();
-            return Query(neighbours);
+            return await Query(neighbours);
         }
 
-        public IEnumerable<Neighbour> Query(IEnumerable<string> targets, bool includeNonResponders = false) {
+        public async Task<IEnumerable<Neighbour>> Query(IEnumerable<string> targets, bool includeNonResponders = false) {
             var result = Enumerable.Empty<Neighbour>();
             if (targets.IsNotNull()) {
                 LogFacade.Instance.LogInfo("Apparent neighbours/targets " + String.Join(", ", targets));
-                IEnumerable<Task<Neighbour>> queries = targets.Select(s => Task.Factory.StartNew<Neighbour>(QueryNeighbour, s)).ToArray();
+                Task<Neighbour>[] queries = targets.Select(s => QueryNeighbour(s)).ToArray();
                 LogFacade.Instance.LogInfo("Wait for " + queries.Count() + " task(s)");
-                Task.WaitAll(queries.ToArray());
+                await Task.WhenAll(queries);
                 result = queries.Where(t => !t.IsFaulted && t.Result.IsNotNull() && (t.Result.IsValid || includeNonResponders)).Select(t => t.Result);
             }
             return result;
@@ -78,30 +78,25 @@ namespace Quorum.Services {
         }
 
         // A null neighbour is returned if cannot be reached
-        private Neighbour QueryNeighbour(object name) {
+        private async Task<Neighbour> QueryNeighbour(string name) {
             Stopwatch watch = new Stopwatch();
             watch.Start();
-            string result = WriteNeighbour(name.ToString(), Builder.Create(new QueryRequest { Requester = "Me", Timeout = Configuration.Get<int>(Constants.Configuration.ResponseLimit) }));
-            var neighbour = result.IsNull() ? Neighbour.NonRespondingNeighbour(name.ToString()) : Parser.As<Neighbour>(result);
+            string result = await WriteNeighbour(name.ToString(), Builder.Create(new QueryRequest { Requester = "Me", Timeout = Configuration.Get<int>(Constants.Configuration.ResponseLimit) }));
+            var neighbour = result.IsNull() ? Neighbour.NonRespondingNeighbour(name) : Parser.As<Neighbour>(result);
             neighbour.LastRequestElapsedTime = watch.ElapsedMilliseconds;
             return neighbour;
         }
 
-        private string WriteNeighbour(string name, string content) {
+        private async Task<string> WriteNeighbour(string name, string content) {
             string result = null;
             try {
                 LogFacade.Instance.LogInfo("Write to " + name + " with content: '" + content + "'");
                 // Timeout is config
-                var task = ChannelPrototype
+                result = await ChannelPrototype
                             .NewInstance()
                             .Write(name.ToString(), content, Configuration.Get<int>(Constants.Configuration.ResponseLimit));
-                task.Wait();
-                result = task.IsFaulted ? null : task.Result;
-                LogFacade.Instance.LogInfo("Neighbour (" + name + ") queried, with result '" + (result.IsNull() ? "<null>" : result) + "'. Faulted? " + task.IsFaulted);
+                LogFacade.Instance.LogInfo("Neighbour (" + name + ") queried, with result '" + (result.IsNull() ? "<null>" : result));
 
-            }
-            catch (AggregateException ex) {
-                LogFacade.Instance.LogInfo("Neighbour (" + name + ") queried, aggregated exception abend '" + RecurseException(ex) + "'");
             }
             catch (Exception ex) {
                 LogFacade.Instance.LogInfo("Neighbour (" + name + ") queried, general exception abend '" + RecurseException(ex) + "'");

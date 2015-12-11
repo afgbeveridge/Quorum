@@ -127,15 +127,15 @@ namespace Infra {
         public static async Task<byte[]> ReadExactly(this NetworkStream stream, int numBytes) {
             byte[] readBuffer = new byte[numBytes];
             int requested = numBytes, cycles = Cycle;
-            LogFacade.Instance.LogInfo("Asked to read exactly " + numBytes + " byte(s)");
-            LogFacade.Instance.LogInfo("Stream, DA? " + stream.DataAvailable + ", readable? " + stream.CanRead);
+            LogFacade.Instance.LogDebug("Asked to read exactly " + numBytes + " byte(s)");
+            LogFacade.Instance.LogDebug("Stream, DA? " + stream.DataAvailable + ", readable? " + stream.CanRead);
             do {
                 int numberOfBytesRead = await stream.ReadAsync(readBuffer, requested - numBytes, numBytes).ConfigureAwait(false);
                 if (numberOfBytesRead > 0)
                     numBytes -= numberOfBytesRead;
                 cycles--;
             } while (numBytes > 0 && cycles > 0);
-            LogFacade.Instance.LogInfo("Finished read exactly: read byte(s) => " + (requested - numBytes) + ", cycles remaining: " + cycles);
+            LogFacade.Instance.LogDebug("Finished read exactly: read byte(s) => " + (requested - numBytes) + ", cycles remaining: " + cycles);
             return readBuffer;
         }
 

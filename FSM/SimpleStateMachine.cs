@@ -25,20 +25,22 @@ namespace FSM {
         public IEventStatistician StatisticsHandler { get; private set; }
         private SemaphoreSlim StateChangeAtomiser;
 
-        public SimpleStateMachine(IEventQueue queueHandler, IEventStatistician stats) {
+        public SimpleStateMachine(IEventQueue queueHandler, IEventStatistician stats, bool enableTimer = true) {
             QueueHandler = queueHandler;
             StatisticsHandler = stats;
             AbsoluteBootTime = DateTime.Now.AsUNIXEpochMilliseconds();
             // TODO: Config
             StateChangeAtomiser = new SemaphoreSlim(1, 1);
             // TODO: Configuration
-            QueueTimer = new System.Timers.Timer(500);
-            QueueTimer.Elapsed += (src, args) => { 
-                if (!InQueueCheckMode)
-                    CheckQueuedEvents(); 
-            };
-            QueueTimer.AutoReset = true;
-            QueueTimer.Enabled = true;
+            if (enableTimer) {
+                QueueTimer = new System.Timers.Timer(500);
+                QueueTimer.Elapsed += (src, args) => {
+                    if (!InQueueCheckMode)
+                        CheckQueuedEvents();
+                };
+                QueueTimer.AutoReset = true;
+                QueueTimer.Enabled = true;
+            }
         }
 
         private static System.Timers.Timer QueueTimer { get; set; }
@@ -81,8 +83,8 @@ namespace FSM {
 
         public async Task<IStateMachine<TContext>> Start() {
             Complete();
-            Assert.True(States.Any(), () => "This state machine is empty");
-            Assert.True(States.Any(s => s.IsStartState), () => "There is no start state defined");
+            DBC.True(States.Any(), () => "This state machine is empty");
+            DBC.True(States.Any(s => s.IsStartState), () => "There is no start state defined");
             return this.Fluently(async _ => {
                 ActiveState = States.First(s => s.IsStartState);
                 await HandleStateResult(await ActiveState.State.OnEntry(Context));
@@ -243,7 +245,7 @@ namespace FSM {
         public IStateMachineContext<TContext> Context { get; private set; }
 
         private void Stable() {
-            Assert.False(CurrentStateDefinition.IsNull(), () => "Machine is unstable");
+            DBC.False(CurrentStateDefinition.IsNull(), () => "Machine is unstable");
         }
 
         public IEnumerable<IEventInstance> PendingEvents { get { return QueueHandler.All; } }
@@ -287,7 +289,7 @@ namespace FSM {
             internal bool IsSingleton { get; set; }
             internal Type EventReceived(string name, bool ignoreNonMatch) {
                 var exists = HandledEvents.ContainsKey(name);
-                Assert.True(exists || ignoreNonMatch, () => "Received an event that could not be handled " + name);
+                DBC.True(exists || ignoreNonMatch, () => "Received an event that could not be handled " + name);
                 return exists ? HandledEvents[name] : null;
             }
             private IState<TContext> CachedState { get; set; }
