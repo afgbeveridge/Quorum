@@ -31,10 +31,10 @@ namespace Quorum.States {
         public IConfiguration Configuration { get; set; }
 
         public override async Task<StateResult> OnEntry(IStateMachineContext<IExecutionContext> context) {
-            return Execute(context, context.CurrentEvent);
+            return await Execute(context, context.CurrentEvent);
         }
 
-        public override StateResult Execute(IStateMachineContext<IExecutionContext> context, IEventInstance anEvent) {
+        public override async Task<StateResult> Execute(IStateMachineContext<IExecutionContext> context, IEventInstance anEvent) {
             Stopwatch watch = new Stopwatch();
             try {
                 Interruptable = false;
@@ -46,9 +46,9 @@ namespace Quorum.States {
                 int timeout = request.Timeout.HasValue ? request.Timeout.Value : Configuration.Get<int>(Constants.Configuration.ResponseLimit);
                 LogFacade.Instance.LogInfo("Query timeout set at ms = " + timeout);
                 // This is a wait as the caller is not guaranteed to be async possible
-                Channel.Respond(anEvent.ResponseContainer, 
+                await Channel.Respond(anEvent.ResponseContainer, 
                                 Builder.Create(queryResponse), 
-                                timeout).Wait();
+                                timeout);
             }
             catch { 
             }

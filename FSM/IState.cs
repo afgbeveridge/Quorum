@@ -18,7 +18,7 @@ namespace FSM {
         Task<StateResult> OnExit(IStateMachineContext<TContext> context);
         bool Interruptable { get; set; }
         bool Bouncer { get; set; }
-        StateResult Execute(IStateMachineContext<TContext> context, IEventInstance anEvent);
+        Task<StateResult> Execute(IStateMachineContext<TContext> context, IEventInstance anEvent);
     }
 
 }

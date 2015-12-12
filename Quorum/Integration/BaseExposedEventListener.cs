@@ -74,7 +74,7 @@ namespace Quorum.Integration {
                     Machine.StatisticsHandler.NoteEvent(action.EventName);
                     var exec = Machine.Container.Resolve<IState<IExecutionContext>>(action.ExecutableStateType.Name);
                     if (exec.IsNotNull())
-                        exec.Execute(Machine.Context, instance);
+                        Task.Run(() => exec.Execute(Machine.Context, instance)).Wait();
                 }
             }
         }

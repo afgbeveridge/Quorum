@@ -11,6 +11,7 @@ using Quorum.Integration;
 using Quorum;
 using Infra;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace QuorumWindowsService {
 
@@ -26,6 +27,10 @@ namespace QuorumWindowsService {
 
         protected override void OnStart(string[] args) {
             // Configure logging early to log any worker type load issues
+            TaskScheduler.UnobservedTaskException += (sender, exceptionEventArgs) => {
+                exceptionEventArgs.SetObserved();
+                LogFacade.Instance.LogError("Unhandled exception propagated", exceptionEventArgs.Exception);
+            };
             Adapter = new QuorumImplFacade()
                         .ConfigureLogging(new LoggingOptions { RequireConsoleSink = false })
                         .WithBuilder(new Builder())

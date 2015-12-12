@@ -34,7 +34,7 @@ namespace FSM {
             return StateResult.None;
         }
 
-        public virtual StateResult Execute(IStateMachineContext<TContext> context, IEventInstance anEvent) {
+        public virtual async Task<StateResult> Execute(IStateMachineContext<TContext> context, IEventInstance anEvent) {
             return StateResult.None;
         }
 
