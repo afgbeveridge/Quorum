@@ -45,6 +45,7 @@ namespace Quorum.States {
                 var request = Parser.As<QueryRequest>(anEvent.Payload);
                 int timeout = request.Timeout.HasValue ? request.Timeout.Value : Configuration.Get<int>(Constants.Configuration.ResponseLimit);
                 LogFacade.Instance.LogInfo("Query timeout set at ms = " + timeout);
+                // This is a wait as the caller is not guaranteed to be async possible
                 Channel.Respond(anEvent.ResponseContainer, 
                                 Builder.Create(queryResponse), 
                                 timeout).Wait();

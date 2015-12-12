@@ -74,14 +74,15 @@ window.qcc.queryMachines = function (mcs, config, onSuccess, failed, always) {
         });
 };
 
-window.qcc.scanNetworkLite = function (config, success, always) {
+window.qcc.scanNetworkLite = function (config, scope, success, always) {
     $.ajax({
         url: '/Neighbourhood/ApparentNeighbours',
         type: 'POST',
         data: JSON.stringify({
             Port: config.port,
             Timeout: config.responseLimit,
-            TransportType: (ko.isObservable(config.transportType) ? config.transportType() : config.transportType)
+            TransportType: (ko.isObservable(config.transportType) ? config.transportType() : config.transportType),
+            Scope: scope || 'workgroup'
         }),
         contentType: 'application/json',
         success: function (data, textStatus, jqXHR) {

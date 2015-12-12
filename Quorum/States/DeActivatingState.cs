@@ -30,7 +30,7 @@ namespace Quorum.States {
                 Interruptable = false;
                 await DeActivateWorker(context.ExecutionContext);
                 context.ExecutionContext.IsMaster = false;
-                ContactNeighbours(context.ExecutionContext);
+                await ContactNeighbours(context.ExecutionContext);
                 PostObit(context);
             }
             finally {
@@ -47,20 +47,18 @@ namespace Quorum.States {
 
         protected virtual void PostObit(IStateMachineContext<IExecutionContext> context) { }
 
-        private void ContactNeighbours(IExecutionContext ctx) {
+        private async Task ContactNeighbours(IExecutionContext ctx) {
             var staticNeighbours = ctx.Network.Neighbours.Select(n => n.Name);
-            IEnumerable<Task> queries = staticNeighbours.Select(s => Task.Factory.StartNew(SendObit, new TaskState { NeighbourName = s, IsMaster = ctx.IsMaster, LocalAddress = ctx.LocalAddress }));
-            Task.WaitAll(queries.ToArray());
+            Task[] queries = staticNeighbours.Select(s => SendObit(new TaskState { NeighbourName = s, IsMaster = ctx.IsMaster, LocalAddress = ctx.LocalAddress })).ToArray();
+            await Task.WhenAll(queries);
         }
 
         // A null neighbour is returned if cannot be reached
-        private void SendObit(object state) {
+        private async Task SendObit(TaskState cur) {
             // Timeout is config
-            TaskState cur = (TaskState)state;
             LogFacade.Instance.LogInfo("Send obit to " + cur.NeighbourName);
             var content = Builder.Create(new DeathAnnouncement { IsMaster = cur.IsMaster, Name = cur.LocalAddress });
-            var task = ChannelPrototype.NewInstance().Write(cur.NeighbourName, content, Configuration.Get<int>(Constants.Configuration.ResponseLimit));
-            task.Wait();
+            await ChannelPrototype.NewInstance().Write(cur.NeighbourName, content, Configuration.Get<int>(Constants.Configuration.ResponseLimit));
         }
 
         private class TaskState {

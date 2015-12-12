@@ -182,6 +182,7 @@
     <Compile Include="Models\BaseRequestModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\ProbeQueryModel.cs" />
     <Compile Include="Models\QueryModel.cs" />
     <Compile Include="Models\TargetRequestModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

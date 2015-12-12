@@ -39,16 +39,18 @@
         $('#scanLite').click(function () {
             $('#scanDiv').hide();
             $('#scanWorking').show();
-            window.qcc.scanNetworkLite(config,
-            function (machines) {
-                var content = machines.map(function(m) { return m.Name.toLowerCase(); }).join(',');
-                obsForm.members(content);
-            },
-            function () {
-                $('#scanDiv').show();
-                $('#scanWorking').hide();
-            }
-        );
+            window.qcc.scanNetworkLite(
+                config,
+                null,
+                function (machines) {
+                    var content = machines.map(function(m) { return m.Name.toLowerCase(); }).join(',');
+                    obsForm.members(content);
+                },
+                function () {
+                    $('#scanDiv').show();
+                    $('#scanWorking').hide();
+                }
+            );
         });
 
         $('#cfgBindingSection').show('slidein');

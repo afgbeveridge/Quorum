@@ -15,7 +15,8 @@
         machines: ko.observableArray([]),
         appConfigText: ko.observable(),
         ccConfigText: ko.observable(),
-        responders: ko.observableArray([])
+        responders: ko.observableArray([]),
+        scope: ko.observable('workgroup')
     };
 
     $('#startProbe').click(function () {
@@ -25,7 +26,9 @@
         vm.appConfigText('');
         $('#probeStart').hide();
         $('#probeWorking').show();
-        window.qcc.scanNetworkLite(config,
+        window.qcc.scanNetworkLite(
+            config,
+            vm.scope(),
             function (machines) {
                 assocLookup = [];
                 machines.forEach(function (m) {
@@ -80,6 +83,6 @@
         }
     });
 
-    ko.applyBindings(vm, $('#bindableSection')[0]);
+    ko.applyBindings(vm, $('#monitorSection')[0]);
 
 });

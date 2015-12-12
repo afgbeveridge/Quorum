@@ -20,9 +20,9 @@ namespace ControlCentre.Controllers {
         }
 
         [HttpPost]
-        public ActionResult ApparentNeighbours(BaseRequestModel model) {
+        public ActionResult ApparentNeighbours(ProbeQueryModel model) {
             EstablishContext(model);
-            return this.Json(new { machines = Service.VisibleComputers(true) });
+            return this.Json(new { machines = Service.VisibleComputers(model.Scope.IsNull() || model.Scope.ToLowerInvariant().Contains("work")) });
         }
 
         [HttpPost]
