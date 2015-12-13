@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace FSM.Tests {
 
-namespace FSM.Tests {
-
-    public class EmptyClass {
+    public class EmptyContext {
     }
 
-    public class EmptyState : BaseState<EmptyClass> {
+    public class EmptyState : BaseState<EmptyContext> {
+
+    }
+
+    public class FaultingState : BaseState<EmptyContext> {
 
     }
 }

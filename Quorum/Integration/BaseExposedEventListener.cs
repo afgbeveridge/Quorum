@@ -73,6 +73,7 @@ namespace Quorum.Integration {
                 else {
                     Machine.StatisticsHandler.NoteEvent(action.EventName);
                     var exec = Machine.Container.Resolve<IState<IExecutionContext>>(action.ExecutableStateType.Name);
+                    // Caution as we are running an async method in a synchronous manner
                     if (exec.IsNotNull())
                         Task.Run(() => exec.Execute(Machine.Context, instance)).Wait();
                 }

@@ -4,10 +4,7 @@
 // MIT license applies.
 //
 #endregion
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace FSM {
@@ -29,6 +26,7 @@ namespace FSM {
         IStateMachine<TContext> MarkAsBounceState();
         IStateMachineContext<TContext> Context { get; }
         IContainer Container { get; }
+        IEnumerable<IStateDefinition<TContext>> ConfiguredStates { get; }
     }
 
 }

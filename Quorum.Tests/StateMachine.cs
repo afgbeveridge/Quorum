@@ -21,7 +21,7 @@ namespace Quorum.Tests {
         }
 
         [Test]
-        public async Task StartWithDefaultStates() {
+        public async Task QuorumMachine_ShouldStartWithDefaultStates() {
             await Machine.Start();
         }
 

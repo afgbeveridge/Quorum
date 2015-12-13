@@ -52,6 +52,7 @@
     <Compile Include="IEventSummary.cs" />
     <Compile Include="InterpreterResult.cs" />
     <Compile Include="IState.cs" />
+    <Compile Include="IStateDefinition.cs" />
     <Compile Include="IStateMachine.cs" />
     <Compile Include="IStateMachineChannel.cs" />
     <Compile Include="IStateMachineContext.cs" />

@@ -45,8 +45,9 @@ namespace ConsoleQuorum {
             }
             finally {
                 "Guard".GuardedExecution(() => {
+                    // Caution as we are running an async method in a synchronous manner
                     if (Adapter.IsNotNull())
-                        Adapter.Stop().Wait();
+                        Task.Run(() => Adapter.Stop()).Wait();
                 });
             }
         }

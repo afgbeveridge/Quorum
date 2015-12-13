@@ -126,16 +126,16 @@ namespace Quorum {
             Register<IExposedEventListener<IExecutionContext>, TcpExposedEventListener>();
         }
 
-        private void RegisterInterceptors() {
+        protected virtual void RegisterInterceptors() {
             LoggingInterceptor.Interceptable("OnEntry", "OnExit");
             Container.Register(Component.For<IInterceptor>().ImplementedBy<LoggingInterceptor>());
         }
 
-        public void Register<TInterface, TConcrete>() where TInterface : class where TConcrete : TInterface {
+        public virtual void Register<TInterface, TConcrete>() where TInterface : class where TConcrete : TInterface {
             Container.Register(Component.For<TInterface>().ImplementedBy<TConcrete>().LifeStyle.Transient);
         }
 
-        public void Register<TInterface>(Type t)
+        public virtual void Register<TInterface>(Type t)
             where TInterface : class {
             Container.Register(Component.For<TInterface>().ImplementedBy(t).LifeStyle.Transient);
         }

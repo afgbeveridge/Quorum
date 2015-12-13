@@ -50,7 +50,8 @@ namespace Quorum.Integration {
                 SpinUpListener();
                 Configure();
                 BuildHelper.Register<IMasterWorkAdapter>(impl);
-                MachineTask = Machine.Start();
+                // Caution as we are running an async method in a synchronous manner
+                Task.Run(() => Machine.Start()).Wait();
             });
         }
 
@@ -104,8 +105,6 @@ namespace Quorum.Integration {
         private IContainer Container { get; set; }
 
         private IExposedEventListener<IExecutionContext> Listener { get; set; }
-
-        private Task MachineTask { get; set; }
 
         private LoggingOptions LogOptions { get; set; }
 

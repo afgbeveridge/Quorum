@@ -6,12 +6,9 @@
 #endregion
 using System;
 using System.Collections.Generic;
-using System.Collections.Concurrent;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Timers;
 using Infra;
 
 namespace FSM {
@@ -20,6 +17,7 @@ namespace FSM {
 
     public class SimpleStateMachine<TContext> : IStateMachine<TContext> {
 
+        private const int QueueCheckInterval = 100;
         private List<StateDefinition> States = new List<StateDefinition>();
         private IEventQueue QueueHandler { get; set; }
         public IEventStatistician StatisticsHandler { get; private set; }
@@ -33,10 +31,11 @@ namespace FSM {
             StateChangeAtomiser = new SemaphoreSlim(1, 1);
             // TODO: Configuration
             if (enableTimer) {
-                QueueTimer = new System.Timers.Timer(500);
+                QueueTimer = new System.Timers.Timer(QueueCheckInterval);
                 QueueTimer.Elapsed += (src, args) => {
+                    // Caution as we are running an async method in a synchronous manner
                     if (!InQueueCheckMode)
-                        CheckQueuedEvents();
+                        Task.Run(() => CheckQueuedEvents()).Wait();
                 };
                 QueueTimer.AutoReset = true;
                 QueueTimer.Enabled = true;
@@ -85,10 +84,9 @@ namespace FSM {
             Complete();
             DBC.True(States.Any(), () => "This state machine is empty");
             DBC.True(States.Any(s => s.IsStartState), () => "There is no start state defined");
-            return this.Fluently(async _ => {
-                ActiveState = States.First(s => s.IsStartState);
-                await HandleStateResult(await ActiveState.State.OnEntry(Context));
-            });
+            ActiveState = States.First(s => s.IsStartState);
+            await HandleStateResult(await ActiveState.State.OnEntry(Context));
+            return this;
         }
 
         public IStateMachine<TContext> Stop() {
@@ -262,17 +260,18 @@ namespace FSM {
 
         public IContainer Container { get; private set; }
 
-        private class StateDefinition {
+        public IEnumerable<IStateDefinition<TContext>> ConfiguredStates { get { return States; } }
+
+        private class StateDefinition : IStateDefinition<TContext> {
 
             internal StateDefinition(IContainer ctr) {
                 HandledEvents = new Dictionary<string, Type>();
                 Container = ctr;
             }
-            internal Dictionary<string, Type> HandledEvents { get; private set; }
-            internal bool Singleton { get; set; }
-            internal Type StateType { get; set; }
-            internal bool IsBounceState { get; set; }
-            internal string Name { get { return StateType.Name;  } }
+            public Dictionary<string, Type> HandledEvents { get; private set; }
+            public Type StateType { get; internal set; }
+            public bool IsBounceState { get; internal set; }
+            public string Name { get { return StateType.Name;  } }
             internal IState<TContext> State {
                 get {
                     IState<TContext> state = CachedState;
@@ -285,14 +284,14 @@ namespace FSM {
                     return state;
                 }
             }
-            internal bool IsStartState { get; set; }
-            internal bool IsSingleton { get; set; }
+            public bool IsStartState { get; internal set; }
+            public bool IsSingleton { get; internal set; }
             internal Type EventReceived(string name, bool ignoreNonMatch) {
                 var exists = HandledEvents.ContainsKey(name);
                 DBC.True(exists || ignoreNonMatch, () => "Received an event that could not be handled " + name);
                 return exists ? HandledEvents[name] : null;
             }
-            private IState<TContext> CachedState { get; set; }
+            public IState<TContext> CachedState { get; private set; }
             private IContainer Container { get; set; }
         }
 

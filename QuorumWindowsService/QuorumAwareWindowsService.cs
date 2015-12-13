@@ -38,8 +38,9 @@ namespace QuorumWindowsService {
         }
 
         protected override void OnStop() {
+            // Caution as we are running an async method in a synchronous manner
             if (Adapter.IsNotNull())
-                Adapter.Stop().Wait();
+                Task.Run(() => Adapter.Stop()).Wait();
         }
 
         public void Debug(Effect action) {
