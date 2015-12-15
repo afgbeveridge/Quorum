@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FSM {
 
-    public interface IState<TContext> {
+    public interface IState<TContext> where TContext : IMinimalContext {
         Task<StateResult> OnEntry(IStateMachineContext<TContext> context);
         Task OnReflexiveEntry(IStateMachineContext<TContext> context);
         Task<StateResult> OnExit(IStateMachineContext<TContext> context);

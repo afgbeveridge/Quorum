@@ -15,7 +15,7 @@ namespace FSM {
 
     internal enum TransitionType { OnEntry, OnExit, ReflexiveOnEntry }
 
-    public class SimpleStateMachine<TContext> : IStateMachine<TContext> {
+    public class SimpleStateMachine<TContext> : IStateMachine<TContext> where TContext : IMinimalContext {
 
         private const int QueueCheckInterval = 100;
         private List<StateDefinition> States = new List<StateDefinition>();
@@ -84,6 +84,8 @@ namespace FSM {
             Complete();
             DBC.True(States.Any(), () => "This state machine is empty");
             DBC.True(States.Any(s => s.IsStartState), () => "There is no start state defined");
+            DBC.False(Context.IsNull(), () => "There is no execution context defined for this machine");
+            LogFacade.Instance.LogInfo("State machine starts: [" + Context.ExecutionContext.HostName + ", " + Context.ExecutionContext.NodeId + "]");
             ActiveState = States.First(s => s.IsStartState);
             await HandleStateResult(await ActiveState.State.OnEntry(Context));
             return this;
@@ -95,17 +97,17 @@ namespace FSM {
 
         public async Task Trigger(IEventInstance anEvent) {
             // Some states may mark themselves as non interruptable, requiring self to queue events. If an event comes in, and queued events exist, maintain order
-            LogFacade.Instance.LogInfo("Trigger " + anEvent.EventName + ", resource level: " + StateChangeAtomiser.CurrentCount);
+            LogFacade.Instance.LogDebug("Trigger " + anEvent.EventName + ", resource level: " + StateChangeAtomiser.CurrentCount);
             await StateChangeAtomiser.WaitAsync();
             try {
                 anEvent.PreviousStateName = HasPreviousState ? PreviousState.Name : null;
-                LogFacade.Instance.LogInfo("Proceed with processing of " + anEvent.EventName + ", current state interruptable? " + ActiveState.State.Interruptable);
+                LogFacade.Instance.LogDebug("Proceed with processing of " + anEvent.EventName + ", current state interruptable? " + ActiveState.State.Interruptable);
                 if (!ActiveState.State.Interruptable || (QueueHandler.Any() && !anEvent.NoQueue)) {
                     if (!anEvent.NoQueue) {
                         QueueHandler.Enqueue(anEvent);
                     }
                     else
-                        LogFacade.Instance.LogInfo("Ah, this event will be discarded - " + anEvent.EventName);
+                        LogFacade.Instance.LogWarning("Ah, this event will be discarded - " + anEvent.EventName);
                 }
                 else {
                     var type = ActiveState.EventReceived(anEvent.EventName, IgnoreUnknownEvents);
@@ -120,7 +122,7 @@ namespace FSM {
                 }
             }
             finally {
-                LogFacade.Instance.LogInfo("Release for Trigger " + anEvent.EventName);
+                LogFacade.Instance.LogDebug("Release for Trigger " + anEvent.EventName);
                 StateChangeAtomiser.Release();
             }
         }
@@ -140,11 +142,11 @@ namespace FSM {
         public double AbsoluteBootTime { get; private set; }
 
         private async Task DispatchEvent(IEventInstance anEvent, Type type) {
-            LogFacade.Instance.LogInfo("Dispatch " + anEvent.EventName);
+            LogFacade.Instance.LogDebug("Dispatch " + anEvent.EventName);
             Context.CurrentEvent = anEvent;
             var isReflexive = type == ActiveState.State.GetType();
             var target = States.First(s => s.StateType == type);
-            LogFacade.Instance.LogInfo("Event " + anEvent.EventName + " transitions to " + target.StateType.Name);
+            LogFacade.Instance.LogDebug("Event " + anEvent.EventName + " transitions to " + target.StateType.Name);
             if (type == ActiveState.StateType) {
                 if (isReflexive)
                     await ActiveState.State.OnReflexiveEntry(Context);
@@ -154,17 +156,15 @@ namespace FSM {
             else {
                 await HandleStateResult(await ActiveState.State.OnExit(Context), TransitionType.OnExit);
                 if (!ActiveState.IsBounceState) {
-                    LogFacade.Instance.LogInfo("Revertable state detected, retain: " + ActiveState.StateType.Name);
+                    LogFacade.Instance.LogDebug("Revertable state detected, retain: " + ActiveState.StateType.Name);
                     PreviousState = ActiveState;
                 }
                 ActiveState = target;
                 await HandleStateResult(await ActiveState.State.OnEntry(Context));
             }
-            // At the moment, consider this safe, as number of queued events likely to be low
-            //await CheckQueuedEvents();
         }
 
-        private async Task CheckQueuedEvents() {
+        public async Task CheckQueuedEvents() {
             if (!InQueueCheckMode) {
                 InQueueCheckMode = true;
                 try {
@@ -191,7 +191,7 @@ namespace FSM {
         }
 
         private async Task HandleStateResult(StateResult result, TransitionType type = TransitionType.OnEntry) {
-            LogFacade.Instance.LogInfo("Interpret state change (" + type + "), result: " + result);
+            LogFacade.Instance.LogDebug("Interpret state change (" + type + "), result: " + result);
             if (result.Revert)
                 await RevertToPreviousState();
             if (!result.Revert && result.NextState.IsNotNull())
@@ -247,6 +247,8 @@ namespace FSM {
         }
 
         public IEnumerable<IEventInstance> PendingEvents { get { return QueueHandler.All; } }
+
+        public IStateDefinition<TContext> CurrentState { get { return ActiveState; } }
 
         private string CurrentEventName { get; set; }
 

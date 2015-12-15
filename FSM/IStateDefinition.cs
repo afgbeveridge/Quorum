@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace FSM {
 
-    public interface IStateDefinition<TContext> {
+    public interface IStateDefinition<TContext> where TContext : IMinimalContext {
         Dictionary<string, Type> HandledEvents { get; }
         Type StateType { get; }
         bool IsBounceState { get; }

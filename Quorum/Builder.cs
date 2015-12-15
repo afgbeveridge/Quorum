@@ -23,12 +23,19 @@ namespace Quorum {
 
     public class Builder {
 
-        public IStateMachine<IExecutionContext> CreateEmpty() {
+        public Builder(bool requireTimer = true) {
+            RequireTimer = requireTimer;
+        }
+
+        private bool RequireTimer { get; set; }
+
+        public IStateMachine<IExecutionContext> CreateEmpty()  {
             CreateBaseRegistrations();
             ConfigureInjections();
-            return new SimpleStateMachine<IExecutionContext>(Container.Resolve<IEventQueue>(), Container.Resolve<IEventStatistician>());
+            return new SimpleStateMachine<IExecutionContext>(Container.Resolve<IEventQueue>(), Container.Resolve<IEventStatistician>(), RequireTimer);
 
         }
+
         public IStateMachine<IExecutionContext> Create() {
             return CreateEmpty()
                         // Bootstrapping

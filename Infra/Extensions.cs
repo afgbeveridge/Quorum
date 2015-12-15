@@ -43,7 +43,7 @@ namespace Infra {
                 try {
                     if (onFailure.IsNotNull()) onFailure(ex);
                 }
-                catch (Exception e) {
+                catch (Exception) {
                     // Diagnostics.LogException(typeof(ObjectExtensions), "Guarded execution error handler failed (!)", e);
                 }
             }

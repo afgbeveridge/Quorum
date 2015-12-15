@@ -32,7 +32,8 @@ namespace QuorumWindowsService {
                 LogFacade.Instance.LogError("Unhandled exception propagated", exceptionEventArgs.Exception);
             };
             Adapter = new QuorumImplFacade()
-                        .ConfigureLogging(new LoggingOptions { RequireConsoleSink = false })
+                        .WithModifiedLogOptions(opts => opts.RequireConsoleSink = false)
+                        .ConfigureLogging()
                         .WithBuilder(new Builder())
                         .Start(GetWorkerImplementation());
         }

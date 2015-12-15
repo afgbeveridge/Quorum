@@ -54,9 +54,11 @@ namespace Quorum.Payloads {
 
         public long WorkUnitsExecuted { get; set; }
 
+        public long NodeId { get; set; }
+
         public static Neighbour Fabricate(IStateMachineContext<IExecutionContext> context) {
                 var strength = new Configuration().Get<string>(Constants.Configuration.MachineStrength);
-                var actualStrength = String.IsNullOrEmpty(strength) ? MachineStrength.Compute : (MachineStrength)Enum.Parse(typeof(MachineStrength), strength, true);
+                var actualStrength = string.IsNullOrEmpty(strength) ? MachineStrength.Compute : (MachineStrength)Enum.Parse(typeof(MachineStrength), strength, true);
                 return new Neighbour {
                     IsMaster = context.ExecutionContext.IsMaster,
                     Name = context.ExecutionContext.HostName,
@@ -68,7 +70,8 @@ namespace Quorum.Payloads {
                     InEligibleForElection = context.ExecutionContext.InEligibleForElection,
                     PendingEvents = context.EnclosingMachine.PendingEvents.Select(e => new PendingEvent {  Id = e.Id, Name = e.EventName, CreatedOn = e.CreatedOn, AgeInSeconds = (DateTime.Now  - e.CreatedOn).TotalSeconds}).ToArray(),
                     HandledEvents = context.EnclosingMachine.StatisticsHandler.HandledEventsInNameOrder.ToArray(),
-                    WorkUnitsExecuted = context.ExecutionContext.WorkerExecutionUnits
+                    WorkUnitsExecuted = context.ExecutionContext.WorkerExecutionUnits,
+                    NodeId = context.ExecutionContext.NodeId
                 };
         }
 
@@ -82,7 +85,8 @@ namespace Quorum.Payloads {
 
         public static HardwareDetails Instance { get; private set; }
 
-        internal HardwareDetails() {
+        // Public for unit test usage
+        public HardwareDetails() {
         }
 
         public string PhysicalMemory { get; set; }

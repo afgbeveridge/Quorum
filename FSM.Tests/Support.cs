@@ -1,6 +1,8 @@
 ﻿namespace FSM.Tests {
 
-    public class EmptyContext {
+    public class EmptyContext : IMinimalContext {
+        public string HostName { get; set; }
+        public long NodeId { get; set; }
     }
 
     public class EmptyState : BaseState<EmptyContext> {

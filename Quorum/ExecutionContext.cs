@@ -20,6 +20,7 @@ namespace Quorum {
             StateStore = new ConcurrentDictionary<Guid, object>();
             LocalAddress = env.LocalIPAddress.ToString();
             HostName = env.HostName;
+            NodeId = env.UniqueId;
         }
 
         /// <summary>
@@ -42,6 +43,8 @@ namespace Quorum {
         public long WorkerExecutionUnits { get; set; }
 
         public IDictionary<Guid, object> StateStore { get; private set; }
+
+        public long NodeId { get; internal set; }
 
     }
 

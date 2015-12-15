@@ -7,7 +7,7 @@
 
 namespace FSM {
 
-    public interface IDirectlyExecutableState<TContext> {
+    public interface IDirectlyExecutableState<TContext> where TContext : IMinimalContext {
 
         StateResult Execute(IStateMachineContext<TContext> context, IEventInstance anEvent);
 

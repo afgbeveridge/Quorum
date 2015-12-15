@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Quorum.Integration {
 
-    public interface IExposedEventListener<TContext> {
+    public interface IExposedEventListener<TContext> where TContext : IMinimalContext {
         void Initialize();
         IStateMachine<TContext> Machine { get; set; }
         void UnInitialize();

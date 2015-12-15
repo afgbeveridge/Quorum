@@ -9,7 +9,7 @@ using System.Linq;
 namespace FSM.Tests {
 
     [TestFixture]
-    public class StateMachine {
+    public class StateMachineCoreTests {
 
         [Test]
         public async Task MachineWithNoStates_ShouldAbend() {
@@ -61,7 +61,8 @@ namespace FSM.Tests {
 
         private IStateMachine<EmptyContext> CreateMachine {
             get {
-                return new SimpleStateMachine<EmptyContext>(Substitute.For<IEventQueue>(), Substitute.For<IEventStatistician>(), false);
+                return new SimpleStateMachine<EmptyContext>(Substitute.For<IEventQueue>(), Substitute.For<IEventStatistician>(), false)
+                    .WithContext(new EmptyContext());
             }
         }
 

@@ -23,7 +23,7 @@ namespace Quorum.Integration.Http {
         protected INetworkEnvironment Network { get; private set; }
 
         protected ClientDetails CreateClient(string address, int timeoutMs, ActionDisposition disposition = ActionDisposition.Read) {
-            LogFacade.Instance.LogInfo("Base http timeout set at ms = " + timeoutMs);
+            LogFacade.Instance.LogDebug("Base http timeout set at ms = " + timeoutMs);
             var details = new ClientDetails { 
                 Client = new HttpClient { Timeout = TimeSpan.FromMilliseconds(timeoutMs) }, 
                 Address = new HttpAddressingScheme(Network) { Name = address }.Address

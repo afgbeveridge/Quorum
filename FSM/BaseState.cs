@@ -6,13 +6,11 @@
 #endregion
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace FSM {
-    
-    public abstract class BaseState<TContext> : IState<TContext> {
+
+    public abstract class BaseState<TContext> : IState<TContext> where TContext : IMinimalContext {
 
         protected Dictionary<string, Action<TContext>> ReflexiveHandlers { get; private set; }
 

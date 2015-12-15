@@ -23,7 +23,7 @@ namespace Quorum.Integration.Http {
 
         public async Task WriteAsync(string content) {
             if (Response.IsNotNull()) {
-                LogFacade.Instance.LogInfo("Response container dispatches: '" + content + "'");
+                LogFacade.Instance.LogDebug("Response container dispatches: '" + content + "'");
                 // Now interpret response
                 // Construct a response. 
                 byte[] buffer = System.Text.Encoding.UTF8.GetBytes(content);

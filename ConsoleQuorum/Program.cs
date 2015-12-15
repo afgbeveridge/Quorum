@@ -7,17 +7,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Quorum;
 using FSM;
 using Quorum.Integration;
-using System.Net;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using Infra;
-using System.Timers;
-using System.DirectoryServices;
 
 namespace ConsoleQuorum {
 
@@ -31,6 +25,7 @@ namespace ConsoleQuorum {
         private static QuorumImplFacade Adapter { get; set; }
 
         public static void Main(string[] args) {
+
             try {
                 Adapter = new QuorumImplFacade()
                     .WithBuilder(new Builder())

@@ -8,10 +8,11 @@ using System;
 using System.Collections.Generic;
 using Quorum.Payloads;
 using Quorum.Integration;
+using FSM;
 
 namespace Quorum {
 
-    public interface IExecutionContext {
+    public interface IExecutionContext : IMinimalContext {
 
         // Held in a container object now
         //object EventPayload { get; }
@@ -23,8 +24,6 @@ namespace Quorum {
         Neighbourhood Network { get; set; }
 
         string LocalAddress { get; set; }
-
-        string HostName { get; set; }
 
         IDictionary<Guid, object> StateStore { get; }
 

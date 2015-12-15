@@ -22,12 +22,14 @@ namespace Quorum {
             public static readonly ConfigurationItem<int> TcpFrameSizeSpecificationLength = ConfigurationItem<int>.Create("quorum.tcp.frameSizeSpecificationLength", 6);
             public static readonly ConfigurationItem<int> TcpConnectionTimeout = ConfigurationItem<int>.Create("quorum.tcp.connectionTimeout", 1000);
             public static readonly ConfigurationItem<string> DefaultTransport = ConfigurationItem<string>.Create("quorum.transport", "http");
+            // Info, Warning, Error, Exception, Debug
+            public static readonly ConfigurationItem<string> MinimalLogLevel = ConfigurationItem<string>.Create("quorum.minimalLogLevel", "Debug");
 
         }
 
-        internal static class Local {
+        public static class Local {
 
-            internal static readonly Guid MasterStateTaskKey = Guid.Empty;
+            public static readonly Guid MasterStateTaskKey = Guid.Empty;
 
         }
 

@@ -7,7 +7,14 @@
 
 namespace FSM {
 
-    public class StateMachineContext<TContext> : IStateMachineContext<TContext> {
+    public class StateMachineContext<TContext> : IStateMachineContext<TContext> where TContext : IMinimalContext {
+
+        public StateMachineContext() {  }
+
+        public StateMachineContext(TContext ctx, IStateMachineChannel<TContext> mc) {
+            ExecutionContext = ctx;
+            EnclosingMachine = mc;
+        }
 
         public TContext ExecutionContext { get; internal set; }
 

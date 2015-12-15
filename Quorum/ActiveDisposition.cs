@@ -16,7 +16,7 @@ namespace Quorum {
 
     public static class ActiveDisposition {
 
-        private const string DispositionKey = "__Dispo__";
+        private const string DispositionKey = "__transport_type_disposition__";
 
         static ActiveDisposition() {
            Shared = false;

@@ -19,17 +19,17 @@ namespace FSM {
         private ConcurrentQueue<IEventInstance> QueuedEvents = new ConcurrentQueue<IEventInstance>();
 
         public void Enqueue(IEventInstance instance) {
-            LogFacade.Instance.LogInfo("Queue event: " + instance.EventName);
+            LogFacade.Instance.LogDebug("Queue event: " + instance.EventName);
             QueuedEvents.Enqueue(instance);
-            LogFacade.Instance.LogInfo("Queued events now " + QueuedEvents.Count + "(added " + instance.EventName + ")");
-            LogFacade.Instance.LogInfo("Queued events waiting [" + (String.Join(", ", All.Select(e => e.EventName))) + "]");
+            LogFacade.Instance.LogDebug("Queued events now " + QueuedEvents.Count + "(added " + instance.EventName + ")");
+            LogFacade.Instance.LogDebug("Queued events waiting [" + (String.Join(", ", All.Select(e => e.EventName))) + "]");
         }
 
         public IEventInstance Dequeue() {
             IEventInstance anEvent;
-            LogFacade.Instance.LogInfo("Trying to dequeue an event");
+            LogFacade.Instance.LogDebug("Trying to dequeue an event");
             if (QueuedEvents.TryDequeue(out anEvent))
-                LogFacade.Instance.LogInfo("Dequeued: " + anEvent.EventName);
+                LogFacade.Instance.LogDebug("Dequeued: " + anEvent.EventName);
             return anEvent;
         }
 

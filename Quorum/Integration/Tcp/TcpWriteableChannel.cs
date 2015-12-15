@@ -26,19 +26,19 @@ namespace Quorum.Integration.Tcp {
 
         public async Task<string> Write(string address, string content, int timeoutMs) {
             var splitTimeout = timeoutMs / 2;
-            LogFacade.Instance.LogInfo("Base tcp timeout set at ms = " + timeoutMs + ", split for this transport: " + splitTimeout);
+            LogFacade.Instance.LogDebug("Base tcp timeout set at ms = " + timeoutMs + ", split for this transport: " + splitTimeout);
             var client = new TcpClient() { SendTimeout = splitTimeout, ReceiveTimeout = splitTimeout };
             string result = null;
             try {
                 var res = client.BeginConnect(address, Configuration.Get<int>(Constants.Configuration.ExternalEventListenerPort), new AsyncCallback(ConnectionCallback), new CallbackState { Client = client, Address = address });
                 var connectTimeout = Configuration.Get(Constants.Configuration.TcpConnectionTimeout);
-                LogFacade.Instance.LogInfo("Wait for connect with " + address + ", wait period: " + connectTimeout);
+                LogFacade.Instance.LogDebug("Wait for connect with " + address + ", wait period: " + connectTimeout);
                 if (!await res.AsyncWaitHandle.WaitOneAsync(connectTimeout)) {
                     LogFacade.Instance.LogInfo("Giving up waiting to connect with " + address);
                     res.AsyncWaitHandle.Close();
                 }
                 if (!Connected)
-                    LogFacade.Instance.LogInfo("Deffo not connected to " + address);
+                    LogFacade.Instance.LogDebug("Deffo not connected to " + address);
                 else {
                     LogFacade.Instance.LogInfo("Tcp connection established with " + address);
                     var stream = client.GetStream();
@@ -46,7 +46,7 @@ namespace Quorum.Integration.Tcp {
                     int written = await frame.FrameAndWrite(stream, content);
                     LogFacade.Instance.LogInfo("Written bytes to " + address + ", count " + written);
                     result = await stream.ReadAll(TcpBoundedFrame.DetermineFrameSize);
-                    LogFacade.Instance.LogInfo("Read from " + address + ": '" + result + "'");
+                    LogFacade.Instance.LogDebug("Read from " + address + ": '" + result + "'");
                 }
             }
             finally {

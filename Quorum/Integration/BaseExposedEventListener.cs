@@ -66,7 +66,7 @@ namespace Quorum.Integration {
                 };
                 LogFacade.Instance.LogInfo("Received an external event " + action.EventName + "; pass to state machine? " + (action.ExecutableStateType.IsNull() ? "Yes" : "No"));
                 if (action.ExecutableStateType.IsNull()) {
-                    LogFacade.Instance.LogInfo("Respond with pro-forma intent");
+                    LogFacade.Instance.LogDebug("Respond with pro-forma intent");
                     onTrigger(instance);
                     Machine.Trigger(instance);
                 }

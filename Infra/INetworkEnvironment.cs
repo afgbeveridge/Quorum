@@ -19,6 +19,8 @@ namespace Infra {
 
         string HostName { get; }
 
+        long UniqueId { get; }
+
     }
 
 }

@@ -37,6 +37,10 @@ namespace Quorum.Integration {
             return this.Fluently(_ => LogOptions = options);
         }
 
+        public QuorumImplFacade WithModifiedLogOptions(Action<LoggingOptions> f) {
+            return this.Fluently(_ => LogOptions = DeriveLoggingOptions(f) );
+        }
+
         public QuorumImplFacade Start<TWorker>() where TWorker : IMasterWorkAdapter {
             return Start(typeof(TWorker));
         }
@@ -44,7 +48,7 @@ namespace Quorum.Integration {
         public QuorumImplFacade Start(Type impl) {
             return this.Fluently(_ => {
                 DBC.False(BuildHelper.IsNull(), () => "You must call WithBuilder before Start()");
-                ConfigureLogging();
+                ConfigureLogging(LogOptions ?? DeriveLoggingOptions());
                 Machine = BuildHelper.Create();
                 Container = BuildHelper.AsContainer();
                 SpinUpListener();
@@ -73,7 +77,7 @@ namespace Quorum.Integration {
         public QuorumImplFacade ConfigureLogging(LoggingOptions options = null) {
             return this.Fluently(_ => {
                 if (LogFacade.Instance.Adapter.IsNull())
-                    LogFacade.Instance.Adapter = new NLogLogger().Configure(options ?? LogOptions);
+                    LogFacade.Instance.Adapter = new NLogLogger().Configure(options ?? LogOptions ?? DeriveLoggingOptions());
             });
         }
 
@@ -90,6 +94,15 @@ namespace Quorum.Integration {
             DiscoveryTimer.Elapsed += (src, args) => Machine.Trigger(EventInstance.Create(EventNames.Discovery));
             DiscoveryTimer.AutoReset = true;
             DiscoveryTimer.Enabled = true;
+        }
+
+        public LoggingOptions DeriveLoggingOptions(Action<LoggingOptions> f = null) {
+            var opts = new LoggingOptions {
+                MinimalLogLevel = (LogLevel)Enum.Parse(typeof(LogLevel), new Configuration().Get(Constants.Configuration.MinimalLogLevel), true)
+            };
+            if (f.IsNotNull())
+                f(opts);
+            return opts;
         }
 
         private Timer DiscoveryTimer { get; set; }

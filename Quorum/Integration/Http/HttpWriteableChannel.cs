@@ -25,10 +25,10 @@ namespace Quorum.Integration.Http {
             LogFacade.Instance.LogInfo("Contact (write to): " + request.Address);
             var response = await request.Client.PostAsync(request.Address, new ByteArrayContent(Encoding.Default.GetBytes(content))).ConfigureAwait(false);
             string result = null;
-            LogFacade.Instance.LogInfo("Success?: " + response.IsSuccessStatusCode);
+            LogFacade.Instance.LogDebug("Success?: " + response.IsSuccessStatusCode);
             if (response.IsSuccessStatusCode) 
                 result = await response.Content.ReadAsStringAsync();
-            LogFacade.Instance.LogInfo("Content read: " + result);
+            LogFacade.Instance.LogDebug("Content read: " + result);
             return result;
         }
 
@@ -39,7 +39,7 @@ namespace Quorum.Integration.Http {
                 watch.Start();
                 await response.WriteAsync(content);
                 watch.Stop();
-                LogFacade.Instance.LogInfo("Query response written in ms = " + watch.ElapsedMilliseconds);
+                LogFacade.Instance.LogDebug("Query response written in ms = " + watch.ElapsedMilliseconds);
             }
         }
 

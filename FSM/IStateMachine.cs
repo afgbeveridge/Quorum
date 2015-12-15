@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace FSM {
 
-    public interface IStateMachine<TContext> : IStateMachineChannel<TContext> {
+    public interface IStateMachine<TContext> : IStateMachineChannel<TContext> where TContext : IMinimalContext {
         IStateMachine<TContext> DefineState<TState>() where TState : IState<TContext>;
         IStateMachine<TContext> AsStartState();
         IStateMachine<TContext> Singleton();
@@ -27,6 +27,8 @@ namespace FSM {
         IStateMachineContext<TContext> Context { get; }
         IContainer Container { get; }
         IEnumerable<IStateDefinition<TContext>> ConfiguredStates { get; }
+        IStateDefinition<TContext> CurrentState { get; }
+        Task CheckQueuedEvents();
     }
 
 }

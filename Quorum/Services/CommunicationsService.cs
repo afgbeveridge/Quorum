@@ -43,7 +43,7 @@ namespace Quorum.Services {
             if (targets.IsNotNull()) {
                 LogFacade.Instance.LogInfo("Apparent neighbours/targets " + String.Join(", ", targets));
                 Task<Neighbour>[] queries = targets.Select(s => QueryNeighbour(s)).ToArray();
-                LogFacade.Instance.LogInfo("Wait for " + queries.Count() + " task(s)");
+                LogFacade.Instance.LogDebug("Wait for " + queries.Count() + " task(s)");
                 await Task.WhenAll(queries);
                 result = queries.Where(t => !t.IsFaulted && t.Result.IsNotNull() && (t.Result.IsValid || includeNonResponders)).Select(t => t.Result);
             }
@@ -90,16 +90,16 @@ namespace Quorum.Services {
         private async Task<string> WriteNeighbour(string name, string content) {
             string result = null;
             try {
-                LogFacade.Instance.LogInfo("Write to " + name + " with content: '" + content + "'");
+                LogFacade.Instance.LogDebug("Write to " + name + " with content: '" + content + "'");
                 // Timeout is config
                 result = await ChannelPrototype
                             .NewInstance()
                             .Write(name.ToString(), content, Configuration.Get<int>(Constants.Configuration.ResponseLimit));
-                LogFacade.Instance.LogInfo("Neighbour (" + name + ") queried, with result '" + (result.IsNull() ? "<null>" : result));
+                LogFacade.Instance.LogDebug("Neighbour (" + name + ") queried, with result '" + (result.IsNull() ? "<null>" : result));
 
             }
             catch (Exception ex) {
-                LogFacade.Instance.LogInfo("Neighbour (" + name + ") queried, general exception abend '" + RecurseException(ex) + "'");
+                LogFacade.Instance.LogWarning("Neighbour (" + name + ") queried, general exception abend '" + RecurseException(ex) + "'");
             }
             return result;
         }

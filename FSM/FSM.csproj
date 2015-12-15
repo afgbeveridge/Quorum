@@ -50,6 +50,7 @@
     <Compile Include="IEventQueue.cs" />
     <Compile Include="IEventStatistician.cs" />
     <Compile Include="IEventSummary.cs" />
+    <Compile Include="IMinimalContext.cs" />
     <Compile Include="InterpreterResult.cs" />
     <Compile Include="IState.cs" />
     <Compile Include="IStateDefinition.cs" />

@@ -40,11 +40,11 @@ namespace Quorum.States {
                 Interruptable = false;
                 watch.Start();
                 var queryResponse = Neighbour.Fabricate(context);
-                LogFacade.Instance.LogInfo("Created response body in ms = " + watch.ElapsedMilliseconds);
+                LogFacade.Instance.LogDebug("Created response body in ms = " + watch.ElapsedMilliseconds);
                 /// Tell the world who we are
                 var request = Parser.As<QueryRequest>(anEvent.Payload);
                 int timeout = request.Timeout.HasValue ? request.Timeout.Value : Configuration.Get<int>(Constants.Configuration.ResponseLimit);
-                LogFacade.Instance.LogInfo("Query timeout set at ms = " + timeout);
+                LogFacade.Instance.LogDebug("Query timeout set at ms = " + timeout);
                 // This is a wait as the caller is not guaranteed to be async possible
                 await Channel.Respond(anEvent.ResponseContainer, 
                                 Builder.Create(queryResponse), 
@@ -54,7 +54,7 @@ namespace Quorum.States {
             }
             finally {
                 watch.Stop();
-                LogFacade.Instance.LogInfo("Query response in ms = " + watch.ElapsedMilliseconds);
+                LogFacade.Instance.LogDebug("Query response in ms = " + watch.ElapsedMilliseconds);
             }
             // This is a bounce state, so we revert to the previous state
             return new StateResult { Revert = true };
