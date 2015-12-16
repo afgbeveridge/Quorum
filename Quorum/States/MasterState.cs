@@ -15,10 +15,10 @@ namespace Quorum.States {
 
     public class MasterState : BaseQuorumState {
 
-        public override async Task<StateResult> OnEntry(IStateMachineContext<IExecutionContext> context) {
+        public override Task<StateResult> OnEntry(IStateMachineContext<IExecutionContext> context) {
             context.ExecutionContext.IsMaster = true;
-            await EnsureWorkerActive(context.ExecutionContext);
-            return StateResult.None;
+            EnsureWorkerActive(context.ExecutionContext);
+            return Task.FromResult(StateResult.None);
         }
 
     }

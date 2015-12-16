@@ -19,9 +19,9 @@ namespace Quorum.States {
 
         public IPayloadParser Parser { get; set; }
 
-        public override async Task<StateResult> OnEntry(IStateMachineContext<IExecutionContext> context) {
+        public override Task<StateResult> OnEntry(IStateMachineContext<IExecutionContext> context) {
             var obit = Parser.As<DeathAnnouncement>(context.CurrentEvent.Payload);
-            return new StateResult { Revert = !obit.IsMaster, NextState = obit.IsMaster ? EventNames.RequestElection : null };
+            return Task.FromResult(new StateResult { Revert = !obit.IsMaster, NextState = obit.IsMaster ? EventNames.RequestElection : null });
         }
     }
 }

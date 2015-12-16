@@ -17,17 +17,13 @@ namespace Quorum.States {
 
         public IMasterWorkAdapter Worker { get; set; }
 
-        protected async Task EnsureWorkerActive(IExecutionContext ctx) {
+        protected void EnsureWorkerActive(IExecutionContext ctx) {
             var worker = GetWorker(ctx) ?? new WorkerContainer { Processor = Worker, ExecutionContext = ctx };
             if (worker.ProcessingTask.IsNull() || worker.ProcessingTask.IsCompleted) {
                 worker.Processor.WorkUnitExecuted = worker.WorkerExecutes;
                 worker.CancellationToken = new CancellationTokenSource();
                 var token = worker.CancellationToken.Token;
-                worker.ProcessingTask = Task.Factory.StartNew(async () => {
-                    await worker.Processor.Activated();
-                    while (!token.IsCancellationRequested)
-                        await Task.Delay(MiniPause);
-                }, token).Unwrap();
+                worker.ProcessingTask = worker.Processor.Activated();
                 SetWorker(ctx, worker);
             }
         }

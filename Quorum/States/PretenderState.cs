@@ -19,10 +19,10 @@ namespace Quorum.States {
 
     public class PretenderState : BaseState<IExecutionContext>{
 
-        public override async Task<StateResult> OnEntry(IStateMachineContext<IExecutionContext> context) {
+        public override Task<StateResult> OnEntry(IStateMachineContext<IExecutionContext> context) {
             context.ExecutionContext.InEligibleForElection = false;
             LogFacade.Instance.LogInfo("Marking self as eligible for election");
-            return StateResult.None;
+            return Task.FromResult(StateResult.None);
         }
 
     }

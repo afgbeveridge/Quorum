@@ -168,7 +168,7 @@ namespace FSM {
             if (!InQueueCheckMode) {
                 InQueueCheckMode = true;
                 try {
-                    if (ActiveState.State.Interruptable && QueueHandler.Any()) {
+                    if (ActiveState.IsNotNull() && ActiveState.State.Interruptable && QueueHandler.Any()) {
                         IEventInstance anEvent = QueueHandler.Dequeue();
                         if (anEvent.IsNotNull()) {
                             anEvent.NoQueue = true;

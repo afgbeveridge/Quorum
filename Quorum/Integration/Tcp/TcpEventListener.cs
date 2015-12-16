@@ -42,7 +42,7 @@ namespace Quorum.Integration.Tcp {
                     var client = Listener.AcceptTcpClient();
                     var stream = client.GetStream();
                     var content = await stream.ReadAll(TcpBoundedFrame.DetermineFrameSize);
-                    ProcessRequest(content, stream, e => ((NetworkStream)e).Write(AcceptedMessageBytes, 0, AcceptedMessageBytes.Length));
+                    ProcessRequest(content, stream, e => ((NetworkStream)e.ResponseContainer).Write(AcceptedMessageBytes, 0, AcceptedMessageBytes.Length));
                 }
             }
             catch (Exception ex) {

@@ -40,11 +40,12 @@ namespace Quorum.Integration.Http {
 
         private HttpListener Listener { get; set; }
 
-        protected override async Task ListenerImplementation() {
+        protected override Task ListenerImplementation() {
             var res = Listener.BeginGetContext(new AsyncCallback(ListenerCallback), Listener);
             if (!res.AsyncWaitHandle.WaitOne(400)) {
                 res.AsyncWaitHandle.Close();
             }
+            return Task.FromResult(0);
         }
 
         private void ListenerCallback(IAsyncResult result) {

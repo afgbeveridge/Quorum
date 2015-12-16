@@ -8,11 +8,12 @@ namespace Quorum.Tests {
 
     public class EmptyWorker : BaseMasterWorkAdapter {
 
-        protected async override Task<bool> Work() {
-            return ContinueExecuting;
+        protected override Task<WorkResult> Work() {
+            return Task.FromResult(WorkResult.NonCommittal);
         }
 
-        protected async override Task Stopping() {
+        protected override Task Stopping() {
+            return Task.FromResult(0);
         }
 
         protected override void Stopped() {

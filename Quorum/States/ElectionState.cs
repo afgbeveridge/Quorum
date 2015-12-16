@@ -26,11 +26,11 @@ namespace Quorum.States {
 
         public IConfiguration Configuration { get; set; }
 
-        public override async Task<StateResult> OnEntry(IStateMachineContext<IExecutionContext> context) {
+        public override Task<StateResult> OnEntry(IStateMachineContext<IExecutionContext> context) {
             //LogFacade.Instance.LogInfo("Discovery requested? " + RequestedDiscovery);
             var result = AnalyzeDiscovery(context); //!RequestedDiscovery ? StateResult.Create(nextState: EventNames.Discovery) : AnalyzeDiscovery(context.ExecutionContext);
             //RequestedDiscovery = !RequestedDiscovery;
-            return result;
+            return Task.FromResult(result);
         }
 
         private StateResult AnalyzeDiscovery(IStateMachineContext<IExecutionContext> ctx) {

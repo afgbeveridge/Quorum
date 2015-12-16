@@ -14,10 +14,10 @@ namespace WorkerAdapterExample {
         /// When invoked, the receiver should execute a unit of work.
         /// </summary>
         /// <returns>false if the receiver indicates it has a fault and cannot continue</returns>
-        protected override async Task<bool> Work() {
+        protected override async Task<WorkResult> Work() {
             await Task.Delay(10);
             WorkUnitExecuted();
-            return ContinueExecuting;
+            return WorkResult.NonCommittal;
         }
 
         /// <summary>
