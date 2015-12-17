@@ -17,12 +17,11 @@ namespace ConsoleQuorum {
 
     public class NullWorkerAdapter : BaseMasterWorkAdapter {
 
-        protected override async Task<WorkResult> Work() {
-            await Task.Delay(2000);
+        protected override Task<WorkResult> Work() {
             Console.WriteLine("Working.....");
             if (WorkUnitExecuted.IsNotNull())
                 WorkUnitExecuted();
-            return WorkResult.NonCommittal;
+            return Task.FromResult(new WorkResult { Continue = ContinueExecuting, BackOffPeriod = 2000 });
         }
 
         protected override async Task Stopping() {

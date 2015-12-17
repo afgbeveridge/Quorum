@@ -61,9 +61,14 @@ namespace Quorum {
         public class WorkResult {
             public bool Continue { get; set; }
             public int? BackOffPeriod { get; set; }
-            public static WorkResult NonCommittal {
+            public static WorkResult KeepWorking {
                 get {
                     return new WorkResult { Continue = true };
+                }
+            }
+            public static WorkResult Conclude {
+                get {
+                    return new WorkResult { Continue = false };
                 }
             }
         }

@@ -31,7 +31,8 @@
                 var cur = obsForm[prop];
                 cfg[prop] = ko.isObservable(cur) ? cur() : '';
             }
-            window.qcc.save(cfg); 
+            window.qcc.save(cfg);
+            $('#savedMessage').show().fadeOut(2000);
         });
 
         $('#cancel').click(function () { location.assign('/'); });

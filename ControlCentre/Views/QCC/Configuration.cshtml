@@ -48,7 +48,10 @@
     </div>
     <p></p>
     <div class="row">
-        <div class="col-xs-4"><button data-bind="enable: isValid" id="save" class="btn-primary">Save</button>&nbsp;<button id="cancel" class="btn-primary">Cancel</button></div>
+        <div class="col-xs-8">
+            <button data-bind="enable: isValid" id="save" class="btn-primary">Save</button>&nbsp;<button id="cancel" class="btn-primary">Cancel</button>
+            <span id="savedMessage" style="display: none;">Configuration saved...</span>
+        </div>
     </div>
 </div>
 

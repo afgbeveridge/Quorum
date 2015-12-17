@@ -41,10 +41,6 @@ namespace Quorum.States {
             catch { }
         }
 
-        private void WorkerExecutes() {
-
-        }
-
         private WorkerContainer GetWorker(IExecutionContext ctx) {
             return (ctx.StateStore.ContainsKey(Constants.Local.MasterStateTaskKey) ? ctx.StateStore[Constants.Local.MasterStateTaskKey] : null) as WorkerContainer;
         }

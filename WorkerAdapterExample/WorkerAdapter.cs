@@ -17,7 +17,7 @@ namespace WorkerAdapterExample {
         protected override async Task<WorkResult> Work() {
             await Task.Delay(10);
             WorkUnitExecuted();
-            return WorkResult.NonCommittal;
+            return WorkResult.KeepWorking;
         }
 
         /// <summary>

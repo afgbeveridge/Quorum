@@ -62,12 +62,11 @@ window.qcc.queryMachines = function (mcs, config, onSuccess, failed, always) {
         }),
         contentType: 'application/json',
         success: function (data, textStatus, jqXHR) {
-            console.log('Proceed...');
             onSuccess(data.machines);
         }
     })
-        .fail(function () {
-            if (failed) failed();
+        .fail(function (xHR, status, error) {
+            if (failed) failed(xHR, status, error);
         })
         .always(function () {
             if (always) always();

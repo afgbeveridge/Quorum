@@ -9,7 +9,7 @@ namespace Quorum.Tests {
     public class EmptyWorker : BaseMasterWorkAdapter {
 
         protected override Task<WorkResult> Work() {
-            return Task.FromResult(WorkResult.NonCommittal);
+            return Task.FromResult(WorkResult.KeepWorking);
         }
 
         protected override Task Stopping() {

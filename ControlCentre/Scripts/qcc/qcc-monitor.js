@@ -88,7 +88,12 @@
             else
                 start(vm.gatedDiscoPeriod());
         },
-        querying: ko.observable(false)
+        querying: ko.observable(false),
+        errorHistoryLimit: 5,
+        communicationsErrors: ko.observableArray([]),
+        showHideCommsErrors: function () {
+            $('#generalErrors').toggle();
+        }
     };
 
     vm.gatedDiscoPeriod = ko.computed({
@@ -124,6 +129,10 @@
 
     ko.applyBindings(vm, $('#monitorSection')[0]);
 
+    function formattedNow() {
+        return moment(Date.now()).format("MMM Do YYYY, HH:mm:ss:SS");
+    };
+
     function setTimer(period) {
         vm.timer(setInterval(function () {
             vm.querying(true);
@@ -140,7 +149,7 @@
             function validate(target, data) {
                 target.HandledEvents.removeAll();
                 target.PendingEvents.removeAll();
-                target.lastContact(moment(Date.now()).format("MMM Do YYYY, HH:mm:ss:SS"));
+                target.lastContact(formattedNow());
                 ko.mapping.fromJS(data, null, target);
                 target.HandledEvents(data.HandledEvents);
                 target.PendingEvents(data.PendingEvents.map(function (e) {
@@ -174,10 +183,16 @@
                         m.IsValid ? validate(target, m) : invalidate(target);
                     });
                 },
-            function () {
+            function (xhr, status, error) {
                 mcs.forEach(function (m) {
                     invalidate(getObservable(m));
                 });
+                // Record error in vm.communicationsErrors; limit according to vm.errorHistoryLimit
+                if (vm.communicationsErrors().length >= vm.errorHistoryLimit) {
+                    var id = vm.communicationsErrors()[0].id;
+                    vm.communicationsErrors.remove(function (e) { return e.id == id; });
+                }
+                vm.communicationsErrors.push({ id: Date.now(), status: status, error: error, formattedDate: formattedNow() });
             },
             function () {
                 vm.queries(vm.queries() + vm.members.length);
