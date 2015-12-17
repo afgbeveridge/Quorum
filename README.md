@@ -6,4 +6,4 @@ For example, a quorum based Windows service could communicate with its peers to 
 Please see the [wiki](https://github.com/afgbeveridge/Quorum/wiki) for further details.
 
 # License
-This project is released under the [MIT license](https://opensource.org/licenses/MIT)
+This project is released under the [MIT license](https://opensource.org/licenses/MIT), with the project specific license [here](https://github.com/afgbeveridge/Quorum/blob/master/license.md)
