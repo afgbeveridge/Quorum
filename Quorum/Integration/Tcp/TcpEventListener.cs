@@ -6,18 +6,14 @@
 #endregion
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Quorum.Integration;
 using System.Net.Sockets;
-using System.IO;
 using Infra;
-using Quorum;
 using FSM;
 
 namespace Quorum.Integration.Tcp {
-    
+
     public class TcpExposedEventListener : BaseExposedEventListener {
 
         private static readonly byte[] AcceptedMessageBytes = Encoding.ASCII.GetBytes(AcceptedMessage);
@@ -41,7 +37,10 @@ namespace Quorum.Integration.Tcp {
                     LogFacade.Instance.LogInfo("Processing a Tcp connection request");
                     var client = Listener.AcceptTcpClient();
                     var stream = client.GetStream();
-                    var result = TcpBoundedFrame.Parse(await stream.ReadAll(TcpBoundedFrame.DetermineFrameSize));
+                    int? size = await TcpBoundedFrame.DetermineFrameSize(stream);
+                    if (size.HasValue)
+                        RequestValidator.ValidateRequestSize(size.Value);
+                    var result = TcpBoundedFrame.Parse(await stream.ReadAll(size));
                     // Check directives
                     ValidateRequest(result.Directives, client);
                     ProcessRequest(result.Content, stream, e => ((NetworkStream)e.ResponseContainer).Write(AcceptedMessageBytes, 0, AcceptedMessageBytes.Length));
@@ -53,7 +52,7 @@ namespace Quorum.Integration.Tcp {
         }
 
         private void ValidateRequest(IDictionary<string, string> directives, TcpClient client) {
-            RequestValidator.Validate(directives, client);
+            RequestValidator.ValidateDirectives(directives, client);
         }
 
         private INetworkEnvironment NetworkHelper { get; set; }

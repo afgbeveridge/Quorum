@@ -105,9 +105,12 @@ namespace Infra {
         private const int Cycle = 32;
 
         public static async Task<string> ReadAll(this NetworkStream stream, Func<NetworkStream, Task<int?>> frameSizer) {
+            return await ReadAll(stream, await frameSizer(stream));
+        }
+
+        public static async Task<string> ReadAll(this NetworkStream stream, int? frameLength) {
             byte[] readBuffer = new byte[ReadSize];
             string result = null;
-            int? frameLength = await frameSizer(stream);
             if (frameLength.HasValue) {
                 int toRead = frameLength.Value;
                 using (var writer = new MemoryStream()) {

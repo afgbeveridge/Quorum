@@ -4,6 +4,7 @@
 // MIT license applies.
 //
 #endregion
+using System;
 using Infra;
 using System.Collections.Generic;
 
@@ -17,7 +18,13 @@ namespace Quorum.Integration {
 
         private INetworkEnvironment Network { get; set; }
 
-        public void Validate(IDictionary<string, string> directives, object outerContext) {
+        public void ValidateRequestSize(long size) {
+            var max = Config.Get(Constants.Configuration.MaxPayloadLength);
+            LogFacade.Instance.LogDebug("Inbound request size validation: (" + size + ", " + max + ")");
+            DBC.True(size <= max, () => "Query payload must be rejected, size exceeds maximum configured (" + size + "," + max + ")");
+        }
+
+        public void ValidateDirectives(IDictionary<string, string> directives, object outerContext) {
             ExamineFramingDirectives(directives);
             ExamineAuthentication(directives);
         }
@@ -27,9 +34,14 @@ namespace Quorum.Integration {
         protected virtual void ExamineFramingDirectives(IDictionary<string, string> directives) {
             var header = Config.Get(Constants.Configuration.CustomHeader);
             if (Config.Get(Constants.Configuration.EmitCustomHeader) && header.IsNotNull()) {
-                DBC.True(directives.ContainsKey(header), () => "Expected request to contain header " + header);
-                // TODO: Check value matches the determinable quorum id of the sender
+                Action<string> checkHeader = name => DBC.True(directives.ContainsKey(name), () => "Expected request to contain header " + name);
+                checkHeader(header);
                 LogFacade.Instance.LogDebug("Inbound request qualification: (" + header + ", " + directives[header] + ")");
+                var seed = Config.Get(Constants.Configuration.HostNameHeader);
+                checkHeader(seed);
+                var derived = Network.DeriveUniqueId(directives[seed]);
+                LogFacade.Instance.LogDebug("Seed derived: " + derived);
+                DBC.True(long.Parse(directives[header]) == derived, () => "Node Id mismatch: (" + directives[header] + "," + directives[seed] + ")");
             }
         }
 

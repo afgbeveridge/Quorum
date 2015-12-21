@@ -26,8 +26,11 @@ namespace Quorum {
             public static readonly ConfigurationItem<string> MinimalLogLevel = ConfigurationItem<string>.Create("quorum.minimalLogLevel", "Debug");
             public static readonly ConfigurationItem<bool> EncryptedTransportRequired = ConfigurationItem<bool>.Create("quorum.encryptedTransportRequired", false);
             public static readonly ConfigurationItem<string> CustomHeader = ConfigurationItem<string>.Create("quorum.customHeader", "X-QuorumMember");
+            public static readonly ConfigurationItem<string> HostNameHeader = ConfigurationItem<string>.Create("quorum.customHeader", "X-QuorumHostName");
             public static readonly ConfigurationItem<bool> EmitCustomHeader = ConfigurationItem<bool>.Create("quorum.emitCustomHeader", true);
-
+            public static readonly ConfigurationItem<long> MaxPayloadLength = ConfigurationItem<long>.Create("quorum.maxPayloadLength", 4096L);
+            // 'Private' configuration
+            internal static readonly ConfigurationItem<int> HttpListenerWaitHandleTimeout = ConfigurationItem<int>.Create("quorum.httpListenerWaitHandleTimeout", 100);
         }
 
         public static class Local {

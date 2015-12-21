@@ -23,6 +23,12 @@ window.qcc.withLocalStorage = function (f) {
     else return f();
 };
 
+window.qcc.computeConfigurationHash = function (cfg) {
+    // TOD: Handle situation where order of members changes, but not actually their names
+    return ['members', 'port', 'responseLimit', 'transportType']
+        .map(function (p) { return ko.isObservable(cfg[p]) ? cfg[p]() : cfg[p]; }).join(',');
+};
+
 window.qcc.deserialize = function () {
     return window.qcc.withLocalStorage(function () {
         var stored = localStorage.getItem('qcc'), result;
@@ -37,6 +43,7 @@ window.qcc.deserialize = function () {
             };
         }
         result.observableForm = ko.mapping.fromJS(result);
+        result.hash = window.qcc.computeConfigurationHash(result);
         result.members = result.members.split(',');
         return result;
     });

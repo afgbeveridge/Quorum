@@ -43,6 +43,7 @@ namespace Quorum.Integration.Http {
             if (Config.Get(Constants.Configuration.EmitCustomHeader)) {
                 var header = Config.Get(Constants.Configuration.CustomHeader);
                 msg.Headers.Add(header, Network.UniqueId.ToString());
+                msg.Headers.Add(Config.Get(Constants.Configuration.HostNameHeader), Network.SeedForUniqueId);
             }
             if (Modifier.IsNotNull())
                 Modifier.RequestPreWrite(msg); 

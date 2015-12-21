@@ -20,6 +20,7 @@ namespace Quorum.Integration.Http {
 
         public HttpExposedEventListener(IConfiguration cfg, IEventInterpreter<IExecutionContext> interpreter, IRequestValidator validator)
             : base(cfg, interpreter, validator) {
+            WaitHandleTimeout = cfg.Get(Constants.Configuration.HttpListenerWaitHandleTimeout);
         }
 
         protected override void StartListening() {
@@ -37,11 +38,13 @@ namespace Quorum.Integration.Http {
 
         protected override Task ListenerImplementation() {
             var res = Listener.BeginGetContext(new AsyncCallback(ListenerCallback), Listener);
-            if (!res.AsyncWaitHandle.WaitOne(100)) {
+            if (!res.AsyncWaitHandle.WaitOne(WaitHandleTimeout)) {
                 res.AsyncWaitHandle.Close();
             }
             return Task.FromResult(0);
         }
+
+        private int WaitHandleTimeout { get; set; }
 
         private void ListenerCallback(IAsyncResult result) {
             HttpListener listener = (HttpListener)result.AsyncState;
@@ -70,7 +73,8 @@ namespace Quorum.Integration.Http {
         }
 
         private void ValidateRequest(NameValueCollection headers, HttpListenerContext ctx) {
-            RequestValidator.Validate(headers.AllKeys.ToDictionary(k => k, k => headers[k]), ctx);
+            RequestValidator.ValidateRequestSize(ctx.Request.ContentLength64);
+            RequestValidator.ValidateDirectives(headers.AllKeys.ToDictionary(k => k, k => headers[k]), ctx);
         }
 
     }

@@ -35,10 +35,13 @@
         $('#save').click(function () {
             var cfg = {};
             for (var prop in obsForm) {
-                var cur = obsForm[prop];
-                cfg[prop] = ko.isObservable(cur) ? cur() : '';
+                if (config.hasOwnProperty(prop)) {
+                    var cur = obsForm[prop];
+                    cfg[prop] = ko.isObservable(cur) ? cur() : '';
+                }
             }
             window.qcc.save(cfg);
+            config.hash = window.qcc.computeConfigurationHash(obsForm);
             $('#savedMessage').show().fadeOut(2000);
         });
 
@@ -61,7 +64,13 @@
             );
         });
 
+        $(window).on('beforeunload', function () {
+            var hash = window.qcc.computeConfigurationHash(obsForm);
+            if (hash != config.hash) return 'You have unsaved changes.';
+        });
+
         $('#cfgBindingSection').show('slidein');
+
     }
 
 });

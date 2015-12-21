@@ -18,6 +18,8 @@ namespace Infra {
 
         long DeriveUniqueId(string name);
 
+        string SeedForUniqueId { get; }
+
         string NameForIPAddress(IPAddress address);
 
     }

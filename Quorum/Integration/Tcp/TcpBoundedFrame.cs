@@ -40,6 +40,10 @@ namespace Quorum.Integration.Tcp {
             return key + "=" + value;
         }
 
+        public static string CombineDirectives(params string[] directives) {
+            return string.Join(new string(DirectiveLine, 1), directives);
+        }
+
         public static TcpBundle Parse(string entireSet) {
             int idx = entireSet.IndexOf(DirectiveFromContentSeparator);
             TcpBundle result = new TcpBundle { Content = idx < 0 ? entireSet : entireSet.Substring(idx + 1) };

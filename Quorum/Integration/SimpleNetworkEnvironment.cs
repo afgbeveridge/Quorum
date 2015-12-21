@@ -44,6 +44,12 @@ namespace Quorum.Integration {
             }
         }
 
+        public string SeedForUniqueId {
+            get {
+                return HostName;
+            }
+        }
+
         public long DeriveUniqueId(string name) {
             string hexValue = string.Empty;
             using (MD5 alg = MD5.Create()) {

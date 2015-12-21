@@ -60,8 +60,12 @@ namespace Quorum.Integration.Tcp {
 
         private string GetDirectives() {
             string result = string.Empty;
-            if (Configuration.Get(Constants.Configuration.EmitCustomHeader)) 
-                result = TcpBoundedFrame.FormDirective(Configuration.Get(Constants.Configuration.CustomHeader), Network.UniqueId);
+            if (Configuration.Get(Constants.Configuration.EmitCustomHeader)) {
+                result = TcpBoundedFrame.CombineDirectives(
+                                TcpBoundedFrame.FormDirective(Configuration.Get(Constants.Configuration.CustomHeader), Network.UniqueId),
+                                TcpBoundedFrame.FormDirective(Configuration.Get(Constants.Configuration.HostNameHeader), Network.SeedForUniqueId)
+                         );
+            }
             return result;
         }
 
