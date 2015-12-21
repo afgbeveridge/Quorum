@@ -12,7 +12,7 @@ namespace Quorum {
 
     // Lazy class :-)
 
-    public enum TransportType { Tcp, Http };
+    public enum TransportType { Tcp, Http, Https };
 
     public static class ActiveDisposition {
 
@@ -34,10 +34,11 @@ namespace Quorum {
 
         private static void AcceptTransportType(string type) {
             Shim.Current = (TransportType)Enum.Parse(typeof(TransportType), type, true);
+            new Configuration().LocalSet(Constants.Configuration.EncryptedTransportRequired.Key, Shim.Current == TransportType.Https);
         }
 
         public static void Initialise(string type = null) {
-            AcceptTransportType(type ?? new Configuration().Get<string>(Constants.Configuration.DefaultTransport));
+            AcceptTransportType(type ?? new Configuration().Get(Constants.Configuration.DefaultTransport));
         }
 
         public static bool Shared { 

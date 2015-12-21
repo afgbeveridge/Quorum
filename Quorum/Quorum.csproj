@@ -68,11 +68,12 @@
     <Compile Include="Integration\Http\ClientDetails.cs" />
     <Compile Include="Integration\Http\HttpAddressingScheme.cs" />
     <Compile Include="Integration\Http\HttpEventListener.cs" />
+    <Compile Include="Integration\IRequestValidator.cs" />
     <Compile Include="Integration\QuorumImplFacade.cs" />
     <Compile Include="Integration\Http\HttpReadableChannel.cs" />
     <Compile Include="Integration\Http\HttpResponseContainer.cs" />
     <Compile Include="Integration\Http\HttpWriteableChannel.cs" />
-    <Compile Include="Integration\Http\IHttpClientModifier.cs" />
+    <Compile Include="Integration\Http\IHttpCommunicationsModifier.cs" />
     <Compile Include="Integration\IExposedEventListener.cs" />
     <Compile Include="Integration\IAddressingScheme.cs" />
     <Compile Include="Integration\IElectionAdjudicator.cs" />
@@ -84,6 +85,7 @@
     <Compile Include="Integration\JsonPayloadParser.cs" />
     <Compile Include="Integration\EarliestBootCandidateAdjudicator.cs" />
     <Compile Include="Integration\SimpleNetworkEnvironment.cs" />
+    <Compile Include="Integration\SimpleRequestValidator.cs" />
     <Compile Include="Integration\Tcp\TcpBoundedFrame.cs" />
     <Compile Include="Integration\Tcp\TcpEventListener.cs" />
     <Compile Include="Integration\Tcp\TcpReadableChannel.cs" />

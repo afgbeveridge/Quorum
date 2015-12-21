@@ -11,6 +11,7 @@
         <div class="col-xs-3">Communications transport type</div>
         <div class="col-xs-9">
             <input type="radio" name="transportGroup" value="http" data-bind="checked: transportType" /> Http
+            <input type="radio" name="transportGroup" value="https" data-bind="checked: transportType" disabled="disabled"/> Https
             <input type="radio" name="transportGroup" value="tcp" data-bind="checked: transportType" /> Tcp
         </div>
     </div>
@@ -36,7 +37,7 @@
         <div class="col-xs-3"><input id="port" data-bind="textInput: port" type="text" maxlength="5" /></div>
     </div>
     <div class="row" data-bind="visible: portInvalid">
-        <div class="col-xs-6" style="color:red;">Port must be between 1025 and 65535</div>
+        <div class="col-xs-6" style="color:red;">Port must be between <span data-bind="text: limits.minPort"></span> and <span data-bind="text: limits.maxPort"></span></div>
     </div>
     <p></p>
     <div class="row">
@@ -44,7 +45,7 @@
         <div class="col-xs-3"><input id="responseLimit" data-bind="textInput: responseLimit" type="text" maxlength="8" /></div>
     </div>
     <div class="row" data-bind="visible: responseLimitInvalid">
-        <div class="col-xs-6" style="color:red;">Response limit must be between 1000 and 30000</div>
+        <div class="col-xs-6" style="color:red;">Response limit must be between <span data-bind="text: limits.minResponseLimit"></span> and <span data-bind="text: limits.maxResponseLimit"></span></div>
     </div>
     <p></p>
     <div class="row">

@@ -12,6 +12,8 @@ using Quorum;
 using FSM;
 using Quorum.Integration;
 using Infra;
+using System.Net.NetworkInformation;
+using System.DirectoryServices;
 
 namespace ConsoleQuorum {
 

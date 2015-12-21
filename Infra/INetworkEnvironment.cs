@@ -4,15 +4,10 @@
 // MIT license applies.
 //
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Net;
 
 namespace Infra {
-    
+
     public interface INetworkEnvironment {
 
         IPAddress LocalIPAddress { get; }
@@ -20,6 +15,10 @@ namespace Infra {
         string HostName { get; }
 
         long UniqueId { get; }
+
+        long DeriveUniqueId(string name);
+
+        string NameForIPAddress(IPAddress address);
 
     }
 

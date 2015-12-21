@@ -2,7 +2,7 @@
 
     // See if we have some in local storage
 
-    var config = window.qcc.deserializeWithCheck(), maxTrackedRequests = 500;
+    var config = window.qcc.deserializeWithCheck(), maxTrackedRequests = 100, scanInterval = 10000;
 
     var member = function (n, port, limit) {
         var self = this;
@@ -17,6 +17,7 @@
         self.InEligibleForElection = ko.observable(null);
         // TODO: Arrange for controller server side to handle this
         self.address = 'http://' + n + ':' + port + '/';
+        self.detected = ko.observable(false);
         function mutator(stateName) {
             $.ajax({
                 url: '/Neighbourhood/Render' + stateName,
@@ -82,9 +83,8 @@
         timer: ko.observable(),
         baseTimeout: config.responseLimit,
         stopOrStart: function () {
-            console.log('Starting or stopping monitor timer');
             if (vm.timer())
-                stop();
+                stop(vm.timer);
             else
                 start(vm.gatedDiscoPeriod());
         },
@@ -93,7 +93,8 @@
         communicationsErrors: ko.observableArray([]),
         showHideCommsErrors: function () {
             $('#generalErrors').toggle();
-        }
+        },
+        scanTimer: ko.observable()
     };
 
     vm.gatedDiscoPeriod = ko.computed({
@@ -123,7 +124,7 @@
     function modifyAjaxTimeout() {
         $.ajaxSetup({
             type: 'POST',
-            timeout: vm.gatedDiscoPeriod() - 500
+            timeout: vm.gatedDiscoPeriod()
         });
     };
 
@@ -169,7 +170,7 @@
                     target.maximumResponseTime(elapsed);
                 target.totalResponseTimes(target.totalResponseTimes() + elapsed);
             };
-            var mcs = vm.members.map(function (m) { return m.name; });
+            var mcs = vm.members.filter(function(m) { return m.detected(); }).map(function (m) { return m.name; });
 
             function getObservable(name) {
                 var nm = name.toLowerCase();
@@ -201,10 +202,10 @@
         }, period));
     };
 
-    function stop() {
-        if (vm.timer())
-            clearInterval(vm.timer());
-        vm.timer(null);
+    function stop(t) {
+        if (t())
+            clearInterval(t());
+        t(null);
     };
 
     function start(val) {
@@ -213,18 +214,37 @@
     };
 
     vm.gatedDiscoPeriod.subscribe(function (val) {
-        stop();
+        stop(vm.timer);
         start(val);
     });
 
-    start(vm.gatedDiscoPeriod());
-
     $(window).unload(function () {
-        console.log('Clean up');
-        if (vm.timer())
-            clearInterval(vm.timer());
+        qcc.log("Stopping timers");
+        stop(vm.timer);
+        stop(vm.scanTimer);
     });
 
-    $('#monitorSection').show('slidein');
+    function scanner(firstTime) {
+        window.qcc.pingNetworkLite(
+            vm.members.map(function(m) { return m.name; }),
+            config, null,
+            function (machines) {
+                var found = machines.map(function (m) { return m.Name.toLowerCase(); });
+                vm.members.forEach(function (m) {
+                    m.detected(found.indexOf(m.name) >= 0);
+                });
+            },
+            function () {
+                if (firstTime) {
+                    $('#bootWait').toggle();
+                    $('#monitorSection').show('slidein');
+                    start(vm.gatedDiscoPeriod());
+                }
+            }, true);
+    };
+
+    scanner(true);
+
+    vm.scanTimer(setInterval(scanner, scanInterval));
 
 });

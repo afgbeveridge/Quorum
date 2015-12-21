@@ -16,10 +16,6 @@ namespace Quorum.Tests {
             return Task.FromResult(0);
         }
 
-        protected override void Stopped() {
-
-        }
-
     }
 
 

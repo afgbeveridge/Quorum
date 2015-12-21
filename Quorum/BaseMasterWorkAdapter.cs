@@ -43,7 +43,8 @@ namespace Quorum {
 
         protected abstract Task Stopping();
 
-        protected abstract void Stopped();
+        protected virtual void Stopped() {
+        }
 
         public async Task DeActivated() {
             await Region.WaitAsync();

@@ -1,9 +1,17 @@
 ﻿
+"use strict";
+
 window.qcc = window.qcc || {};
 
 window.qcc.configuration = window.qcc.configuration || {};
 
 window.qcc.redirectLocation = "/QCC/Configuration";
+
+window.qcc.logEnabled = true;
+
+window.qcc.log = function (msg) {
+    window.qcc.logEnabled && console.log(msg);
+};
 
 window.qcc.serialize = function (cfg) {
     return ko.toJSON(cfg);
@@ -28,7 +36,6 @@ window.qcc.deserialize = function () {
                 transportType: 'http'
             };
         }
-        // TODO: Make an observableForm property mapped from JS to etc using ko mapping
         result.observableForm = ko.mapping.fromJS(result);
         result.members = result.members.split(',');
         return result;
@@ -51,6 +58,7 @@ window.qcc.save = function (cfg) {
 };
 
 window.qcc.queryMachines = function (mcs, config, onSuccess, failed, always) {
+    qcc.log('Querying neighbours with timeout set to ' + config.responseLimit);
     $.ajax({
         url: '/Neighbourhood/QueryMachines',
         type: 'POST',
@@ -73,27 +81,56 @@ window.qcc.queryMachines = function (mcs, config, onSuccess, failed, always) {
         });
 };
 
-window.qcc.scanNetworkLite = function (config, scope, success, always) {
+window.qcc.networkProbe = function (options) {
     $.ajax({
-        url: '/Neighbourhood/ApparentNeighbours',
+        url: options.url,
         type: 'POST',
         data: JSON.stringify({
-            Port: config.port,
-            Timeout: config.responseLimit,
-            TransportType: (ko.isObservable(config.transportType) ? config.transportType() : config.transportType),
-            Scope: scope || 'workgroup'
+            Port: options.config.port,
+            Timeout: options.internalTimeout || options.config.responseLimit,
+            TransportType: (ko.isObservable(options.config.transportType) ? options.config.transportType() : options.config.transportType),
+            Scope: options.scope || 'workgroup',
+            Machines: options.machines
         }),
         contentType: 'application/json',
+        timeout: options.ajaxTimeout,
         success: function (data, textStatus, jqXHR) {
-                success(data.machines);
+                options.success(data.machines);
             }
         })
         .fail(function () {
-            alert('Probe attempt failed');
+            if (!options.silent)
+                alert('Probe attempt failed');
         })
         .always(function () {
-            always && always();
+            options.always && options.always();
         });
+};
+
+window.qcc.scanNetworkLite = function (config, scope, success, always, timeout) {
+    window.qcc.networkProbe({
+        url: '/Neighbourhood/ApparentNeighbours',
+        config: config,
+        scope: scope,
+        success: success,
+        always: always,
+        ajaxTimeout: timeout
+    });
+};
+
+window.qcc.pingNetworkLite = function (mcs, config, scope, success, always, silent, timeout) {
+    window.qcc.networkProbe({
+        url: '/Neighbourhood/ContactableNeighbours',
+        config: config,
+        scope: scope,
+        success: success,
+        always: always,
+        // Config?
+        ajaxTimeout: 6000,
+        internalTimeout: 5000,
+        silent: true,
+        machines: mcs
+    });
 };
 
 // Util

@@ -21,9 +21,12 @@ namespace Quorum.Integration {
 
         protected IEventInterpreter<IExecutionContext> Interpreter { get; private set; }
 
-        public BaseExposedEventListener(IConfiguration cfg, IEventInterpreter<IExecutionContext> interpreter) {
+        protected IRequestValidator RequestValidator { get; private set; }
+
+        public BaseExposedEventListener(IConfiguration cfg, IEventInterpreter<IExecutionContext> interpreter, IRequestValidator validator) {
             Config = cfg;
             Interpreter = interpreter;
+            RequestValidator = validator;
         }
 
         public IStateMachine<IExecutionContext> Machine { get; set; }

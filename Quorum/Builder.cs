@@ -109,6 +109,7 @@ namespace Quorum {
             Register<IConfiguration, Configuration>();
             Register<INetworkEnvironment, SimpleNetworkEnvironment>();
             Register<ICommunicationsService, CommunicationsService>();
+            RegisterValidators();
             Container.Kernel.AddHandlerSelector(new WriteableChannelSelector());
             Container.Kernel.AddHandlerSelector(new ReadableChannelSelector());
             Container.Kernel.AddHandlerSelector(new EventListenerSelector());
@@ -131,6 +132,10 @@ namespace Quorum {
             Register<IReadableChannel, TcpReadableChannel>();
             Register<IWriteableChannel, TcpWriteableChannel>();
             Register<IExposedEventListener<IExecutionContext>, TcpExposedEventListener>();
+        }
+
+        protected virtual void RegisterValidators() {
+            Register<IRequestValidator, SimpleRequestValidator>();
         }
 
         protected virtual void RegisterInterceptors() {

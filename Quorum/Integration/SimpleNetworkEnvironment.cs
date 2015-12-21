@@ -26,6 +26,12 @@ namespace Quorum.Integration {
             }
         }
 
+        public string NameForIPAddress(IPAddress address) {
+            return Dns
+                    .GetHostEntry(address)
+                    .HostName;
+        }
+
         public string HostName {
             get {
                 return Dns.GetHostName();
@@ -34,16 +40,20 @@ namespace Quorum.Integration {
 
         public long UniqueId {
             get {
-                string hexValue = string.Empty;
-                using (MD5 alg = MD5.Create()) {
-                    var hash = alg.ComputeHash(Encoding.ASCII.GetBytes(HostName));
-                    hexValue = string.Join(string.Empty, hash.Select(b => b.ToString("x2")).ToArray());
-                }
-                return hexValue
-                            .Chunk(ChunkSize)
-                            .Select(arr => new string(arr.ToArray()))
-                            .Sum(s => long.Parse(s, System.Globalization.NumberStyles.AllowHexSpecifier));
+                return DeriveUniqueId(HostName);
             }
+        }
+
+        public long DeriveUniqueId(string name) {
+            string hexValue = string.Empty;
+            using (MD5 alg = MD5.Create()) {
+                var hash = alg.ComputeHash(Encoding.ASCII.GetBytes(name));
+                hexValue = string.Join(string.Empty, hash.Select(b => b.ToString("x2")).ToArray());
+            }
+            return hexValue
+                        .Chunk(ChunkSize)
+                        .Select(arr => new string(arr.ToArray()))
+                        .Sum(s => long.Parse(s, System.Globalization.NumberStyles.AllowHexSpecifier));
         }
     }
 }

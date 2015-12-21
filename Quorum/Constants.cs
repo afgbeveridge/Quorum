@@ -24,6 +24,9 @@ namespace Quorum {
             public static readonly ConfigurationItem<string> DefaultTransport = ConfigurationItem<string>.Create("quorum.transport", "http");
             // Info, Warning, Error, Exception, Debug
             public static readonly ConfigurationItem<string> MinimalLogLevel = ConfigurationItem<string>.Create("quorum.minimalLogLevel", "Debug");
+            public static readonly ConfigurationItem<bool> EncryptedTransportRequired = ConfigurationItem<bool>.Create("quorum.encryptedTransportRequired", false);
+            public static readonly ConfigurationItem<string> CustomHeader = ConfigurationItem<string>.Create("quorum.customHeader", "X-QuorumMember");
+            public static readonly ConfigurationItem<bool> EmitCustomHeader = ConfigurationItem<bool>.Create("quorum.emitCustomHeader", true);
 
         }
 

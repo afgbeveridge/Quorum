@@ -7,20 +7,24 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using FSM;
 using Quorum.Integration;
 using Quorum.Payloads;
-using System.Configuration;
 using Infra;
 using System.DirectoryServices;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Diagnostics;
 
 namespace Quorum.Services {
 
     public class CommunicationsService : ICommunicationsService {
+
+        public CommunicationsService(INetworkEnvironment env) {
+            Network = env;
+        }
+
+        private INetworkEnvironment Network { get; set; }
 
         public IWriteableChannel ChannelPrototype { get; set; }
 
@@ -51,9 +55,8 @@ namespace Quorum.Services {
         }
 
         public IEnumerable<BasicMachine> VisibleComputers(bool workgroupOnly = false) {
-            Func<string, IEnumerable<DirectoryEntry>> immediateChildren = key => new DirectoryEntry("WinNT:" + key)
-                    .Children
-                    .Cast<DirectoryEntry>();
+            Func<string, IEnumerable<DirectoryEntry>> immediateChildren = key => 
+                    new DirectoryEntry("WinNT:" + key).Children.Cast<DirectoryEntry>();
             Func<IEnumerable<DirectoryEntry>, IEnumerable<BasicMachine>> qualifyAndSelect = entries => entries.Where(c => c.SchemaClassName == "Computer")
                     .Select(c => { 
                         var addresses = Dns.GetHostAddresses(c.Name);
@@ -69,6 +72,33 @@ namespace Quorum.Services {
             ).ToArray();
         }
 
+        public async Task<IEnumerable<BasicMachine>> Ping(IEnumerable<string> targets, int timeoutMs) {
+            var result = Enumerable.Empty<BasicMachine>();
+            if (targets.IsNotNull()) {
+                LogFacade.Instance.LogInfo("(Ping) Apparent neighbours/targets " + string.Join(", ", targets) + ", patient for ms = " + timeoutMs);
+                Task<BasicMachine>[] queries = targets.Select(s => GuardedPing(s, timeoutMs)).ToArray();
+                LogFacade.Instance.LogDebug("Wait for " + queries.Count() + " task(s)");
+                await Task.WhenAll(queries);
+                result = queries.Where(t => !t.IsFaulted && t.Result.IsNotNull() && t.Result.Name.IsNotNull()).Select(t => t.Result).ToArray();
+            }
+            return result;
+        }
+
+        private async Task<BasicMachine> GuardedPing(string name, int timeoutMs) {
+            BasicMachine mc = null;
+            try {
+                var reply = await new Ping().SendPingAsync(name, timeoutMs);
+                if (reply.Status == IPStatus.Success)
+                    mc = new BasicMachine {
+                        Name = name,
+                        IpAddressV4 = reply.Address.ToString()
+                    };
+            }
+            catch {
+            }
+            return mc;
+        }
+
         public bool RenderEligible(string name) {
             return WriteNeighbour(name, "{\"TypeHint\": \"PretenderState\" }").IsNotNull();
         }
@@ -79,12 +109,22 @@ namespace Quorum.Services {
 
         // A null neighbour is returned if cannot be reached
         private async Task<Neighbour> QueryNeighbour(string name) {
-            Stopwatch watch = new Stopwatch();
-            watch.Start();
-            string result = await WriteNeighbour(name.ToString(), Builder.Create(new QueryRequest { Requester = "Me", Timeout = Configuration.Get<int>(Constants.Configuration.ResponseLimit) }));
-            var neighbour = result.IsNull() ? Neighbour.NonRespondingNeighbour(name) : Parser.As<Neighbour>(result);
-            neighbour.LastRequestElapsedTime = watch.ElapsedMilliseconds;
-            return neighbour;
+            Neighbour n = null;
+            string result = null;
+            try {
+                Stopwatch watch = new Stopwatch();
+                watch.Start();
+                result = await WriteNeighbour(name.ToString(), Builder.Create(new QueryRequest { Requester = Network.HostName, Timeout = Configuration.Get(Constants.Configuration.ResponseLimit) }));
+                n = result.IsNull() ? Neighbour.NonRespondingNeighbour(name) : Parser.As<Neighbour>(result);
+                watch.Stop();
+                n.LastRequestElapsedTime = watch.ElapsedMilliseconds;
+            }
+            catch (Exception ex) {
+                LogFacade.Instance.LogException("Neighbour write and parse failed for " + name, ex);
+                n = Neighbour.NonRespondingNeighbour(name);
+            }
+            LogFacade.Instance.LogDebug("QueryNeighbour " + name + " completed in " + n.LastRequestElapsedTime + " ms");
+            return n;
         }
 
         private async Task<string> WriteNeighbour(string name, string content) {
@@ -94,7 +134,7 @@ namespace Quorum.Services {
                 // Timeout is config
                 result = await ChannelPrototype
                             .NewInstance()
-                            .Write(name.ToString(), content, Configuration.Get<int>(Constants.Configuration.ResponseLimit));
+                            .Write(name.ToString(), content, Configuration.Get(Constants.Configuration.ResponseLimit));
                 LogFacade.Instance.LogDebug("Neighbour (" + name + ") queried, with result '" + (result.IsNull() ? "<null>" : result));
 
             }
@@ -105,7 +145,7 @@ namespace Quorum.Services {
         }
 
         private string RecurseException(Exception ex) {
-            string msg = String.Empty;
+            string msg = string.Empty;
             Exception e = ex;
             while (e.IsNotNull()) {
                 msg = msg + e.Message + " - ";

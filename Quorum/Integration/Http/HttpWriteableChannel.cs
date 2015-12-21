@@ -6,7 +6,7 @@
 #endregion
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http;
@@ -17,19 +17,27 @@ namespace Quorum.Integration.Http {
     
     public class HttpWriteableChannel : BaseHttpChannel, IWriteableChannel {
 
-        public HttpWriteableChannel(INetworkEnvironment network) : base(network) {
+        public HttpWriteableChannel(INetworkEnvironment network, IConfiguration cfg) : base(network, cfg) {
         }
 
         public async Task<string> Write(string address, string content, int timeoutMs) {
             var request = CreateClient(address, timeoutMs, ActionDisposition.Write);
-            LogFacade.Instance.LogInfo("Contact (write to): " + request.Address);
-            var response = await request.Client.PostAsync(request.Address, new ByteArrayContent(Encoding.Default.GetBytes(content))).ConfigureAwait(false);
-            string result = null;
-            LogFacade.Instance.LogDebug("Success?: " + response.IsSuccessStatusCode);
-            if (response.IsSuccessStatusCode) 
-                result = await response.Content.ReadAsStringAsync();
-            LogFacade.Instance.LogDebug("Content read: " + result);
-            return result;
+            try {
+                LogFacade.Instance.LogInfo("Contact (write to, timeout is " + timeoutMs + "): " + request.Address);
+                var msg = CreateRequest(request.Address, HttpMethod.Post, new ByteArrayContent(Encoding.Default.GetBytes(content)));
+                CancellationTokenSource cts = new CancellationTokenSource(timeoutMs);
+                var response = Task.Run(() => request.Client.SendAsync(msg), cts.Token).Result;
+                cts.Dispose();
+                string result = null;
+                LogFacade.Instance.LogDebug("Success?: " + response.IsSuccessStatusCode);
+                if (response.IsSuccessStatusCode)
+                    result = await response.Content.ReadAsStringAsync();
+                LogFacade.Instance.LogDebug("Content read: " + result);
+                return result;
+            }
+            finally {
+                this.GuardedExecution(() => request.Client.Dispose());
+            }
         }
 
         public async Task Respond(object responseChannel, string content, int timeoutMs) {
@@ -44,7 +52,7 @@ namespace Quorum.Integration.Http {
         }
 
         public virtual IWriteableChannel NewInstance() {
-            return new HttpWriteableChannel(Network);
+            return new HttpWriteableChannel(Network, Config);
         }
     }
 }

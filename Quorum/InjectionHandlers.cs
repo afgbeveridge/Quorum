@@ -42,7 +42,7 @@ namespace Quorum {
     public class WriteableChannelSelector : TypeChoiceSelector<IWriteableChannel> {
 
         public WriteableChannelSelector() {
-            Types[TransportType.Http] = typeof(HttpWriteableChannel);
+            Types[TransportType.Http] = Types[TransportType.Https] = typeof(HttpWriteableChannel);
             Types[TransportType.Tcp] = typeof(TcpWriteableChannel);
         }
 
@@ -51,7 +51,7 @@ namespace Quorum {
     public class ReadableChannelSelector : TypeChoiceSelector<IReadableChannel> {
 
         public ReadableChannelSelector() {
-            Types[TransportType.Http] = typeof(HttpReadableChannel);
+            Types[TransportType.Http] = Types[TransportType.Https] = typeof(HttpReadableChannel);
             Types[TransportType.Tcp] = typeof(TcpReadableChannel);
         }
 
@@ -60,7 +60,7 @@ namespace Quorum {
     public class EventListenerSelector : TypeChoiceSelector<IExposedEventListener<IExecutionContext>> {
 
         public EventListenerSelector() {
-            Types[TransportType.Http] = typeof(HttpExposedEventListener);
+            Types[TransportType.Http] = Types[TransportType.Https] = typeof(HttpExposedEventListener);
             Types[TransportType.Tcp] = typeof(TcpExposedEventListener);
         }
 

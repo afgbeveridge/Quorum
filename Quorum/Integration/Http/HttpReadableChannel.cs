@@ -16,7 +16,7 @@ namespace Quorum.Integration.Http {
 
     public class HttpReadableChannel : BaseHttpChannel, IReadableChannel {
 
-        public HttpReadableChannel(INetworkEnvironment network) : base(network) {
+        public HttpReadableChannel(INetworkEnvironment network) : base(network, null) {
         }
 
         public async Task<string> Read(string address, int timeoutMs) {

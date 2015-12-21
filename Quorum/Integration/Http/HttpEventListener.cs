@@ -6,25 +6,20 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Collections.Concurrent;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Net;
-using Quorum;
 using Infra;
-using System.Threading;
 using System.IO;
 using FSM;
-using System.Net.WebSockets;
+using System.Collections.Specialized;
+using System.Linq;
 
 namespace Quorum.Integration.Http {
 
     public class HttpExposedEventListener : BaseExposedEventListener {
 
-        public HttpExposedEventListener(IConfiguration cfg, IEventInterpreter<IExecutionContext> interpreter)
-            : base(cfg, interpreter) {
+        public HttpExposedEventListener(IConfiguration cfg, IEventInterpreter<IExecutionContext> interpreter, IRequestValidator validator)
+            : base(cfg, interpreter, validator) {
         }
 
         protected override void StartListening() {
@@ -42,7 +37,7 @@ namespace Quorum.Integration.Http {
 
         protected override Task ListenerImplementation() {
             var res = Listener.BeginGetContext(new AsyncCallback(ListenerCallback), Listener);
-            if (!res.AsyncWaitHandle.WaitOne(400)) {
+            if (!res.AsyncWaitHandle.WaitOne(100)) {
                 res.AsyncWaitHandle.Close();
             }
             return Task.FromResult(0);
@@ -56,6 +51,7 @@ namespace Quorum.Integration.Http {
             this.GuardedExecution(() => {
                 context = listener.EndGetContext(result);
                 AllowCORS(context);
+                ValidateRequest(context.Request.Headers, context);
                 using (Stream streamResponse = context.Request.InputStream) {
                     var content = new StreamReader(streamResponse).ReadToEnd();
                     ProcessRequest(content, new HttpResponseContainer { Response = context.Response, Status = status }, e => ((HttpResponseContainer)e.ResponseContainer).WriteAsync(AcceptedMessage).Wait());
@@ -71,6 +67,10 @@ namespace Quorum.Integration.Http {
                 context.Response.AddHeader("Access-Control-Max-Age", "1728000");
             }
             context.Response.AppendHeader("Access-Control-Allow-Origin", "*");
+        }
+
+        private void ValidateRequest(NameValueCollection headers, HttpListenerContext ctx) {
+            RequestValidator.Validate(headers.AllKeys.ToDictionary(k => k, k => headers[k]), ctx);
         }
 
     }

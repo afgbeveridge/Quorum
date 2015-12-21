@@ -10,6 +10,7 @@ using Quorum.Services;
 using Infra;
 using ControlCentre.Models;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace ControlCentre.Controllers {
 
@@ -20,6 +21,12 @@ namespace ControlCentre.Controllers {
         }
 
         [HttpPost]
+        public async Task<ActionResult> ContactableNeighbours(QueryModel model) {
+            EstablishContext(model);
+            return this.Json(new { machines = await Service.Ping(model.Machines, model.Timeout) }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
         public ActionResult ApparentNeighbours(ProbeQueryModel model) {
             EstablishContext(model);
             return this.Json(new { machines = Service.VisibleComputers(model.Scope.IsNull() || model.Scope.ToLowerInvariant().Contains("work")) });
@@ -27,8 +34,13 @@ namespace ControlCentre.Controllers {
 
         [HttpPost]
         public async Task<ActionResult> QueryMachines(QueryModel model) {
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
             EstablishContext(model);
-            return this.Json(new { machines = await Service.Query(model.Machines, true) });
+            var result = this.Json(new { machines = await Service.Query(model.Machines, true) });
+            watch.Stop();
+            LogFacade.Instance.LogDebug("QueryMachines executed in " + watch.ElapsedMilliseconds + " ms");
+            return result;
         }
 
         [HttpPost]
@@ -48,7 +60,8 @@ namespace ControlCentre.Controllers {
         private void EstablishContext(BaseRequestModel model) {
             var cfg = Builder.Resolve<IConfiguration>();
             cfg.LocalSet(Constants.Configuration.ExternalEventListenerPort.Key, model.Port);
-            cfg.LocalSet(Constants.Configuration.ResponseLimit.Key, model.Timeout);
+            // Take only a slice, allow for transport cost and time
+            cfg.LocalSet(Constants.Configuration.ResponseLimit.Key, (int) (model.Timeout * 0.8));
             ActiveDisposition.Initialise(model.TransportType);
         }
 

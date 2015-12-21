@@ -20,9 +20,12 @@ namespace Quorum.Integration.Tcp {
 
         private const int ReadBufferSize = 1024;
 
-        public TcpWriteableChannel(IConfiguration cfg) { 
+        public TcpWriteableChannel(INetworkEnvironment network, IConfiguration cfg) { 
             Configuration = cfg;
+            Network = network;
         }
+
+        protected INetworkEnvironment Network { get; private set; }
 
         public async Task<string> Write(string address, string content, int timeoutMs) {
             var splitTimeout = timeoutMs / 2;
@@ -43,15 +46,22 @@ namespace Quorum.Integration.Tcp {
                     LogFacade.Instance.LogInfo("Tcp connection established with " + address);
                     var stream = client.GetStream();
                     TcpBoundedFrame frame = new TcpBoundedFrame();
-                    int written = await frame.FrameAndWrite(stream, content);
+                    int written = await frame.FrameAndWrite(stream, content, GetDirectives());
                     LogFacade.Instance.LogInfo("Written bytes to " + address + ", count " + written);
-                    result = await stream.ReadAll(TcpBoundedFrame.DetermineFrameSize);
+                    result = TcpBoundedFrame.Parse(await stream.ReadAll(TcpBoundedFrame.DetermineFrameSize)).Content;
                     LogFacade.Instance.LogDebug("Read from " + address + ": '" + result + "'");
                 }
             }
             finally {
                 //client.Close();
             }
+            return result;
+        }
+
+        private string GetDirectives() {
+            string result = string.Empty;
+            if (Configuration.Get(Constants.Configuration.EmitCustomHeader)) 
+                result = TcpBoundedFrame.FormDirective(Configuration.Get(Constants.Configuration.CustomHeader), Network.UniqueId);
             return result;
         }
 
@@ -80,7 +90,7 @@ namespace Quorum.Integration.Tcp {
         }
 
         public IWriteableChannel NewInstance() {
-            return new TcpWriteableChannel(Configuration);
+            return new TcpWriteableChannel(Network, Configuration);
         }
 
         private IConfiguration Configuration { get; set; }

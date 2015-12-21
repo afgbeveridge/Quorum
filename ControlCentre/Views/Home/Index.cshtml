@@ -4,6 +4,7 @@
 
 <div class="jumbotron">
     <h2>Quorum Control Centre - Network view</h2>
+    <h4 id="bootWait">Just checking a few things...<img src="~/Content/Images/ajax-loader.gif" /></h4>
 </div>
 
 <div id="monitorSection" style="display: none;">
@@ -54,7 +55,7 @@
                     </tr>
                 </thead>
                 <tbody data-bind="foreach: members">
-                    <tr>
+                    <tr data-bind="style: { opacity: $data.detected() ? 1 : 0.5 }">
                         <td><img data-bind="attr: { src: stateIcon }" /></td>
                         <td data-bind="text: $data.name"></td>
                         <td data-bind="text: $data.port"></td>
@@ -89,17 +90,17 @@
                     <tr data-bind="visible: $data.showingHardwareDetails" style="background-color: yellow;">
                         <td colspan="9">
                             <div class="row">
-                                <div class="col-xs-2"><em>Failed requests</em>: <span data-bind="text: $data.failedRequests"></span></div>
-                                <div class="col-xs-2"><em>Completed requests</em>: <span data-bind="text: $data.successfulRequests"></span></div>
+                                <div class="col-xs-3"><em>Failed requests</em>: <span data-bind="text: $data.failedRequests"></span></div>
+                                <div class="col-xs-3"><em>Completed requests</em>: <span data-bind="text: $data.successfulRequests"></span></div>
                                 <div class="col-xs-2"><em>Min response ms</em>: <span data-bind="text: $data.minimumResponseTime"></span></div>
                                 <div class="col-xs-2"><em>Max response ms</em>: <span data-bind="text: $data.maximumResponseTime"></span></div>
                                 <div class="col-xs-2"><em>Avg response ms</em>: <span data-bind="text: $data.averageResponseTime().toFixed(1)"></span></div>
                             </div>
                             <div class="row">
-                                <div class="col-xs-2"><em>Physical memory</em>: <span data-bind="text: $data.Hardware.PhysicalMemory"></span></div>
-                                <div class="col-xs-2"><em>CPU Manufacturer</em>: <span data-bind="text: $data.Hardware.CPUManufacturer"></span></div>
+                                <div class="col-xs-3"><em>Physical memory</em>: <span data-bind="text: $data.Hardware.PhysicalMemory"></span></div>
+                                <div class="col-xs-3"><em>CPU Manufacturer</em>: <span data-bind="text: $data.Hardware.CPUManufacturer"></span></div>
                                 <div class="col-xs-2"><em>CPU Speed (GHz)</em>: <span data-bind="text: $data.Hardware.CPUSpeed"></span></div>
-                                <div class="col-xs-6"><em>OS</em>: <span data-bind="text: $data.Hardware.OS"></span></div>
+                                <div class="col-xs-4"><em>OS</em>: <span data-bind="text: $data.Hardware.OS"></span></div>
                             </div>
                         </td>
                     </tr>

@@ -22,7 +22,7 @@ namespace Quorum.Integration.Tcp {
 
         private static readonly byte[] AcceptedMessageBytes = Encoding.ASCII.GetBytes(AcceptedMessage);
 
-        public TcpExposedEventListener(IConfiguration cfg, IEventInterpreter<IExecutionContext> interpreter, INetworkEnvironment env) : base(cfg, interpreter) {
+        public TcpExposedEventListener(IConfiguration cfg, IEventInterpreter<IExecutionContext> interpreter, INetworkEnvironment env, IRequestValidator validator) : base(cfg, interpreter, validator) {
             NetworkHelper = env;
         }
 
@@ -41,13 +41,19 @@ namespace Quorum.Integration.Tcp {
                     LogFacade.Instance.LogInfo("Processing a Tcp connection request");
                     var client = Listener.AcceptTcpClient();
                     var stream = client.GetStream();
-                    var content = await stream.ReadAll(TcpBoundedFrame.DetermineFrameSize);
-                    ProcessRequest(content, stream, e => ((NetworkStream)e.ResponseContainer).Write(AcceptedMessageBytes, 0, AcceptedMessageBytes.Length));
+                    var result = TcpBoundedFrame.Parse(await stream.ReadAll(TcpBoundedFrame.DetermineFrameSize));
+                    // Check directives
+                    ValidateRequest(result.Directives, client);
+                    ProcessRequest(result.Content, stream, e => ((NetworkStream)e.ResponseContainer).Write(AcceptedMessageBytes, 0, AcceptedMessageBytes.Length));
                 }
             }
             catch (Exception ex) {
                 LogFacade.Instance.LogWarning("Failed when processing a Tcp connection request", ex);
             }
+        }
+
+        private void ValidateRequest(IDictionary<string, string> directives, TcpClient client) {
+            RequestValidator.Validate(directives, client);
         }
 
         private INetworkEnvironment NetworkHelper { get; set; }

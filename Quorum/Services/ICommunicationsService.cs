@@ -19,6 +19,8 @@ namespace Quorum.Services {
 
         Task<IEnumerable<Neighbour>> Query(IEnumerable<string> targets, bool includeNonResponders = false);
 
+        Task<IEnumerable<BasicMachine>> Ping(IEnumerable<string> targets, int timeoutMs);
+
         IEnumerable<BasicMachine> VisibleComputers(bool workgroupOnly = false);
 
         bool RenderEligible(string name);
