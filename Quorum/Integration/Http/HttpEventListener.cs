@@ -25,8 +25,14 @@ namespace Quorum.Integration.Http {
 
         protected override void StartListening() {
             Listener = new HttpListener();
-            var address = Config.Get(Constants.Configuration.ExternalEventListenerPort);
-            Listener.Prefixes.Add(new HttpAddressingScheme { Name = Dns.GetHostName(), Port = address.ToString() }.Address);
+            var secure = Config.Get(Constants.Configuration.EncryptedTransportRequired);
+            var address = Config.Get(secure ? Constants.Configuration.ExternalSecureEventListenerPort : Constants.Configuration.ExternalEventListenerPort);
+            Listener.Prefixes.Add(new HttpAddressingScheme {
+                                    Name = Dns.GetHostName(),
+                                    Port = address.ToString(),
+                                    UseSsl = secure
+            }.Address);
+            LogFacade.Instance.LogInfo("Http listener prefix: " + Listener.Prefixes.First());
             Listener.Start();
         }
 

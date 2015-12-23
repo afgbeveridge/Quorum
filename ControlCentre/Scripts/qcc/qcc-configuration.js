@@ -14,7 +14,9 @@
             minResponseLimit: 999,
             maxResponseLimit: 30000,
             minPort: 1025,
-            maxPort: 65535
+            maxPort: 65535,
+            standardInsecurePort: 9999,
+            standardSecurePort: 8999
         };
         obsForm.isInRange = function (val, min, max) {
             return window.qcc.isPositiveNumeric(val) && parseInt(val) >= min && parseInt(val) <= max;
@@ -27,6 +29,9 @@
         });
         obsForm.portInvalid = ko.computed(function () {
             return !obsForm.isInRange(obsForm.port(), obsForm.limits.minPort, obsForm.limits.maxPort);
+        });
+        obsForm.transportType.subscribe(function (val) {
+            return obsForm.port(val.indexOf('s') > 0 ? obsForm.limits.standardSecurePort : obsForm.limits.standardInsecurePort);
         });
         obsForm.isValid = ko.computed(function () {
             return !obsForm.membersInvalid() && !obsForm.responseLimitInvalid() && !obsForm.portInvalid();

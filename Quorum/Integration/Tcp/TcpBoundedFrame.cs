@@ -67,7 +67,7 @@ namespace Quorum.Integration.Tcp {
             return Encoding.ASCII.GetBytes(LengthBytes + all.Length.ToString().PadLeft(LengthBytes, '0') + all);
         }
 
-        public static async Task<int?> DetermineFrameSize(NetworkStream stream) {
+        public static async Task<int?> DetermineFrameSize(System.IO.Stream stream) {
             // First byte is size of length spec
             // Retained for possible future use
             LogFacade.Instance.LogDebug("Request to determine frame size");

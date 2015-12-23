@@ -35,6 +35,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quorum.Tests", "Quorum.Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FSM.Tests", "FSM.Tests\FSM.Tests.csproj", "{025CDCC8-1240-4241-8CA1-00A50A11CA8D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utils", "Utils", "{7BF37DF1-92CF-403A-84D9-A9D00569582B}"
+	ProjectSection(SolutionItems) = preProject
+		bindcert.bat = bindcert.bat
+		gencert.bat = gencert.bat
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

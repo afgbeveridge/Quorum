@@ -104,11 +104,11 @@ namespace Infra {
         private const int ReadSize = 512;
         private const int Cycle = 32;
 
-        public static async Task<string> ReadAll(this NetworkStream stream, Func<NetworkStream, Task<int?>> frameSizer) {
+        public static async Task<string> ReadAll(this Stream stream, Func<Stream, Task<int?>> frameSizer) {
             return await ReadAll(stream, await frameSizer(stream));
         }
 
-        public static async Task<string> ReadAll(this NetworkStream stream, int? frameLength) {
+        public static async Task<string> ReadAll(this Stream stream, int? frameLength) {
             byte[] readBuffer = new byte[ReadSize];
             string result = null;
             if (frameLength.HasValue) {
@@ -127,11 +127,11 @@ namespace Infra {
             return result;
         }
 
-        public static async Task<byte[]> ReadExactly(this NetworkStream stream, int numBytes) {
+        public static async Task<byte[]> ReadExactly(this Stream stream, int numBytes) {
             byte[] readBuffer = new byte[numBytes];
             int requested = numBytes, cycles = Cycle;
             LogFacade.Instance.LogDebug("Asked to read exactly " + numBytes + " byte(s)");
-            LogFacade.Instance.LogDebug("Stream, DA? " + stream.DataAvailable + ", readable? " + stream.CanRead);
+            //LogFacade.Instance.LogDebug("Stream, DA? " + stream.DataAvailable + ", readable? " + stream.CanRead);
             do {
                 int numberOfBytesRead = await stream.ReadAsync(readBuffer, requested - numBytes, numBytes).ConfigureAwait(false);
                 if (numberOfBytesRead > 0)

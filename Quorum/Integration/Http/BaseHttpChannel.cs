@@ -23,8 +23,13 @@ namespace Quorum.Integration.Http {
 
         protected ClientDetails CreateClient(string address, int timeoutMs, ActionDisposition disposition = ActionDisposition.Read) {
             LogFacade.Instance.LogDebug("Base http timeout set at ms = " + timeoutMs);
-            var details = new ClientDetails { 
-                Client = new HttpClient { Timeout = TimeSpan.FromMilliseconds(timeoutMs) }, 
+            var handler =
+                !Config.Get(Constants.Configuration.ByPassCertificateValidation) ?
+                new WebRequestHandler() :
+                new WebRequestHandler { ServerCertificateValidationCallback = (sender, cert, chain, policyErrors) => true,
+            };
+            var details = new ClientDetails {
+                Client = new HttpClient(handler) { Timeout = TimeSpan.FromMilliseconds(timeoutMs) }, 
                 Address = new HttpAddressingScheme(Network) { Name = address }.Address
             };
             if (Modifier.IsNotNull()) 

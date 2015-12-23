@@ -15,6 +15,7 @@ namespace Quorum {
 
             public static readonly ConfigurationItem<string> Nexus = ConfigurationItem<string>.Create("quorum.environment");
             public static readonly ConfigurationItem<int> ExternalEventListenerPort = ConfigurationItem<int>.Create("quorum.listenerPort", 9999);
+            public static readonly ConfigurationItem<int> ExternalSecureEventListenerPort = ConfigurationItem<int>.Create("quorum.secureListenerPort", 8999);
             public static readonly ConfigurationItem<string> MachineStrength = ConfigurationItem<string>.Create("quorum.machine.strength");
             public static readonly ConfigurationItem<int> DiscoveryPeriodMs = ConfigurationItem<int>.Create("quorum.discoveryPeriodMs", 30000);
             public static readonly ConfigurationItem<int> ResponseLimit = ConfigurationItem<int>.Create("quorum.responseLimit", 5000);
@@ -29,6 +30,7 @@ namespace Quorum {
             public static readonly ConfigurationItem<string> HostNameHeader = ConfigurationItem<string>.Create("quorum.customHeader", "X-QuorumHostName");
             public static readonly ConfigurationItem<bool> EmitCustomHeader = ConfigurationItem<bool>.Create("quorum.emitCustomHeader", true);
             public static readonly ConfigurationItem<long> MaxPayloadLength = ConfigurationItem<long>.Create("quorum.maxPayloadLength", 4096L);
+            public static readonly ConfigurationItem<bool> ByPassCertificateValidation = ConfigurationItem<bool>.Create("quorum.byPassCertificateValidation", false);
             // 'Private' configuration
             internal static readonly ConfigurationItem<int> HttpListenerWaitHandleTimeout = ConfigurationItem<int>.Create("quorum.httpListenerWaitHandleTimeout", 100);
         }

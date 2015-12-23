@@ -11,7 +11,7 @@
         <div class="col-xs-3">Communications transport type</div>
         <div class="col-xs-9">
             <input type="radio" name="transportGroup" value="http" data-bind="checked: transportType" /> Http
-            <input type="radio" name="transportGroup" value="https" data-bind="checked: transportType" disabled="disabled"/> Https
+            <input type="radio" name="transportGroup" value="https" data-bind="checked: transportType" /> Https
             <input type="radio" name="transportGroup" value="tcp" data-bind="checked: transportType" /> Tcp
         </div>
     </div>
@@ -38,6 +38,9 @@
     </div>
     <div class="row" data-bind="visible: portInvalid">
         <div class="col-xs-6" style="color:red;">Port must be between <span data-bind="text: limits.minPort"></span> and <span data-bind="text: limits.maxPort"></span></div>
+    </div>
+    <div class="row" id="secureWarning" data-bind="visible: transportType() == 'https'">
+        <div class="col-xs-8"><strong><br/><span style="color: red;">Note:</span>To use secure quorum communications, please read the <a target="_blank" href="https://github.com/afgbeveridge/Quorum/wiki/Configuring-SSL-for-use">Quorum SSL wiki</a> carefully</strong></div>
     </div>
     <p></p>
     <div class="row">

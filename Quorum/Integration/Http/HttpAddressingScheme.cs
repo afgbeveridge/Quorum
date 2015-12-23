@@ -25,8 +25,8 @@ namespace Quorum.Integration.Http {
             Network = network;
             Name = Network.LocalIPAddress.ToString();
             var cfg = new Configuration();
-            Port = cfg.Get(Constants.Configuration.ExternalEventListenerPort).ToString();
             UseSsl = cfg.Get(Constants.Configuration.EncryptedTransportRequired);
+            Port = cfg.Get(UseSsl ? Constants.Configuration.ExternalSecureEventListenerPort : Constants.Configuration.ExternalEventListenerPort).ToString();
         }
 
         public string Port { get; set; }
@@ -37,7 +37,7 @@ namespace Quorum.Integration.Http {
 
         public string Address { get { return new UriBuilder((UseSsl ? Uri.UriSchemeHttps: Uri.UriSchemeHttp) + "://" + Name + ":" + Port + "/" + Path).ToString(); } }
 
-        private bool UseSsl { get; set; }
+        public bool UseSsl { get; set; }
     }
 
 }

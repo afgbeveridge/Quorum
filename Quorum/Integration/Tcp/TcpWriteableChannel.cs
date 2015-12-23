@@ -5,17 +5,12 @@
 //
 #endregion
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Quorum;
 using Infra;
 using System.Net.Sockets;
-using System.IO;
 
 namespace Quorum.Integration.Tcp {
-    
+
     public class TcpWriteableChannel : IWriteableChannel {
 
         private const int ReadBufferSize = 1024;
@@ -33,7 +28,7 @@ namespace Quorum.Integration.Tcp {
             var client = new TcpClient() { SendTimeout = splitTimeout, ReceiveTimeout = splitTimeout };
             string result = null;
             try {
-                var res = client.BeginConnect(address, Configuration.Get<int>(Constants.Configuration.ExternalEventListenerPort), new AsyncCallback(ConnectionCallback), new CallbackState { Client = client, Address = address });
+                var res = client.BeginConnect(address, Configuration.Get(Constants.Configuration.ExternalEventListenerPort), new AsyncCallback(ConnectionCallback), new CallbackState { Client = client, Address = address });
                 var connectTimeout = Configuration.Get(Constants.Configuration.TcpConnectionTimeout);
                 LogFacade.Instance.LogDebug("Wait for connect with " + address + ", wait period: " + connectTimeout);
                 if (!await res.AsyncWaitHandle.WaitOneAsync(connectTimeout)) {

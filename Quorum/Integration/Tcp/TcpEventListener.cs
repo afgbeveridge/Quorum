@@ -23,7 +23,7 @@ namespace Quorum.Integration.Tcp {
         }
 
         protected override void StartListening() {
-            Listener = new TcpListener(NetworkHelper.LocalIPAddress, Config.Get<int>(Constants.Configuration.ExternalEventListenerPort));
+            Listener = new TcpListener(NetworkHelper.LocalIPAddress, Config.Get(Constants.Configuration.ExternalEventListenerPort));
             Listener.Start(Config.Get<int>(Constants.Configuration.TcpBacklogSize));
         }
 

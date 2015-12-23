@@ -1,0 +1,2 @@
+makecert -n "CN=softwarequorumCA" -r -sv softwarequorumCA.pvk softwarequorumCA.cer
+makecert -sk softwarequorumCA -iv softwarequorumCA.pvk -n "CN=Tony-PC" -ic softwarequorumCA.cer Tony-PC.cer -sr localmachine -pe -ss My 
