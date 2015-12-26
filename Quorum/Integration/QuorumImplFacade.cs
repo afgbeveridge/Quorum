@@ -89,7 +89,7 @@ namespace Quorum.Integration {
                 settings.Converters.Add(new StringEnumConverter());
                 return settings;
             });
-            DiscoveryTimer = new Timer(new Infra.Configuration().Get<int>(Constants.Configuration.DiscoveryPeriodMs));
+            DiscoveryTimer = new Timer(new Infra.Configuration().WithAppropriateOverrides().Get(Constants.Configuration.DiscoveryPeriodMs));
             // Hook up the Elapsed event for the timer. 
             DiscoveryTimer.Elapsed += (src, args) => Machine.Trigger(EventInstance.Create(EventNames.Discovery));
             DiscoveryTimer.AutoReset = true;
@@ -98,7 +98,7 @@ namespace Quorum.Integration {
 
         public LoggingOptions DeriveLoggingOptions(Action<LoggingOptions> f = null) {
             var opts = new LoggingOptions {
-                MinimalLogLevel = (LogLevel)Enum.Parse(typeof(LogLevel), new Configuration().Get(Constants.Configuration.MinimalLogLevel), true)
+                MinimalLogLevel = (LogLevel)Enum.Parse(typeof(LogLevel), new Configuration().WithAppropriateOverrides().Get(Constants.Configuration.MinimalLogLevel), true)
             };
             if (f.IsNotNull())
                 f(opts);

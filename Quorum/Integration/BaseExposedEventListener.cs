@@ -23,6 +23,12 @@ namespace Quorum.Integration {
 
         protected IRequestValidator RequestValidator { get; private set; }
 
+        protected bool Secure {
+            get {
+                return Config.Get(Constants.Configuration.EncryptedTransportRequired);
+            }
+        }
+
         public BaseExposedEventListener(IConfiguration cfg, IEventInterpreter<IExecutionContext> interpreter, IRequestValidator validator) {
             Config = cfg;
             Interpreter = interpreter;
@@ -32,7 +38,7 @@ namespace Quorum.Integration {
         public IStateMachine<IExecutionContext> Machine { get; set; }
 
         public void Initialize() {
-            LogFacade.Instance.LogInfo(ActiveDisposition.Current + " listener will be active on port " + Config.Get<int>(Constants.Configuration.ExternalEventListenerPort));
+            LogFacade.Instance.LogInfo(ActiveDisposition.Current + " listener will be active on port " + Config.Get(Secure ? Constants.Configuration.ExternalSecureEventListenerPort : Constants.Configuration.ExternalEventListenerPort));
             StartListening();
             CancellationToken = new CancellationTokenSource();
             CancellationToken token = CancellationToken.Token;

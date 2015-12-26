@@ -9,8 +9,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net.Sockets;
+using System.Net.Security;
+using System.IO;
 using Infra;
 using FSM;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Quorum.Integration.Tcp {
 
@@ -23,8 +26,8 @@ namespace Quorum.Integration.Tcp {
         }
 
         protected override void StartListening() {
-            Listener = new TcpListener(NetworkHelper.LocalIPAddress, Config.Get(Constants.Configuration.ExternalEventListenerPort));
-            Listener.Start(Config.Get<int>(Constants.Configuration.TcpBacklogSize));
+            Listener = new TcpListener(NetworkHelper.LocalIPAddress, Config.Get(Secure ? Constants.Configuration.ExternalSecureEventListenerPort : Constants.Configuration.ExternalEventListenerPort));
+            Listener.Start(Config.Get(Constants.Configuration.TcpBacklogSize));
         }
 
         protected override void StopListening() {
@@ -36,19 +39,33 @@ namespace Quorum.Integration.Tcp {
                 if (Listener.Pending()) {
                     LogFacade.Instance.LogInfo("Processing a Tcp connection request");
                     var client = Listener.AcceptTcpClient();
-                    var stream = client.GetStream();
+                    var stream = OpenStream(client);
                     int? size = await TcpBoundedFrame.DetermineFrameSize(stream);
                     if (size.HasValue)
                         RequestValidator.ValidateRequestSize(size.Value);
                     var result = TcpBoundedFrame.Parse(await stream.ReadAll(size));
                     // Check directives
                     ValidateRequest(result.Directives, client);
-                    ProcessRequest(result.Content, stream, e => ((NetworkStream)e.ResponseContainer).Write(AcceptedMessageBytes, 0, AcceptedMessageBytes.Length));
+                    ProcessRequest(result.Content, stream, e => ((Stream)e.ResponseContainer).Write(AcceptedMessageBytes, 0, AcceptedMessageBytes.Length));
                 }
             }
             catch (Exception ex) {
                 LogFacade.Instance.LogWarning("Failed when processing a Tcp connection request", ex);
             }
+        }
+
+        private Stream OpenStream(TcpClient client) {
+            Stream stream = client.GetStream();
+            var secure = Config.Get(Constants.Configuration.EncryptedTransportRequired);
+            if (secure) {
+                SslStream enc = new SslStream(stream, true);
+                // As we are looking at the common name, we mark up the host name
+                var hostName = "cn=" + NetworkHelper.HostName.ToLowerInvariant();
+                var cert = Crypto.GetCertificate(StoreName.My, StoreLocation.LocalMachine, c => c.Subject.ToLowerInvariant().Trim() == hostName);
+                enc.AuthenticateAsServer(cert, false, System.Security.Authentication.SslProtocols.Default, false);
+                stream = enc;
+            }
+            return stream;
         }
 
         private void ValidateRequest(IDictionary<string, string> directives, TcpClient client) {

@@ -34,10 +34,12 @@ namespace Quorum.Integration {
         protected virtual void ExamineFramingDirectives(IDictionary<string, string> directives) {
             var header = Config.Get(Constants.Configuration.CustomHeader);
             if (Config.Get(Constants.Configuration.EmitCustomHeader) && header.IsNotNull()) {
+                // Some proxies or tools mangle custom header names
                 Action<string> checkHeader = name => DBC.True(directives.ContainsKey(name), () => "Expected request to contain header " + name);
+                header = header.ToLowerInvariant();
                 checkHeader(header);
                 LogFacade.Instance.LogDebug("Inbound request qualification: (" + header + ", " + directives[header] + ")");
-                var seed = Config.Get(Constants.Configuration.HostNameHeader);
+                var seed = Config.Get(Constants.Configuration.HostNameHeader).ToLowerInvariant();
                 checkHeader(seed);
                 var derived = Network.DeriveUniqueId(directives[seed]);
                 LogFacade.Instance.LogDebug("Seed derived: " + derived);

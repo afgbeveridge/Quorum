@@ -54,7 +54,7 @@ namespace QuorumWindowsService {
         // This could be some Infra class, but I'm in YAGNI mode
         private Type GetWorkerImplementation() {
             Type workerType = null;
-            var assName = new Configuration().Get<string>("quorum.workerTypeAssembly");
+            var assName = new Configuration().WithAppropriateOverrides().Get<string>("quorum.workerTypeAssembly");
             try {
                 DBC.False(assName.IsNull(), () => "You must specify an assembly name in quorum.workerTypeAssembly");
                 Assembly assembly = Assembly.Load(assName);

@@ -15,6 +15,7 @@ using System.DirectoryServices;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Diagnostics;
+using FSM;
 
 namespace Quorum.Services {
 
@@ -107,14 +108,27 @@ namespace Quorum.Services {
             return WriteNeighbour(name, "{\"TypeHint\": \"AbdicationState\" }").IsNotNull();
         }
 
+        public async Task<AnalysisResult> Analyze(IContainer container, string name) {
+            Neighbour result = null;
+            var names = Enum.GetNames(typeof(TransportType));
+            string protocol = null;
+            for (int i = 0; i < names.Length && (result.IsNull() || !result.IsValid); i++) {
+                protocol = names[i];
+                ActiveDisposition.AcceptTransportType(protocol);
+                result = await QueryNeighbour(name, container.Resolve<IWriteableChannel>());
+            }
+            return new AnalysisResult { Protocol = result.IsNull() || !result.IsValid ? null : protocol.ToString() };
+        }
+
         // A null neighbour is returned if cannot be reached
-        private async Task<Neighbour> QueryNeighbour(string name) {
+        public async Task<Neighbour> QueryNeighbour(string name, IWriteableChannel channel = null) {
             Neighbour n = null;
-            string result = null;
             try {
                 Stopwatch watch = new Stopwatch();
                 watch.Start();
-                result = await WriteNeighbour(name.ToString(), Builder.Create(new QueryRequest { Requester = Network.HostName, Timeout = Configuration.Get(Constants.Configuration.ResponseLimit) }));
+                string result = await WriteNeighbour(name.ToString(), 
+                                              Builder.Create(new QueryRequest { Requester = Network.HostName, Timeout = Configuration.Get(Constants.Configuration.ResponseLimit) }),
+                                              channel);
                 n = result.IsNull() ? Neighbour.NonRespondingNeighbour(name) : Parser.As<Neighbour>(result);
                 watch.Stop();
                 n.LastRequestElapsedTime = watch.ElapsedMilliseconds;
@@ -127,14 +141,13 @@ namespace Quorum.Services {
             return n;
         }
 
-        private async Task<string> WriteNeighbour(string name, string content) {
+        private async Task<string> WriteNeighbour(string name, string content, IWriteableChannel channel = null) {
             string result = null;
             try {
                 LogFacade.Instance.LogDebug("Write to " + name + " with content: '" + content + "'");
+                var chan = channel ?? ChannelPrototype.NewInstance();
                 // Timeout is config
-                result = await ChannelPrototype
-                            .NewInstance()
-                            .Write(name.ToString(), content, Configuration.Get(Constants.Configuration.ResponseLimit));
+                result = await chan.Write(name.ToString(), content, Configuration.Get(Constants.Configuration.ResponseLimit));
                 LogFacade.Instance.LogDebug("Neighbour (" + name + ") queried, with result '" + (result.IsNull() ? "<null>" : result));
 
             }

@@ -13,6 +13,7 @@
             <input type="radio" name="transportGroup" value="http" data-bind="checked: transportType" /> Http
             <input type="radio" name="transportGroup" value="https" data-bind="checked: transportType" /> Https
             <input type="radio" name="transportGroup" value="tcp" data-bind="checked: transportType" /> Tcp
+            <input type="radio" name="transportGroup" value="tcps" data-bind="checked: transportType" /> Tcps
         </div>
     </div>
     <p></p>
@@ -39,8 +40,8 @@
     <div class="row" data-bind="visible: portInvalid">
         <div class="col-xs-6" style="color:red;">Port must be between <span data-bind="text: limits.minPort"></span> and <span data-bind="text: limits.maxPort"></span></div>
     </div>
-    <div class="row" id="secureWarning" data-bind="visible: transportType() == 'https'">
-        <div class="col-xs-8"><strong><br/><span style="color: red;">Note:</span>To use secure quorum communications, please read the <a target="_blank" href="https://github.com/afgbeveridge/Quorum/wiki/Configuring-SSL-for-use">Quorum SSL wiki</a> carefully</strong></div>
+    <div class="row" id="secureWarning" data-bind="visible: transportType().indexOf('s') > 0">
+        <div class="col-xs-8"><strong><br /><span style="color: red;">Note:</span>To use secure quorum communications, please read the <a target="_blank" href="https://github.com/afgbeveridge/Quorum/wiki/Configuring-SSL-for-use">Quorum SSL wiki</a> carefully</strong></div>
     </div>
     <p></p>
     <div class="row">
@@ -55,6 +56,35 @@
         <div class="col-xs-8">
             <button data-bind="enable: isValid" id="save" class="btn-primary">Save</button>&nbsp;<button id="cancel" class="btn-primary">Cancel</button>
             <span id="savedMessage" style="display: none;">Configuration saved...</span>
+        </div>
+    </div>
+    <p></p>
+    <div class="row">
+        <div class="col-xs-8">
+            <button data-bind="enable: isValid" id="analyze" class="btn-primary">Analyze</button>&nbsp;Click this button to check if the members defined are currently active
+        </div>
+    </div>
+    <p></p>
+    <div class="row" id="analysisResults" style="display: none;">
+        <div class="col-xs-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Contacted?</th>
+                        <th>Protocol</th>
+                    </tr>
+                </thead>
+                <tbody data-bind="foreach: targets">
+                    <tr>
+                        <td data-bind="text: name"></td>
+                        <td data-bind="visible: !querying(), text: contacted"></td>
+                        <td data-bind="visible: querying"><img src="~/Content/Images/ajax-loader.gif" /></td>
+                        <td data-bind="visible: !querying(), text: protocol"></td>
+                        <td data-bind="visible: querying"><img src="~/Content/Images/ajax-loader.gif" /></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

@@ -12,6 +12,7 @@ namespace Infra {
         TValue Get<TCaller, TValue>(string key, TValue defaultValue = default(TValue));
         T Get<T>(ConfigurationItem<T> src);
         void LocalSet<T>(string key, T value);
+        IConfigurationOverrideStorage OverrideStorage { get; set; }
     }
 
 }

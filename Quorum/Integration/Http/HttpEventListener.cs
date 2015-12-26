@@ -25,12 +25,11 @@ namespace Quorum.Integration.Http {
 
         protected override void StartListening() {
             Listener = new HttpListener();
-            var secure = Config.Get(Constants.Configuration.EncryptedTransportRequired);
-            var address = Config.Get(secure ? Constants.Configuration.ExternalSecureEventListenerPort : Constants.Configuration.ExternalEventListenerPort);
+            var address = Config.Get(Secure ? Constants.Configuration.ExternalSecureEventListenerPort : Constants.Configuration.ExternalEventListenerPort);
             Listener.Prefixes.Add(new HttpAddressingScheme {
                                     Name = Dns.GetHostName(),
                                     Port = address.ToString(),
-                                    UseSsl = secure
+                                    UseSsl = Secure
             }.Address);
             LogFacade.Instance.LogInfo("Http listener prefix: " + Listener.Prefixes.First());
             Listener.Start();
@@ -80,7 +79,8 @@ namespace Quorum.Integration.Http {
 
         private void ValidateRequest(NameValueCollection headers, HttpListenerContext ctx) {
             RequestValidator.ValidateRequestSize(ctx.Request.ContentLength64);
-            RequestValidator.ValidateDirectives(headers.AllKeys.ToDictionary(k => k, k => headers[k]), ctx);
+            // Some proxies or tools mangle custom header names, so we lower case all header names
+            RequestValidator.ValidateDirectives(headers.AllKeys.ToDictionary(k => k.ToLowerInvariant(), k => headers[k]), ctx);
         }
 
     }

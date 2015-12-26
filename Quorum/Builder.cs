@@ -36,6 +36,8 @@ namespace Quorum {
 
         }
 
+        public Func<Type, Type, Type> TypeMorpher { get; set; }
+
         public IStateMachine<IExecutionContext> Create() {
             return CreateEmpty()
                         // Bootstrapping
@@ -106,6 +108,8 @@ namespace Quorum {
             Register<IPayloadParser, JsonPayloadParser>();
             Register<IPayloadBuilder, JsonPayloadBuilder>();
             RegisterChannelsAndListener();
+            Register<IConfigurationOverrideStorage, StaticConfigurationOverrideStorage>();
+            Register<IConfigurationOverrideStorage, TransientConfigurationOverrideStorage>();
             Register<IConfiguration, Configuration>();
             Register<INetworkEnvironment, SimpleNetworkEnvironment>();
             Register<ICommunicationsService, CommunicationsService>();
@@ -113,6 +117,7 @@ namespace Quorum {
             Container.Kernel.AddHandlerSelector(new WriteableChannelSelector());
             Container.Kernel.AddHandlerSelector(new ReadableChannelSelector());
             Container.Kernel.AddHandlerSelector(new EventListenerSelector());
+            Container.Kernel.AddHandlerSelector(new LocalStorageSelector());
         }
 
         protected virtual void ConfigureInjections() {
@@ -144,7 +149,10 @@ namespace Quorum {
         }
 
         public virtual void Register<TInterface, TConcrete>() where TInterface : class where TConcrete : TInterface {
-            Container.Register(Component.For<TInterface>().ImplementedBy<TConcrete>().LifeStyle.Transient);
+            if (TypeMorpher.IsNull())
+                Container.Register(Component.For<TInterface>().ImplementedBy<TConcrete>().LifeStyle.Transient);
+            else
+                Register<TInterface>(TypeMorpher(typeof(TInterface), typeof(TConcrete)));
         }
 
         public virtual void Register<TInterface>(Type t)

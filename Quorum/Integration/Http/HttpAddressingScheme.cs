@@ -24,7 +24,7 @@ namespace Quorum.Integration.Http {
         public HttpAddressingScheme(INetworkEnvironment network) {
             Network = network;
             Name = Network.LocalIPAddress.ToString();
-            var cfg = new Configuration();
+            var cfg = new Configuration().WithAppropriateOverrides();
             UseSsl = cfg.Get(Constants.Configuration.EncryptedTransportRequired);
             Port = cfg.Get(UseSsl ? Constants.Configuration.ExternalSecureEventListenerPort : Constants.Configuration.ExternalEventListenerPort).ToString();
         }

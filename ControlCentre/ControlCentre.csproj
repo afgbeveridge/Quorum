@@ -175,11 +175,13 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\QCCController.cs" />
     <Compile Include="Filters\EnumParsingActionFilterAttribute.cs" />
+    <Compile Include="Filters\EstablishContextActionFilterAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\BaseRequestModel.cs" />
+    <Compile Include="Models\EligibilityRequestModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ProbeQueryModel.cs" />
@@ -278,6 +280,10 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FSM\FSM.csproj">
+      <Project>{eda7c996-5b71-40d1-b8f8-ed1a9fe5af63}</Project>
+      <Name>FSM</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Infra\Infra.csproj">
       <Project>{7758b13b-e49d-4cc6-80cf-5a7b2290f9aa}</Project>
       <Name>Infra</Name>

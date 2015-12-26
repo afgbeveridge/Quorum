@@ -4,12 +4,11 @@
 // MIT license applies.
 //
 #endregion
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Quorum.Integration;
 using System.Threading.Tasks;
 using Quorum.Payloads;
+using FSM;
 
 namespace Quorum.Services {
     
@@ -19,9 +18,13 @@ namespace Quorum.Services {
 
         Task<IEnumerable<Neighbour>> Query(IEnumerable<string> targets, bool includeNonResponders = false);
 
+        Task<Neighbour> QueryNeighbour(string name, IWriteableChannel channel = null);
+
         Task<IEnumerable<BasicMachine>> Ping(IEnumerable<string> targets, int timeoutMs);
 
         IEnumerable<BasicMachine> VisibleComputers(bool workgroupOnly = false);
+
+        Task<AnalysisResult> Analyze(IContainer container, string name);
 
         bool RenderEligible(string name);
 

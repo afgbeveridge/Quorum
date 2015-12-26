@@ -6,19 +6,23 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Configuration;
 
 namespace Infra {
 
     public class Configuration : IConfiguration {
 
-        private static readonly Dictionary<string, object> LocalOverrides = new Dictionary<string, object>();
+        public IConfigurationOverrideStorage OverrideStorage { get; set; }
+
+        public Configuration() : this(new StaticConfigurationOverrideStorage()) {
+        }
+
+        public Configuration(IConfigurationOverrideStorage overrideStorage) {
+            OverrideStorage = overrideStorage;
+        }
 
         public T Get<T>(string key, T defaultValue = default(T)) {
-            var setting = LocalOverrides.ContainsKey(key) ? LocalOverrides[key] : ConfigurationManager.AppSettings[key];
+            var setting = OverrideStorage.ValueOrDefault(key, ConfigurationManager.AppSettings[key]);
             return setting == null ? defaultValue : (T)Convert.ChangeType(setting, typeof(T));
         }
 
@@ -31,7 +35,7 @@ namespace Infra {
         }
 
         public void LocalSet<T>(string key, T value) {
-            LocalOverrides[key] = value;
+            OverrideStorage.Set(key, value);
         }
 
     }

@@ -8,6 +8,8 @@ using System;
 using System.Threading.Tasks;
 using Infra;
 using System.Net.Sockets;
+using System.IO;
+using System.Net.Security;
 
 namespace Quorum.Integration.Tcp {
 
@@ -28,7 +30,13 @@ namespace Quorum.Integration.Tcp {
             var client = new TcpClient() { SendTimeout = splitTimeout, ReceiveTimeout = splitTimeout };
             string result = null;
             try {
-                var res = client.BeginConnect(address, Configuration.Get(Constants.Configuration.ExternalEventListenerPort), new AsyncCallback(ConnectionCallback), new CallbackState { Client = client, Address = address });
+                var secure = Configuration.Get(Constants.Configuration.EncryptedTransportRequired);
+                int port = Configuration.Get(secure ? Constants.Configuration.ExternalSecureEventListenerPort : Constants.Configuration.ExternalEventListenerPort);
+                var res = client.BeginConnect(address, 
+                                              port, 
+                                              new AsyncCallback(ConnectionCallback), 
+                                              new CallbackState { Client = client, Address = address
+                });
                 var connectTimeout = Configuration.Get(Constants.Configuration.TcpConnectionTimeout);
                 LogFacade.Instance.LogDebug("Wait for connect with " + address + ", wait period: " + connectTimeout);
                 if (!await res.AsyncWaitHandle.WaitOneAsync(connectTimeout)) {
@@ -39,7 +47,7 @@ namespace Quorum.Integration.Tcp {
                     LogFacade.Instance.LogDebug("Deffo not connected to " + address);
                 else {
                     LogFacade.Instance.LogInfo("Tcp connection established with " + address);
-                    var stream = client.GetStream();
+                    var stream = OpenStream(client, secure, address);
                     TcpBoundedFrame frame = new TcpBoundedFrame();
                     int written = await frame.FrameAndWrite(stream, content, GetDirectives());
                     LogFacade.Instance.LogInfo("Written bytes to " + address + ", count " + written);
@@ -51,6 +59,16 @@ namespace Quorum.Integration.Tcp {
                 //client.Close();
             }
             return result;
+        }
+
+        private Stream OpenStream(TcpClient client, bool secure, string target) {
+            Stream str = client.GetStream();
+            if (secure) {
+                var enc = new SslStream(str, true);
+                enc.AuthenticateAsClient(target);
+                str = enc;
+            }
+            return str;
         }
 
         private string GetDirectives() {
@@ -82,7 +100,7 @@ namespace Quorum.Integration.Tcp {
         private bool Connected { get; set; }
 
         public async Task Respond(object responseChannel, string content, int timeoutMs) {
-            var response = responseChannel as NetworkStream;
+            var response = responseChannel as Stream;
             if (response.IsNotNull()) {
                 await new TcpBoundedFrame().FrameAndWrite(response, content).ConfigureAwait(false);
             }

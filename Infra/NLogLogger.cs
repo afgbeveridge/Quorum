@@ -6,9 +6,6 @@
 #endregion
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
@@ -84,7 +81,7 @@ namespace Infra {
 
         private void CreateEventLogTarget() {
             EventLogTarget target = new EventLogTarget {
-                Source = "NHooked",
+                Source = "Quorum",
                 Log = "Application",
                 MachineName = ".",
                 Layout = DefaultLayout

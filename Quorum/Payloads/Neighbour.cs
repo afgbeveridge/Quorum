@@ -7,8 +7,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FSM;
 using Infra;
 using System.Diagnostics;
@@ -57,7 +55,7 @@ namespace Quorum.Payloads {
         public long NodeId { get; set; }
 
         public static Neighbour Fabricate(IStateMachineContext<IExecutionContext> context) {
-                var strength = new Configuration().Get<string>(Constants.Configuration.MachineStrength);
+                var strength = new Configuration().WithAppropriateOverrides().Get(Constants.Configuration.MachineStrength);
                 var actualStrength = string.IsNullOrEmpty(strength) ? MachineStrength.Compute : (MachineStrength)Enum.Parse(typeof(MachineStrength), strength, true);
                 return new Neighbour {
                     IsMaster = context.ExecutionContext.IsMaster,

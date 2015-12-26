@@ -12,15 +12,15 @@ namespace Quorum {
 
     // Lazy class :-)
 
-    public enum TransportType { Tcp, Http, Https };
+    public enum TransportType { Tcp, Http, Https, Tcps };
 
     public static class ActiveDisposition {
 
         private const string DispositionKey = "__transport_type_disposition__";
 
         static ActiveDisposition() {
-           Shared = false;
-           Initialise();
+            Shared = false;
+            Initialise();
         }
 
         public static TransportType Current {
@@ -32,31 +32,50 @@ namespace Quorum {
             }
         }
 
-        private static void AcceptTransportType(string type) {
-            Shim.Current = (TransportType)Enum.Parse(typeof(TransportType), type, true);
-            new Configuration().LocalSet(Constants.Configuration.EncryptedTransportRequired.Key, Shim.Current == TransportType.Https);
+        public static void AcceptTransportType(string type) {
+            AcceptTransportType((TransportType)Enum.Parse(typeof(TransportType), type, true));
+        }
+
+        public static void AcceptTransportType(TransportType type) {
+            Shim.Current = type;
+            new Configuration().WithAppropriateOverrides().LocalSet(Constants.Configuration.EncryptedTransportRequired.Key, Shim.Current.ToString().EndsWith("s"));
         }
 
         public static void Initialise(string type = null) {
             AcceptTransportType(type ?? new Configuration().Get(Constants.Configuration.DefaultTransport));
         }
 
-        public static bool Shared { 
+        /// <summary>
+        /// Shared == true means that the receiver is not to be regarded as multi thread safe
+        /// </summary>
+        public static bool Shared {
+            get {
+                return Shim.IsTransient;
+            }
             set {
-                Shim = value ? new SharedDisposition() : (IDispositionShim) new StaticDisposition();
-            } 
+                Shim = value ? new SharedDisposition() : (IDispositionShim)new StaticDisposition();
+            }
+        }
+
+        public static bool IsTransient{
+            get {
+                return Shim.IsTransient;
+            }
         }
 
         private static IDispositionShim Shim { get; set; }
 
-        private interface IDispositionShim { 
+        private interface IDispositionShim {
             TransportType Current { get; set; }
+            bool IsTransient { get; }
         }
 
         private class StaticDisposition : IDispositionShim {
             public TransportType Current { get; set; }
+            public bool IsTransient {
+                get { return false; }
+            }
         }
-
         private class SharedDisposition : IDispositionShim {
             public TransportType Current {
                 get {
@@ -66,8 +85,11 @@ namespace Quorum {
                     HttpContext.Current.Items[DispositionKey] = value;
                 }
             }
+
+            public bool IsTransient {
+                get { return true; }
+            }
+
         }
-
     }
-
 }

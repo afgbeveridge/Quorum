@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-    
+
     // See if we have some in local storage
 
     var config = window.qcc.deserialize();
@@ -36,6 +36,10 @@
         obsForm.isValid = ko.computed(function () {
             return !obsForm.membersInvalid() && !obsForm.responseLimitInvalid() && !obsForm.portInvalid();
         });
+        obsForm.members.subscribe(function () {
+            $('#analysisResults').hide();
+        });
+        obsForm.targets = ko.observableArray();
         ko.applyBindings(obsForm, $('#cfgBindingSection')[0]);
         $('#save').click(function () {
             var cfg = {};
@@ -59,7 +63,7 @@
                 config,
                 null,
                 function (machines) {
-                    var content = machines.map(function(m) { return m.Name.toLowerCase(); }).join(',');
+                    var content = machines.map(function (m) { return m.Name.toLowerCase(); }).join(',');
                     obsForm.members(content);
                 },
                 function () {
@@ -67,6 +71,36 @@
                     $('#scanWorking').hide();
                 }
             );
+        });
+
+        $('#analyze').click(function () {
+            $('#analysisResults').show();
+            obsForm.targets.removeAll();
+            obsForm.members().split(',').forEach(function (t) {
+                var cur = { name: t, contacted: ko.observable(), protocol: ko.observable(), querying: ko.observable(true) };
+                obsForm.targets.push(cur);
+                $.ajax({
+                    url: '/Neighbourhood/Analyze',
+                    type: 'POST',
+                    data: JSON.stringify({
+                        Timeout: obsForm.responseLimit(),
+                        Name: t
+                    }),
+                    contentType: 'application/json',
+                    timeout: obsForm.responseLimit() * 5,
+                    success: function (data, textStatus, jqXHR) {
+                        cur.querying(false);
+                        cur.contacted(data.result.Protocol ? 'Yes' : 'No');
+                        cur.protocol(data.result.Protocol || '-');
+                    }
+                })
+            .fail(function () {
+                cur.querying(false);
+                cur.contacted('No');
+                cur.protocol('-');
+            });
+            });
+
         });
 
         $(window).on('beforeunload', function () {

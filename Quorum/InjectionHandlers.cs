@@ -11,6 +11,7 @@ using Castle.MicroKernel;
 using Quorum.Integration;
 using Quorum.Integration.Http;
 using Quorum.Integration.Tcp;
+using Infra;
 
 namespace Quorum {
 
@@ -43,7 +44,7 @@ namespace Quorum {
 
         public WriteableChannelSelector() {
             Types[TransportType.Http] = Types[TransportType.Https] = typeof(HttpWriteableChannel);
-            Types[TransportType.Tcp] = typeof(TcpWriteableChannel);
+            Types[TransportType.Tcp] = Types[TransportType.Tcps] = typeof(TcpWriteableChannel);
         }
 
     }
@@ -52,7 +53,7 @@ namespace Quorum {
 
         public ReadableChannelSelector() {
             Types[TransportType.Http] = Types[TransportType.Https] = typeof(HttpReadableChannel);
-            Types[TransportType.Tcp] = typeof(TcpReadableChannel);
+            Types[TransportType.Tcp] = Types[TransportType.Tcps] = typeof(TcpReadableChannel);
         }
 
     }
@@ -61,9 +62,25 @@ namespace Quorum {
 
         public EventListenerSelector() {
             Types[TransportType.Http] = Types[TransportType.Https] = typeof(HttpExposedEventListener);
-            Types[TransportType.Tcp] = typeof(TcpExposedEventListener);
+            Types[TransportType.Tcp] = Types[TransportType.Tcps] = typeof(TcpExposedEventListener);
         }
 
+    }
+
+    public class LocalStorageSelector : GenericHandlerSelector<IConfigurationOverrideStorage> {
+
+        protected Dictionary<bool, Type> Types = new Dictionary<bool, Type>();
+
+        public LocalStorageSelector() {
+            Types[true] = typeof(TransientConfigurationOverrideStorage);
+            Types[false] = typeof(StaticConfigurationOverrideStorage);
+        }
+
+        protected override Type RelevantType {
+            get {
+                return Types[ActiveDisposition.IsTransient];
+            }
+        }
     }
 
 }

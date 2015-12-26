@@ -4,21 +4,8 @@
 // MIT license applies.
 //
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Quorum.States;
-using Quorum.AOP;
-using Castle.Windsor;
-using Castle.MicroKernel.Registration;
-using Castle.DynamicProxy;
-using Quorum.Integration;
-using Quorum.Integration.Http;
-using Quorum.Services;
-using System.Reflection;
 using Infra;
+using Quorum;
 
 namespace ControlCentre {
 
@@ -33,7 +20,7 @@ namespace ControlCentre {
             return Container.Resolve<TType>();
         }
 
-        private static Quorum.Builder Container { get; set; }
+        internal static Quorum.Builder Container { get; set; }
 
     }
 

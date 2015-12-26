@@ -60,6 +60,7 @@
     <Compile Include="EventInterpreter.cs" />
     <Compile Include="EventNames.cs" />
     <Compile Include="ExecutionContext.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="IExecutionContext.cs" />
     <Compile Include="IMasterWorkAdapter.cs" />
     <Compile Include="InjectionHandlers.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="Integration\Tcp\TcpEventListener.cs" />
     <Compile Include="Integration\Tcp\TcpReadableChannel.cs" />
     <Compile Include="Integration\Tcp\TcpWriteableChannel.cs" />
+    <Compile Include="Payloads\AnalysisResult.cs" />
     <Compile Include="Payloads\BasePayload.cs" />
     <Compile Include="Payloads\BasicMachine.cs" />
     <Compile Include="Payloads\DeathAnnouncement.cs" />
@@ -112,6 +114,7 @@
     <Compile Include="States\PretenderState.cs" />
     <Compile Include="States\QueryState.cs" />
     <Compile Include="States\QuiescentState.cs" />
+    <Compile Include="TransientConfigurationOverrideStorage.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FSM\FSM.csproj">

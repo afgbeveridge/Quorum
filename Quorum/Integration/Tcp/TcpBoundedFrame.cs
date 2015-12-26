@@ -7,6 +7,7 @@
 using System.Text;
 using System.Threading.Tasks;
 using System.Net.Sockets;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using Infra;
@@ -19,7 +20,7 @@ namespace Quorum.Integration.Tcp {
         private const char DirectiveSeparator = '=';
 
         static TcpBoundedFrame() {
-            LengthBytes = new Configuration().Get(Constants.Configuration.TcpFrameSizeSpecificationLength);
+            LengthBytes = new Configuration().WithAppropriateOverrides().Get(Constants.Configuration.TcpFrameSizeSpecificationLength);
             DirectiveFromContentSeparator = (char) 3;
         }
 
@@ -27,11 +28,11 @@ namespace Quorum.Integration.Tcp {
 
         public static char DirectiveFromContentSeparator { get; set; }
 
-        public async Task<int> FrameAndWrite(NetworkStream stream, string content, string directives = "") {
+        public async Task<int> FrameAndWrite(Stream stream, string content, string directives = "") {
             return await FrameAndWrite(stream, SizeUp(content, directives));
         }
 
-        private async Task<int> FrameAndWrite(NetworkStream stream, byte[] frame) {
+        private async Task<int> FrameAndWrite(Stream stream, byte[] frame) {
             await stream.WriteAsync(frame, 0, frame.Length).ConfigureAwait(false);
             return frame.Length;
         }
@@ -55,7 +56,7 @@ namespace Quorum.Integration.Tcp {
                     .Split(DirectiveLine)
                     .Select(s => {
                         var split = s.Split(DirectiveSeparator);
-                        return new { key = split.First(), value = split[1] };
+                        return new { key = split.First().ToLowerInvariant(), value = split[1] };
                     })
                     .ToDictionary(t => t.key, t => t.value);
             }
@@ -67,7 +68,7 @@ namespace Quorum.Integration.Tcp {
             return Encoding.ASCII.GetBytes(LengthBytes + all.Length.ToString().PadLeft(LengthBytes, '0') + all);
         }
 
-        public static async Task<int?> DetermineFrameSize(System.IO.Stream stream) {
+        public static async Task<int?> DetermineFrameSize(Stream stream) {
             // First byte is size of length spec
             // Retained for possible future use
             LogFacade.Instance.LogDebug("Request to determine frame size");
