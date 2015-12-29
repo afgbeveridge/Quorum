@@ -14,6 +14,7 @@
         self.IsMaster = ko.observable('Unknown');
         self.UpTime = ko.observable(0);
         self.Strength = ko.observable('Unknown');
+        self.CurrentState = ko.observable('-');
         self.InEligibleForElection = ko.observable(null);
         // TODO: Arrange for controller server side to handle this
         self.address = 'http://' + n + ':' + port + '/';
@@ -140,6 +141,7 @@
             function invalidate(target) {
                 target.IsMaster('Unknown');
                 target.Strength('Unknown');
+                target.CurrentState('-');
                 target.UpTime(0);
                 target.alive('No');
                 target.showingHardwareDetails(false);
@@ -179,10 +181,19 @@
 
             window.qcc.queryMachines(mcs, config,
                 function (machines) {
+                    var needConfig = [];
+                    var curSet = mcs.sort().join("");
                     machines.forEach(function (m) {
                         var target = getObservable(m.Name);
-                        m.IsValid ? validate(target, m) : invalidate(target);
+                        if (!m.IsValid) 
+                            invalidate(target);
+                        else {
+                            validate(target, m);
+                            if (!m.SupposedNeighbours || m.SupposedNeighbours.length == 0 || (m.SupposedNeighbours || []).sort().join("") != curSet)
+                                needConfig.push(m.Name);
+                        }
                     });
+                    (needConfig.length > 0) && window.qcc.broadcastConfiguration(config, needConfig, mcs);
                 },
             function (xhr, status, error) {
                 mcs.forEach(function (m) {

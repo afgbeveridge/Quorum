@@ -11,6 +11,7 @@ using ControlCentre.Models;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using ControlCentre.Filters;
+using System.Net;
 
 namespace ControlCentre.Controllers {
 
@@ -57,8 +58,9 @@ namespace ControlCentre.Controllers {
         }
 
         [HttpPost]
-        public ActionResult ConfigurationOffer(ConfigurationOfferModel model) {
-            return this.Json(new { result = true });
+        public async Task<ActionResult> ConfigurationOffer(ConfigurationOfferModel model) {
+            await Service.OfferConfiguration(model.ConfigurationTargets, model.StatedNexus);
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
         private ICommunicationsService Service { get { return Builder.Resolve<ICommunicationsService>(); } }

@@ -27,7 +27,6 @@ namespace FSM {
         IStateMachineContext<TContext> Context { get; }
         IContainer Container { get; }
         IEnumerable<IStateDefinition<TContext>> ConfiguredStates { get; }
-        IStateDefinition<TContext> CurrentState { get; }
         Task CheckQueuedEvents();
     }
 

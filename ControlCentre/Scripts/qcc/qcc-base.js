@@ -140,6 +140,24 @@ window.qcc.pingNetworkLite = function (mcs, config, scope, success, always, sile
     });
 };
 
+window.qcc.broadcastConfiguration = function (config, targets, nexus) {
+    qcc.log('Updating neighbour configuraton for ' + targets.join(",") + ' with ' + nexus.join(","));
+    $.ajax({
+        url: '/Neighbourhood/ConfigurationOffer',
+        type: 'POST',
+        data: JSON.stringify({
+            StatedNexus: nexus,
+            ConfigurationTargets: targets,
+            Port: config.port,
+            Timeout: config.responseLimit,
+            TransportType: (ko.isObservable(config.transportType) ? config.transportType() : config.transportType)
+        }),
+        contentType: 'application/json',
+        success: function (data, textStatus, jqXHR) {
+        }
+    });
+};
+
 // Util
 window.qcc.findWithIndex = function (arr, fn) {
     var result;

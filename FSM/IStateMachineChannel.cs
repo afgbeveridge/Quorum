@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace FSM {
 
-    public interface IStateMachineChannel<TContext> {
+    public interface IStateMachineChannel<TContext> where TContext : IMinimalContext {
         Task Trigger(IEventInstance anEvent);
         Task RevertToPreviousState();
         bool HasPreviousState { get; }
@@ -17,6 +17,7 @@ namespace FSM {
         double AbsoluteBootTime { get; }
         IEnumerable<IEventInstance> PendingEvents { get; }
         IEventStatistician StatisticsHandler { get; }
+        IStateDefinition<TContext> CurrentState { get; }
     }
 
 }

@@ -121,6 +121,16 @@ namespace Quorum.Services {
             return new AnalysisResult { Protocol = result.IsNull() || !result.IsValid ? null : protocol.ToString() };
         }
 
+        public Task OfferConfiguration(IEnumerable<string> targets, IEnumerable<string> quorumMembers) {
+            targets
+                .ToList()
+                .ForEach(async t => {
+                    await WriteNeighbour(t, Builder.Create(new ConfigurationBroadcast { QuorumMembers = quorumMembers.ToArray() }));
+                });
+            return Task.FromResult(0);
+        }
+
+
         // A null neighbour is returned if cannot be reached
         public async Task<Neighbour> QueryNeighbour(string name, IWriteableChannel channel = null) {
             Neighbour n = null;

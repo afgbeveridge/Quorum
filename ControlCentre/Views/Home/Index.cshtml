@@ -45,7 +45,7 @@
                     <tr>
                         <th style="width:5%;">State</th>
                         <th style="width:15%;">Name</th>
-                        <th style="width:6%;">Port</th>
+                        <th style="width:6%;">In State</th>
                         <th style="width:19%;">Last contact</th>
                         <th style="width:5%;">Alive?</th>
                         <th style="width:5%;">Master?</th>
@@ -58,7 +58,7 @@
                     <tr data-bind="style: { opacity: $data.detected() ? 1 : 0.5 }">
                         <td><img data-bind="attr: { src: stateIcon }" /></td>
                         <td data-bind="text: $data.name"></td>
-                        <td data-bind="text: $data.port"></td>
+                        <td data-bind="text: $data.CurrentState"></td>
                         <td data-bind="text: $data.lastContact"></td>
                         <td data-bind="text: $data.alive"></td>
                         <td data-bind="text: $data.IsMaster"></td>

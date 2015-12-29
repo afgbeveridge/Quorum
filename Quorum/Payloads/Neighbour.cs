@@ -56,6 +56,8 @@ namespace Quorum.Payloads {
 
         public string[] SupposedNeighbours { get; set; }
 
+        public string CurrentState { get; set; }
+
         public static Neighbour Fabricate(IStateMachineContext<IExecutionContext> context) {
             var cfg = new Configuration().WithAppropriateOverrides();
             var nexus = cfg.Get(Constants.Configuration.Nexus);
@@ -74,7 +76,8 @@ namespace Quorum.Payloads {
                 HandledEvents = context.EnclosingMachine.StatisticsHandler.HandledEventsInNameOrder.ToArray(),
                 WorkUnitsExecuted = context.ExecutionContext.WorkerExecutionUnits,
                 NodeId = context.ExecutionContext.NodeId,
-                SupposedNeighbours = string.IsNullOrEmpty(nexus) ? Enumerable.Empty<string>().ToArray() : nexus.Split(',')
+                SupposedNeighbours = string.IsNullOrEmpty(nexus) ? Enumerable.Empty<string>().ToArray() : nexus.Split(','),
+                CurrentState = context.EnclosingMachine.CurrentState.IsNull() ? "None" : context.EnclosingMachine.CurrentState.Name
             };
         }
 
