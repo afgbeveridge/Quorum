@@ -40,6 +40,12 @@
             $('#analysisResults').hide();
         });
         obsForm.targets = ko.observableArray();
+        obsForm.protocolsDetected = ko.observableArray();
+        obsForm.analysisIssues = ko.observable(false);
+        obsForm.protocolsDetected.subscribe(function () {
+            var cur = obsForm.protocolsDetected();
+            obsForm.analysisIssues(cur.length < 2 ? false : !cur.reduce(function (a, b) { return a === b ? a : false; }));
+        });
         ko.applyBindings(obsForm, $('#cfgBindingSection')[0]);
         $('#save').click(function () {
             var cfg = {};
@@ -76,6 +82,7 @@
         $('#analyze').click(function () {
             $('#analysisResults').show();
             obsForm.targets.removeAll();
+            obsForm.protocolsDetected.removeAll();
             obsForm.members().split(',').forEach(function (t) {
                 var cur = { name: t, contacted: ko.observable(), protocol: ko.observable(), querying: ko.observable(true) };
                 obsForm.targets.push(cur);
@@ -89,9 +96,11 @@
                     contentType: 'application/json',
                     timeout: obsForm.responseLimit() * 5,
                     success: function (data, textStatus, jqXHR) {
+                        var protocol = data.result.Protocol;
                         cur.querying(false);
-                        cur.contacted(data.result.Protocol ? 'Yes' : 'No');
-                        cur.protocol(data.result.Protocol || '-');
+                        cur.contacted(protocol ? 'Yes' : 'No');
+                        cur.protocol(protocol || '-');
+                        protocol && obsForm.protocolsDetected.push(protocol);
                     }
                 })
             .fail(function () {

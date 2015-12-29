@@ -12,6 +12,8 @@ using Newtonsoft.Json.Converters;
 using Infra;
 using System.Timers;
 using Quorum.Payloads;
+using Quorum.States;
+using System.Linq;
 
 
 namespace Quorum.Integration {
@@ -51,6 +53,7 @@ namespace Quorum.Integration {
                 ConfigureLogging(LogOptions ?? DeriveLoggingOptions());
                 Machine = BuildHelper.Create();
                 Container = BuildHelper.AsContainer();
+                CheckStability();
                 SpinUpListener();
                 Configure();
                 BuildHelper.Register<IMasterWorkAdapter>(impl);
@@ -111,6 +114,16 @@ namespace Quorum.Integration {
             Listener = Container.Resolve<IExposedEventListener<IExecutionContext>>();
             Listener.Machine = Machine;
             Listener.Initialize();
+        }
+
+        private void CheckStability() {
+            var cfg = Container.Resolve<IConfiguration>().WithAppropriateOverrides();
+            if (string.IsNullOrEmpty(cfg.Get(Constants.Configuration.Nexus))) {
+                LogFacade.Instance.LogInfo("Machine will enter pending configuration state, awaiting a configuration broadcast");
+                Machine.ConfiguredStates.First(d => d.IsStartState).IsStartState = false;
+                // We know the name of a state...hmmm..
+                Machine.ConfiguredStates.First(d => d.StateType == typeof(PendingConfigurationState)).IsStartState = true;
+            }
         }
 
         public IStateMachine<IExecutionContext> Machine { get; private set; }

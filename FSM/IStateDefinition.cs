@@ -14,7 +14,7 @@ namespace FSM {
         Type StateType { get; }
         bool IsBounceState { get; }
         string Name { get; }
-        bool IsStartState { get; }
+        bool IsStartState { get; set; }
         bool IsSingleton { get; }
         IState<TContext> CachedState { get; }
     }

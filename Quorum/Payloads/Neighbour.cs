@@ -13,16 +13,16 @@ using System.Diagnostics;
 
 namespace Quorum.Payloads {
 
-    public enum MachineStrength {  Compute, IO, Memory }
+    public enum MachineStrength { Compute, IO, Memory }
 
     public class Neighbour : BasePayload {
 
         public bool IsMaster { get; set; }
 
-        public bool IsValid { 
+        public bool IsValid {
             get {
                 return Hardware.IsNotNull();
-            } 
+            }
         }
 
         public bool InEligibleForElection { get; set; }
@@ -54,23 +54,28 @@ namespace Quorum.Payloads {
 
         public long NodeId { get; set; }
 
+        public string[] SupposedNeighbours { get; set; }
+
         public static Neighbour Fabricate(IStateMachineContext<IExecutionContext> context) {
-                var strength = new Configuration().WithAppropriateOverrides().Get(Constants.Configuration.MachineStrength);
-                var actualStrength = string.IsNullOrEmpty(strength) ? MachineStrength.Compute : (MachineStrength)Enum.Parse(typeof(MachineStrength), strength, true);
-                return new Neighbour {
-                    IsMaster = context.ExecutionContext.IsMaster,
-                    Name = context.ExecutionContext.HostName,
-                    UpTime = context.EnclosingMachine.UpTime,
-                    AbsoluteBootTime = context.EnclosingMachine.AbsoluteBootTime,
-                    Strength = actualStrength.ToString(),
-                    // Could be null if not yet interrogated
-                    Hardware = HardwareDetails.Instance ?? new HardwareDetails(),
-                    InEligibleForElection = context.ExecutionContext.InEligibleForElection,
-                    PendingEvents = context.EnclosingMachine.PendingEvents.Select(e => new PendingEvent {  Id = e.Id, Name = e.EventName, CreatedOn = e.CreatedOn, AgeInSeconds = (DateTime.Now  - e.CreatedOn).TotalSeconds}).ToArray(),
-                    HandledEvents = context.EnclosingMachine.StatisticsHandler.HandledEventsInNameOrder.ToArray(),
-                    WorkUnitsExecuted = context.ExecutionContext.WorkerExecutionUnits,
-                    NodeId = context.ExecutionContext.NodeId
-                };
+            var cfg = new Configuration().WithAppropriateOverrides();
+            var nexus = cfg.Get(Constants.Configuration.Nexus);
+            var strength = cfg.Get(Constants.Configuration.MachineStrength);
+            var actualStrength = string.IsNullOrEmpty(strength) ? MachineStrength.Compute : (MachineStrength)Enum.Parse(typeof(MachineStrength), strength, true);
+            return new Neighbour {
+                IsMaster = context.ExecutionContext.IsMaster,
+                Name = context.ExecutionContext.HostName,
+                UpTime = context.EnclosingMachine.UpTime,
+                AbsoluteBootTime = context.EnclosingMachine.AbsoluteBootTime,
+                Strength = actualStrength.ToString(),
+                // Could be null if not yet interrogated
+                Hardware = HardwareDetails.Instance ?? new HardwareDetails(),
+                InEligibleForElection = context.ExecutionContext.InEligibleForElection,
+                PendingEvents = context.EnclosingMachine.PendingEvents.Select(e => new PendingEvent { Id = e.Id, Name = e.EventName, CreatedOn = e.CreatedOn, AgeInSeconds = (DateTime.Now - e.CreatedOn).TotalSeconds }).ToArray(),
+                HandledEvents = context.EnclosingMachine.StatisticsHandler.HandledEventsInNameOrder.ToArray(),
+                WorkUnitsExecuted = context.ExecutionContext.WorkerExecutionUnits,
+                NodeId = context.ExecutionContext.NodeId,
+                SupposedNeighbours = string.IsNullOrEmpty(nexus) ? Enumerable.Empty<string>().ToArray() : nexus.Split(',')
+            };
         }
 
         public static Neighbour NonRespondingNeighbour(string name) {
@@ -88,11 +93,11 @@ namespace Quorum.Payloads {
         }
 
         public string PhysicalMemory { get; set; }
-        
+
         public string CPUManufacturer { get; set; }
-        
+
         public string CPUSpeed { get; set; }
-        
+
         public string OS { get; set; }
 
         public static HardwareDetails Interrogate() {

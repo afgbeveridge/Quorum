@@ -181,6 +181,7 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\BaseRequestModel.cs" />
+    <Compile Include="Models\ConfigurationOfferModel.cs" />
     <Compile Include="Models\EligibilityRequestModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />

@@ -95,6 +95,7 @@
     <Compile Include="Payloads\AnalysisResult.cs" />
     <Compile Include="Payloads\BasePayload.cs" />
     <Compile Include="Payloads\BasicMachine.cs" />
+    <Compile Include="Payloads\ConfigurationBroadcast.cs" />
     <Compile Include="Payloads\DeathAnnouncement.cs" />
     <Compile Include="Payloads\Neighbour.cs" />
     <Compile Include="Payloads\Neighbourhood.cs" />
@@ -111,9 +112,11 @@
     <Compile Include="States\DiscoveryState.cs" />
     <Compile Include="States\ElectionState.cs" />
     <Compile Include="States\MasterState.cs" />
+    <Compile Include="States\PendingConfigurationState.cs" />
     <Compile Include="States\PretenderState.cs" />
     <Compile Include="States\QueryState.cs" />
     <Compile Include="States\QuiescentState.cs" />
+    <Compile Include="States\ReceivingConfigurationState.cs" />
     <Compile Include="TransientConfigurationOverrideStorage.cs" />
   </ItemGroup>
   <ItemGroup>

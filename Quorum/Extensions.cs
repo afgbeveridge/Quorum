@@ -9,5 +9,9 @@ namespace Quorum {
             return cfg;
         }
 
+        public static bool IsStable(this IConfiguration cfg) {
+            return !string.IsNullOrEmpty(cfg.Get(Constants.Configuration.Nexus));
+        }
+
     }
 }

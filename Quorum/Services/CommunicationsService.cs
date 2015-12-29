@@ -112,6 +112,7 @@ namespace Quorum.Services {
             Neighbour result = null;
             var names = Enum.GetNames(typeof(TransportType));
             string protocol = null;
+            // Rather old school use of a for loop as c# gets all confused using an async lambda with a FirstOrDefault(), which was my preferred approach
             for (int i = 0; i < names.Length && (result.IsNull() || !result.IsValid); i++) {
                 protocol = names[i];
                 ActiveDisposition.AcceptTransportType(protocol);

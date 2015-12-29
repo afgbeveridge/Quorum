@@ -54,7 +54,7 @@ namespace Quorum.States {
             // Timeout is config
             LogFacade.Instance.LogInfo("Send obit to " + cur.NeighbourName);
             var content = Builder.Create(new DeathAnnouncement { IsMaster = cur.IsMaster, Name = cur.LocalAddress });
-            await ChannelPrototype.NewInstance().Write(cur.NeighbourName, content, Configuration.Get<int>(Constants.Configuration.ResponseLimit));
+            await ChannelPrototype.NewInstance().Write(cur.NeighbourName, content, Configuration.Get(Constants.Configuration.ResponseLimit));
         }
 
         private class TaskState {

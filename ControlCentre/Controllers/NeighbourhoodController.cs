@@ -56,6 +56,11 @@ namespace ControlCentre.Controllers {
             return this.Json(new { result = await Service.Analyze(Builder.Container.AsContainer(), target.Name) });
         }
 
+        [HttpPost]
+        public ActionResult ConfigurationOffer(ConfigurationOfferModel model) {
+            return this.Json(new { result = true });
+        }
+
         private ICommunicationsService Service { get { return Builder.Resolve<ICommunicationsService>(); } }
 
     }

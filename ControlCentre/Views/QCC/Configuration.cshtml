@@ -65,6 +65,12 @@
         </div>
     </div>
     <p></p>
+    <div class="row" data-bind="visible: analysisIssues" style="color: red;">
+        <div class="col-xs-8">
+            Warning: Detected that the quorum is unstable - different protocols in use.
+        </div>
+    </div>
+    <p></p>
     <div class="row" id="analysisResults" style="display: none;">
         <div class="col-xs-12">
             <table class="table">

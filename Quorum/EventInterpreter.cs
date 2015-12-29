@@ -23,7 +23,8 @@ namespace Quorum {
             { typeof(DeathAnnouncement).Name, EventNames.NeighbourDying },
             { typeof(AbdicationState).Name, EventNames.Abdication },
             { typeof(PretenderState).Name, EventNames.MakePretender },
-            { typeof(DeathState).Name, EventNames.Die }
+            { typeof(DeathState).Name, EventNames.Die },
+            { typeof(ReceivingConfigurationState).Name, EventNames.ConfigurationOffered }
         }; 
 
         public IPayloadParser Parser { get; set; }

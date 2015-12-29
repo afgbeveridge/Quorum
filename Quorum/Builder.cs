@@ -85,6 +85,13 @@ namespace Quorum {
                        // State
                        .DefineState<PretenderState>()
                        .MarkAsBounceState()
+                       // State
+                       .DefineState<PendingConfigurationState>()
+                       .On(EventNames.ConfigurationOffered)
+                       .TransitionTo<ReceivingConfigurationState>()
+                       // State
+                       .DefineState<ReceivingConfigurationState>()
+                       .MarkAsBounceState()
                        // Commit last state
                        .Complete()
                        // Allow query transition from all states

@@ -264,7 +264,7 @@ namespace FSM {
 
         public IEnumerable<IStateDefinition<TContext>> ConfiguredStates { get { return States; } }
 
-        private class StateDefinition : IStateDefinition<TContext> {
+        public class StateDefinition : IStateDefinition<TContext> {
 
             internal StateDefinition(IContainer ctr) {
                 HandledEvents = new Dictionary<string, Type>();
@@ -286,7 +286,7 @@ namespace FSM {
                     return state;
                 }
             }
-            public bool IsStartState { get; internal set; }
+            public bool IsStartState { get; set; }
             public bool IsSingleton { get; internal set; }
             internal Type EventReceived(string name, bool ignoreNonMatch) {
                 var exists = HandledEvents.ContainsKey(name);
