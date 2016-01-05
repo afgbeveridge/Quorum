@@ -31,7 +31,8 @@ namespace ControlCentre {
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                      "~/Content/toastr.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/qccbase").Include("~/Scripts/qcc/qcc-base.js"));
             bundles.Add(new ScriptBundle("~/bundles/qccconfiguration").Include("~/Scripts/qcc/qcc-configuration.js"));

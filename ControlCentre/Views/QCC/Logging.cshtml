@@ -1,11 +1,8 @@
 ﻿@{
-    ViewBag.Title = "QCC Configuration";
+    ViewBag.Title = "QCC Logging";
 }
 
-<div class="jumbotron">
-    <h2>Quorum Control Centre - Logging</h2>
-    <h4 id="bootWait">Just checking a few things...<img src="~/Content/Images/ajax-loader.gif" /></h4>
-</div>
+@Html.Partial("_JumbotronHeader", new { Purpose = "Logging", GatedPage = true }.ToExpando())
 
 <div id="wrongTransport" style="display: none;">
     <h2>Logging support is only provided when the quorum transport is either http or https</h2>
@@ -13,8 +10,11 @@
 
 <div id="bindingSection" style="display: none;">
     <div class="row">
+        <div class="col-xs-3"><span data-bind="html: 'Active transport:<strong>' + config.transportType + '</strong>'"></span></div>
+        <div data-bind="visible: insecure" class="col-xs-9"><span class="text-danger">Warning: You should view real time logs over a secure connection</span></div>
+    </div>
+    <div class="row">
         <div class="col-xs-4">Quorum members - click a node to start/stop log capture</div>
-        <div class="col-xs-2"><span data-bind="html: 'Active transport:<strong>' + config.transportType + '</strong>'"></span></div>
     </div>
     <p></p>
     <div style='width:100%'>

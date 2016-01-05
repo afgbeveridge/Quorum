@@ -2,9 +2,7 @@
     ViewBag.Title = "Probe";
 }
 
-<div class="jumbotron">
-    <h2>Quorum Control Centre - Network Probe</h2>
-</div>
+@Html.Partial("_JumbotronHeader", new { Purpose = "Network Probe", GatedPage = false }.ToExpando())
 
 <div id="monitorSection">
     <div class="container">

@@ -2,9 +2,7 @@
     ViewBag.Title = "QCC Configuration";
 }
 
-<div class="jumbotron">
-    <h2>Quorum Control Centre - Configuration</h2>
-</div>
+@Html.Partial("_JumbotronHeader", new { Purpose = "Configuration", GatedPage = false }.ToExpando())
 
 <div id="cfgBindingSection" style="display: none;">
     <div class="row">
@@ -53,13 +51,9 @@
     </div>
     <p></p>
     <div class="row">
-        <div class="col-xs-8">
+        <div class="col-xs-3">
             <button data-bind="enable: isValid" id="save" class="btn-primary">Save</button>&nbsp;<button id="cancel" class="btn-primary">Cancel</button>
-            <span id="savedMessage" style="display: none;">Configuration saved...</span>
         </div>
-    </div>
-    <p></p>
-    <div class="row">
         <div class="col-xs-8">
             <button data-bind="enable: isValid" id="analyze" class="btn-primary">Analyze</button>&nbsp;Click this button to check if the members defined are currently active
         </div>
@@ -97,4 +91,5 @@
 
 @section scripts {
     @Scripts.Render("~/bundles/qccconfiguration")
+    @Scripts.Render("~/Scripts/toastr.js")
 }

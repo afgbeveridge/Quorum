@@ -112,7 +112,8 @@
             maxEntries: ko.observable(50),
             config: cfg,
             socketViewModels: ko.observableArray([]),
-            scanTimer: null
+            scanTimer: null,
+            insecure: !secureTransport
         };
 
         loggingViewModel.nodes = ko.observableArray(loggingViewModel.config.members.map(function (m) { return new selectableNodeViewModel(m, cfg.port); }));

@@ -2,10 +2,7 @@
     ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron">
-    <h2>Quorum Control Centre - Network view</h2>
-    <h4 id="bootWait">Just checking a few things...<img src="~/Content/Images/ajax-loader.gif" /></h4>
-</div>
+@Html.Partial("_JumbotronHeader", new { Purpose = "Operations view", GatedPage = true }.ToExpando())
 
 <div id="monitorSection" style="display: none;">
     <div class="container">

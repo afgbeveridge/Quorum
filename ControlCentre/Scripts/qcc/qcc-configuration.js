@@ -8,6 +8,12 @@
         alert('Cannot ascertain any configuration at all');
     }
     else {
+        toastr.options = {
+            "positionClass": "toast-top-center",
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "2500"
+        };
         var obsForm = config.observableForm;
         // Now fill in some limits
         obsForm.limits = {
@@ -58,7 +64,7 @@
             }
             window.qcc.save(cfg);
             config.hash = window.qcc.computeConfigurationHash(obsForm);
-            $('#savedMessage').show().fadeOut(2000);
+            toastr["info"]("Configuration saved...", "QCC");
         });
 
         $('#cancel').click(function () { location.assign('/'); });
