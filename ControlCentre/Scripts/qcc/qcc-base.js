@@ -158,6 +158,16 @@ window.qcc.broadcastConfiguration = function (config, targets, nexus) {
     });
 };
 
+window.qcc.scanner = function(config, members, success, always) {
+    window.qcc.pingNetworkLite(
+        members,
+        config,
+        null,
+        success,
+        always || $.noop,
+        true);
+};
+
 // Util
 window.qcc.findWithIndex = function (arr, fn) {
     var result;

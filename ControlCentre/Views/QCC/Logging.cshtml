@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "QCC Configuration";
+}
+
+<div class="jumbotron">
+    <h2>Quorum Control Centre - Logging</h2>
+    <h4 id="bootWait">Just checking a few things...<img src="~/Content/Images/ajax-loader.gif" /></h4>
+</div>
+
+<div id="wrongTransport" style="display: none;">
+    <h2>Logging support is only provided when the quorum transport is either http or https</h2>
+</div>
+
+<div id="bindingSection" style="display: none;">
+    <div class="row">
+        <div class="col-xs-4">Quorum members - click a node to start/stop log capture</div>
+        <div class="col-xs-2"><span data-bind="html: 'Active transport:<strong>' + config.transportType + '</strong>'"></span></div>
+    </div>
+    <p></p>
+    <div style='width:100%'>
+        <ul id="nodeList" class="quorumMember" data-bind="foreach: nodes">
+            <li style='display:inline;width: 100%;' data-bind="click: click, css: nodeOpacity"><img data-bind="attr: { src: applicableImage }" height='32' width='32' /><span data-bind="text: $data.name"></span></li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th style="width:20%;">Node</th>
+                        <th style="width:30%;">When</th>
+                        <th style="width:10%;">Level</th>
+                        <th style="width:40%;">Message</th>
+                    </tr>
+                </thead>
+                <tbody data-bind="foreach: entries">
+                    <tr>
+                        <td data-bind="text: $data.Node"></td>
+                        <td data-bind="text: $data.When"></td>
+                        <td data-bind="text: $data.Level"></td>
+                        <td data-bind="text: $data.Message"></td>
+                    </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    @Scripts.Render("~/bundles/qcc-logging")
+}

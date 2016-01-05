@@ -87,8 +87,6 @@ namespace Quorum {
                        .MarkAsBounceState()
                        // State
                        .DefineState<PendingConfigurationState>()
-                       .On(EventNames.ConfigurationOffered)
-                       .TransitionTo<ReceivingConfigurationState>()
                        // State
                        .DefineState<ReceivingConfigurationState>()
                        .MarkAsBounceState()
@@ -102,7 +100,8 @@ namespace Quorum {
                        .ForAllEnter<AbdicationState>(EventNames.Abdication)
                        .ForAllEnter<MasterState>(EventNames.Elected)
                        .ForAllEnter<PretenderState>(EventNames.MakePretender)
-                       .ForAllEnter<QuiescentState>(EventNames.Quiescent);
+                       .ForAllEnter<QuiescentState>(EventNames.Quiescent)
+                       .ForAllEnter<ReceivingConfigurationState>(EventNames.ConfigurationOffered);
 
         }
 
@@ -120,7 +119,7 @@ namespace Quorum {
             Register<IConfiguration, Configuration>();
             Register<INetworkEnvironment, SimpleNetworkEnvironment>();
             Register<ICommunicationsService, CommunicationsService>();
-            RegisterValidators();
+            Register<ISecurityService, SecurityService>();
             Container.Kernel.AddHandlerSelector(new WriteableChannelSelector());
             Container.Kernel.AddHandlerSelector(new ReadableChannelSelector());
             Container.Kernel.AddHandlerSelector(new EventListenerSelector());
@@ -144,10 +143,6 @@ namespace Quorum {
             Register<IReadableChannel, TcpReadableChannel>();
             Register<IWriteableChannel, TcpWriteableChannel>();
             Register<IExposedEventListener<IExecutionContext>, TcpExposedEventListener>();
-        }
-
-        protected virtual void RegisterValidators() {
-            Register<IRequestValidator, SimpleRequestValidator>();
         }
 
         protected virtual void RegisterInterceptors() {

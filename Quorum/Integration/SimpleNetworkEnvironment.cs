@@ -29,12 +29,13 @@ namespace Quorum.Integration {
         public string NameForIPAddress(IPAddress address) {
             return Dns
                     .GetHostEntry(address)
-                    .HostName;
+                    .HostName
+                    .ToLowerInvariant();
         }
 
         public string HostName {
             get {
-                return Dns.GetHostName();
+                return Dns.GetHostName().ToLowerInvariant();
             }
         }
 

@@ -196,6 +196,10 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Images\ajax-loader.gif" />
     <Content Include="Content\Images\ellipsis.gif" />
+    <Content Include="Content\Images\listening_server.png" />
+    <Content Include="Content\Images\not_contacted_server.png" />
+    <Content Include="Content\Images\not_listening_server.png" />
+    <Content Include="Content\Images\server.png" />
     <Content Include="Content\Images\traffic-lights-green-icon.png" />
     <Content Include="Content\Images\traffic-lights-red-icon.png" />
     <Content Include="Content\Images\traffic-lights-yellow-icon.png" />
@@ -227,6 +231,7 @@
     <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\qcc\qcc-base.js" />
     <Content Include="Scripts\qcc\qcc-configuration.js" />
+    <Content Include="Scripts\qcc\qcc-logging.js" />
     <Content Include="Scripts\qcc\qcc-monitor.js" />
     <Content Include="Scripts\qcc\qcc-probe.js" />
     <Content Include="Scripts\respond.js" />
@@ -269,6 +274,7 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\QCC\Configuration.cshtml" />
     <Content Include="Views\Neighbourhood\Index.cshtml" />
+    <Content Include="Views\QCC\Logging.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

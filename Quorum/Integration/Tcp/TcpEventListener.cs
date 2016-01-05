@@ -13,6 +13,7 @@ using System.Net.Security;
 using System.IO;
 using Infra;
 using FSM;
+using Quorum.Services;
 using System.Security.Cryptography.X509Certificates;
 
 namespace Quorum.Integration.Tcp {
@@ -21,7 +22,7 @@ namespace Quorum.Integration.Tcp {
 
         private static readonly byte[] AcceptedMessageBytes = Encoding.ASCII.GetBytes(AcceptedMessage);
 
-        public TcpExposedEventListener(IConfiguration cfg, IEventInterpreter<IExecutionContext> interpreter, INetworkEnvironment env, IRequestValidator validator) : base(cfg, interpreter, validator) {
+        public TcpExposedEventListener(IConfiguration cfg, IEventInterpreter<IExecutionContext> interpreter, INetworkEnvironment env, ISecurityService svc) : base(cfg, interpreter, svc) {
             NetworkHelper = env;
         }
 
@@ -42,7 +43,7 @@ namespace Quorum.Integration.Tcp {
                     var stream = OpenStream(client);
                     int? size = await TcpBoundedFrame.DetermineFrameSize(stream);
                     if (size.HasValue)
-                        RequestValidator.ValidateRequestSize(size.Value);
+                        SecurityService.ValidateRequestSize(size.Value);
                     var result = TcpBoundedFrame.Parse(await stream.ReadAll(size));
                     // Check directives
                     ValidateRequest(result.Directives, client);
@@ -69,7 +70,7 @@ namespace Quorum.Integration.Tcp {
         }
 
         private void ValidateRequest(IDictionary<string, string> directives, TcpClient client) {
-            RequestValidator.ValidateDirectives(directives, client);
+            SecurityService.ValidateDirectives(directives, client);
         }
 
         private INetworkEnvironment NetworkHelper { get; set; }

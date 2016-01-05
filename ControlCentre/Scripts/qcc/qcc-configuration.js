@@ -49,6 +49,7 @@
         ko.applyBindings(obsForm, $('#cfgBindingSection')[0]);
         $('#save').click(function () {
             var cfg = {};
+            obsForm.members(obsForm.members().toLowerCase());
             for (var prop in obsForm) {
                 if (config.hasOwnProperty(prop)) {
                     var cur = obsForm[prop];

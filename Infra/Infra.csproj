@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractLogger.cs" />
+    <Compile Include="CachedLogEntry.cs" />
     <Compile Include="Crypto.cs" />
     <Compile Include="DBC.cs" />
     <Compile Include="AsyncAssert.cs" />

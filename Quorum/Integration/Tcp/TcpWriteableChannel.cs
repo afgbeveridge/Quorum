@@ -10,6 +10,7 @@ using Infra;
 using System.Net.Sockets;
 using System.IO;
 using System.Net.Security;
+using Quorum.Services;
 
 namespace Quorum.Integration.Tcp {
 
@@ -23,6 +24,8 @@ namespace Quorum.Integration.Tcp {
         }
 
         protected INetworkEnvironment Network { get; private set; }
+
+        public ISecurityService SecurityService { get; set; }
 
         public async Task<string> Write(string address, string content, int timeoutMs) {
             var splitTimeout = timeoutMs / 2;
@@ -49,7 +52,7 @@ namespace Quorum.Integration.Tcp {
                     LogFacade.Instance.LogInfo("Tcp connection established with " + address);
                     var stream = OpenStream(client, secure, address);
                     TcpBoundedFrame frame = new TcpBoundedFrame();
-                    int written = await frame.FrameAndWrite(stream, content, GetDirectives());
+                    int written = await frame.FrameAndWrite(stream, content, SecurityService.GetRawFrameDirectives());
                     LogFacade.Instance.LogInfo("Written bytes to " + address + ", count " + written);
                     result = TcpBoundedFrame.Parse(await stream.ReadAll(TcpBoundedFrame.DetermineFrameSize)).Content;
                     LogFacade.Instance.LogDebug("Read from " + address + ": '" + result + "'");
@@ -69,17 +72,6 @@ namespace Quorum.Integration.Tcp {
                 str = enc;
             }
             return str;
-        }
-
-        private string GetDirectives() {
-            string result = string.Empty;
-            if (Configuration.Get(Constants.Configuration.EmitCustomHeader)) {
-                result = TcpBoundedFrame.CombineDirectives(
-                                TcpBoundedFrame.FormDirective(Configuration.Get(Constants.Configuration.CustomHeader), Network.UniqueId),
-                                TcpBoundedFrame.FormDirective(Configuration.Get(Constants.Configuration.HostNameHeader), Network.SeedForUniqueId)
-                         );
-            }
-            return result;
         }
 
         private void ConnectionCallback(IAsyncResult result) {
@@ -107,7 +99,7 @@ namespace Quorum.Integration.Tcp {
         }
 
         public IWriteableChannel NewInstance() {
-            return new TcpWriteableChannel(Network, Configuration);
+            return new TcpWriteableChannel(Network, Configuration) { SecurityService = SecurityService };
         }
 
         private IConfiguration Configuration { get; set; }

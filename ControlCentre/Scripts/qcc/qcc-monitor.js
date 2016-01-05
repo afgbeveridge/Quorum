@@ -110,7 +110,7 @@
         },
         owner: this
     })
-    
+
 
     vm.viable = ko.computed(function () {
         var active = 0;
@@ -172,7 +172,7 @@
                     target.maximumResponseTime(elapsed);
                 target.totalResponseTimes(target.totalResponseTimes() + elapsed);
             };
-            var mcs = vm.members.filter(function(m) { return m.detected(); }).map(function (m) { return m.name; });
+            var mcs = vm.members.filter(function (m) { return m.detected(); }).map(function (m) { return m.name; });
 
             function getObservable(name) {
                 var nm = name.toLowerCase();
@@ -185,7 +185,7 @@
                     var curSet = mcs.sort().join("");
                     machines.forEach(function (m) {
                         var target = getObservable(m.Name);
-                        if (!m.IsValid) 
+                        if (!m.IsValid)
                             invalidate(target);
                         else {
                             validate(target, m);
@@ -235,27 +235,21 @@
         stop(vm.scanTimer);
     });
 
-    function scanner(firstTime) {
-        window.qcc.pingNetworkLite(
-            vm.members.map(function(m) { return m.name; }),
-            config, null,
-            function (machines) {
-                var found = machines.map(function (m) { return m.Name.toLowerCase(); });
-                vm.members.forEach(function (m) {
-                    m.detected(found.indexOf(m.name) >= 0);
-                });
-            },
-            function () {
-                if (firstTime) {
-                    $('#bootWait').toggle();
-                    $('#monitorSection').show('slidein');
-                    start(vm.gatedDiscoPeriod());
-                }
-            }, true);
+    var scanNodes = vm.members.map(function (m) { return m.name; });
+
+    function onScanComplete(machines) {
+        var found = machines.map(function (m) { return m.Name.toLowerCase(); });
+        vm.members.forEach(function (m) {
+            m.detected(found.indexOf(m.name) >= 0);
+        });
     };
 
-    scanner(true);
+    window.qcc.scanner(config, scanNodes, onScanComplete, function () {
+        $('#bootWait').toggle();
+        $('#monitorSection').show('slidein');
+        start(vm.gatedDiscoPeriod());
+    });
 
-    vm.scanTimer(setInterval(scanner, scanInterval));
+    vm.scanTimer(setInterval(window.qcc.scanner, scanInterval, config, scanNodes, onScanComplete));
 
 });

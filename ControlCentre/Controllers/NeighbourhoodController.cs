@@ -24,19 +24,19 @@ namespace ControlCentre.Controllers {
 
         [HttpPost]
         public async Task<ActionResult> ContactableNeighbours(QueryModel model) {
-            return this.Json(new { machines = await Service.Ping(model.Machines, model.Timeout) }, JsonRequestBehavior.AllowGet);
+            return this.Json(new { machines = await CommsService.Ping(model.Machines, model.Timeout) });
         }
 
         [HttpPost]
         public ActionResult ApparentNeighbours(ProbeQueryModel model) {
-            return this.Json(new { machines = Service.VisibleComputers(model.Scope.IsNull() || model.Scope.ToLowerInvariant().Contains("work")) });
+            return this.Json(new { machines = CommsService.VisibleComputers(model.Scope.IsNull() || model.Scope.ToLowerInvariant().Contains("work")) });
         }
 
         [HttpPost]
         public async Task<ActionResult> QueryMachines(QueryModel model) {
             Stopwatch watch = new Stopwatch();
             watch.Start();
-            var result = this.Json(new { machines = await Service.Query(model.Machines, true) });
+            var result = this.Json(new { machines = await CommsService.Query(model.Machines, true) });
             watch.Stop();
             LogFacade.Instance.LogDebug("QueryMachines executed in " + watch.ElapsedMilliseconds + " ms");
             return result;
@@ -44,26 +44,34 @@ namespace ControlCentre.Controllers {
 
         [HttpPost]
         public ActionResult RenderInEligible(EligibilityRequestModel model) {
-            return this.Json(new { success = Service.RenderInEligible(model.Name) });
+            return this.Json(new { success = CommsService.RenderInEligible(model.Name) });
         }
 
         [HttpPost]
         public ActionResult RenderEligible(EligibilityRequestModel model) {
-            return this.Json(new { success = Service.RenderEligible(model.Name) });
+            return this.Json(new { success = CommsService.RenderEligible(model.Name) });
         }
 
         [HttpPost]
         public async Task<ActionResult> Analyze(TargetRequestModel target) {
-            return this.Json(new { result = await Service.Analyze(Builder.Container.AsContainer(), target.Name) });
+            return this.Json(new { result = await CommsService.Analyze(Builder.Container.AsContainer(), target.Name) });
+        }
+
+        [HttpGet]
+        public ActionResult GenerateCustomHeaders() {
+            string sourceHost = Request.IsLocal ? Builder.Resolve<INetworkEnvironment>().HostName : Request.UserHostName.ToLowerInvariant();
+            return this.Json(new { result = SecurityService.EncodedFrameDirectivesFor(sourceHost) }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         public async Task<ActionResult> ConfigurationOffer(ConfigurationOfferModel model) {
-            await Service.OfferConfiguration(model.ConfigurationTargets, model.StatedNexus);
+            await CommsService.OfferConfiguration(model.ConfigurationTargets, model.StatedNexus);
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
-        private ICommunicationsService Service { get { return Builder.Resolve<ICommunicationsService>(); } }
+        private ICommunicationsService CommsService { get { return Builder.Resolve<ICommunicationsService>(); } }
+
+        private ISecurityService SecurityService { get { return Builder.Resolve<ISecurityService>(); } }
 
     }
 

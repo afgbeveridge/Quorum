@@ -6,7 +6,7 @@
 #endregion
 using System.Text;
 using System.Threading.Tasks;
-using System.Net.Sockets;
+using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,12 +21,12 @@ namespace Quorum.Integration.Tcp {
 
         static TcpBoundedFrame() {
             LengthBytes = new Configuration().WithAppropriateOverrides().Get(Constants.Configuration.TcpFrameSizeSpecificationLength);
-            DirectiveFromContentSeparator = (char) 3;
+            DirectiveFromContentSeparator = new string((char)3, 1);
         }
 
         public static int LengthBytes { get; set; }
 
-        public static char DirectiveFromContentSeparator { get; set; }
+        public static string DirectiveFromContentSeparator { get; set; }
 
         public async Task<int> FrameAndWrite(Stream stream, string content, string directives = "") {
             return await FrameAndWrite(stream, SizeUp(content, directives));
@@ -45,9 +45,10 @@ namespace Quorum.Integration.Tcp {
             return string.Join(new string(DirectiveLine, 1), directives);
         }
 
-        public static TcpBundle Parse(string entireSet) {
+        public static TcpBundle Parse(string unconverted) {
+            var entireSet = Encoding.ASCII.GetString(Convert.FromBase64String(unconverted));
             int idx = entireSet.IndexOf(DirectiveFromContentSeparator);
-            TcpBundle result = new TcpBundle { Content = idx < 0 ? entireSet : entireSet.Substring(idx + 1) };
+            TcpBundle result = new TcpBundle { Content = idx < 0 ? entireSet : entireSet.EndsWith(DirectiveFromContentSeparator) ? String.Empty : entireSet.Substring(idx + 1) };
             if (idx > 0) {
                 // for is x=y|a=b and so on
                 result.Directives = 
@@ -64,8 +65,15 @@ namespace Quorum.Integration.Tcp {
         }
 
         public byte[] SizeUp(string content, string directives = "") {
-            var all = directives + (!string.IsNullOrEmpty(directives) ? new string(DirectiveFromContentSeparator, 1) : string.Empty) + content;
-            return Encoding.ASCII.GetBytes(LengthBytes + all.Length.ToString().PadLeft(LengthBytes, '0') + all);
+            return Encoding.ASCII.GetBytes(SizeUpString(content, directives));
+        }
+
+        public string SizeUpString(string content, string directives = "") {
+            // We base64 the content to allow easier usage downstream for other potential consumers
+            var unconverted = directives + (!string.IsNullOrEmpty(directives) ? DirectiveFromContentSeparator : string.Empty) + content;
+            var all = Convert.ToBase64String(Encoding.ASCII.GetBytes(unconverted));
+            LogFacade.Instance.LogDebug("Converted tcp send content: " + all);
+            return LengthBytes + all.Length.ToString().PadLeft(LengthBytes, '0') + all;
         }
 
         public static async Task<int?> DetermineFrameSize(Stream stream) {
@@ -80,6 +88,11 @@ namespace Quorum.Integration.Tcp {
             remaining = int.Parse(Encoding.ASCII.GetString(lenBytes, 0, toRead));
             LogFacade.Instance.LogDebug("Determined frame size to be: " + remaining);
             return remaining;
+        }
+
+        // If a complete frame is offered up, length bytes and all, try and decipher
+        public static string DissectCompleteFrame(string src) {
+            return src.Substring(LengthBytes + 1);
         }
 
     }

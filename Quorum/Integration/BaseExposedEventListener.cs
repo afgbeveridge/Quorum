@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Infra;
 using System.Threading;
 using FSM;
+using Quorum.Services;
 
 
 namespace Quorum.Integration {
@@ -21,7 +22,7 @@ namespace Quorum.Integration {
 
         protected IEventInterpreter<IExecutionContext> Interpreter { get; private set; }
 
-        protected IRequestValidator RequestValidator { get; private set; }
+        protected ISecurityService SecurityService { get; private set; }
 
         protected bool Secure {
             get {
@@ -29,10 +30,10 @@ namespace Quorum.Integration {
             }
         }
 
-        public BaseExposedEventListener(IConfiguration cfg, IEventInterpreter<IExecutionContext> interpreter, IRequestValidator validator) {
+        public BaseExposedEventListener(IConfiguration cfg, IEventInterpreter<IExecutionContext> interpreter, ISecurityService svc) {
             Config = cfg;
             Interpreter = interpreter;
-            RequestValidator = validator;
+            SecurityService = svc;
         }
 
         public IStateMachine<IExecutionContext> Machine { get; set; }
@@ -57,7 +58,7 @@ namespace Quorum.Integration {
 
         protected abstract void StopListening();
 
-        private CancellationTokenSource CancellationToken { get; set; }
+        protected CancellationTokenSource CancellationToken { get; set; }
 
         private Task ListenerTask { get; set; }
 

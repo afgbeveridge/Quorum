@@ -15,6 +15,10 @@ namespace ControlCentre.Controllers {
             return View();
         }
 
+        public ActionResult Logging() {
+            return View();
+        }
+
         public ActionResult SetTransportType(string type) {
             ActiveDisposition.Initialise(type);
             return this.Json(new { success = true }, JsonRequestBehavior.AllowGet);
