@@ -28,7 +28,8 @@
             return window.qcc.isPositiveNumeric(val) && parseInt(val) >= min && parseInt(val) <= max;
         };
         obsForm.membersInvalid = ko.computed(function () {
-            return !obsForm.members() || obsForm.members().length == 0 || $.trim(obsForm.members()) == '';
+            return !obsForm.members() || obsForm.members().length == 0 || 
+                    $.trim(obsForm.members()) == '' || !obsForm.members().split(',').every(function(n) { return n; });
         });
         obsForm.responseLimitInvalid = ko.computed(function () {
             return !obsForm.isInRange(obsForm.responseLimit(), obsForm.limits.minResponseLimit, obsForm.limits.maxResponseLimit);
@@ -53,7 +54,8 @@
             obsForm.analysisIssues(cur.length < 2 ? false : !cur.reduce(function (a, b) { return a === b ? a : false; }));
         });
         ko.applyBindings(obsForm, $('#cfgBindingSection')[0]);
-        $('#save').click(function () {
+
+        function deriveConfiguration() {
             var cfg = {};
             obsForm.members(obsForm.members().toLowerCase());
             for (var prop in obsForm) {
@@ -61,7 +63,12 @@
                     var cur = obsForm[prop];
                     cfg[prop] = ko.isObservable(cur) ? cur() : '';
                 }
-            }
+            };
+            return cfg;
+        };
+
+        $('#save').click(function () {
+            var cfg = deriveConfiguration();
             window.qcc.save(cfg);
             config.hash = window.qcc.computeConfigurationHash(obsForm);
             toastr["info"]("Configuration saved...", "QCC");
@@ -87,6 +94,7 @@
         });
 
         $('#analyze').click(function () {
+            $('#importExport').hide();
             $('#analysisResults').show();
             obsForm.targets.removeAll();
             obsForm.protocolsDetected.removeAll();
@@ -117,6 +125,41 @@
             });
             });
 
+        });
+
+        $('#hideAnalysis').click(function () {
+            $('#analysisResults').hide();
+        });
+
+        function handleImportExportAction(toHide, toShow, doc) {
+            $('#analysisResults').hide();
+            $(toHide).hide();
+            $('#importExport').show();
+            $(toShow).show();
+            $('#configurationDocument').val(doc);
+        };
+
+        $('#import').click(function () {
+            handleImportExportAction('.exportMode', '.importMode', '');
+        });
+
+        $('#export').click(function () {
+            var json = qcc.serialize(deriveConfiguration());
+            handleImportExportAction('.importMode', '.exportMode', json);
+        });
+
+        $('#hideImportExportSection').click(function () {
+            $('#importExport').hide();
+        });
+
+        $('#importConfiguration').click(function () {
+            try {
+                var cfg = JSON.parse($('#configurationDocument').val());
+                ko.mapping.fromJS(cfg, null, obsForm);
+            }
+            catch (e) {
+                toastr["error"]("Specified configuration invalid...", "QCC");
+            }
         });
 
         $(window).on('beforeunload', function () {

@@ -120,6 +120,10 @@
         return active > 1;
     });
 
+    vm.splitBrain = ko.computed(function () {
+        return vm.members.filter(function (m) { return m.IsMaster() === true; }).length > 1;
+    });
+
     vm.gatedDiscoPeriod.extend({ rateLimit: { timeout: 175, method: "notifyWhenChangesStop" } });
 
     function modifyAjaxTimeout() {

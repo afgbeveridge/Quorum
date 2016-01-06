@@ -6,6 +6,9 @@
 
 <div id="monitorSection" style="display: none;">
     <div class="container">
+        <div class="row" data-bind="visible: splitBrain">
+            <div class="col-xs-12"><img height="64" width="64" src="~/Content/Images/warning-red.png" /><strong>The Quorum is in a split brain state</strong></div>
+        </div>
         <div class="row">
             <div class="col-xs-2"><span data-bind="html: 'Active transport:<strong>' + transport + '</strong>'"></span></div>
             <div class="col-xs-3">Poll period:&nbsp;<input type="text" maxlength="8" data-bind="textinput: gatedDiscoPeriod" /></div>

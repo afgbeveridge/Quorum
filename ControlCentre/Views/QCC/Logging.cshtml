@@ -10,11 +10,11 @@
 
 <div id="bindingSection" style="display: none;">
     <div class="row">
-        <div class="col-xs-3"><span data-bind="html: 'Active transport:<strong>' + config.transportType + '</strong>'"></span></div>
-        <div data-bind="visible: insecure" class="col-xs-9"><span class="text-danger">Warning: You should view real time logs over a secure connection</span></div>
+        <div class="col-xs-12"><span data-bind="html: 'Active transport:<strong>' + config.transportType + '</strong>'"></span><span data-bind="visible: insecure" class="text-danger">&nbsp;(Warning: You should view real time logs over a secure connection)</span></div>
     </div>
+    <p></p>
     <div class="row">
-        <div class="col-xs-4">Quorum members - click a node to start/stop log capture</div>
+        <div class="col-xs-7"><strong>Quorum members - click a node to start/stop log capture</strong></div>
     </div>
     <p></p>
     <div style='width:100%'>
