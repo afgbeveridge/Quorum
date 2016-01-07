@@ -29,7 +29,7 @@ namespace Quorum.Integration.Http {
                 var response = Task.Run(() => request.Client.SendAsync(msg), cts.Token).Result;
                 cts.Dispose();
                 string result = null;
-                LogFacade.Instance.LogDebug("Success?: " + response.IsSuccessStatusCode);
+                LogFacade.Instance.LogDebug("Success?: " + response.IsSuccessStatusCode + ", code: " + response.StatusCode);
                 if (response.IsSuccessStatusCode)
                     result = await response.Content.ReadAsStringAsync();
                 LogFacade.Instance.LogDebug("Content read: " + result);
