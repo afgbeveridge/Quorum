@@ -36,11 +36,11 @@ namespace Quorum.Services {
         public IPayloadBuilder Builder { get; set; }
 
         // Discover all neighbours, using the configured channel
-        public async Task<IEnumerable<Neighbour>> DiscoverExcept(string invokingHostName) {
+        public async Task<IEnumerable<Neighbour>> DiscoverExcept(string invokingHostName, bool includeNonResponders = false) {
             var staticNeighbours = Configuration.Get<string>(Constants.Configuration.Nexus.Key);
             var neighbours = !String.IsNullOrEmpty(staticNeighbours) ? staticNeighbours.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries).Except(new[] { invokingHostName }, StringComparer.InvariantCultureIgnoreCase) : null;
             var result = Enumerable.Empty<Neighbour>();
-            return await Query(neighbours);
+            return await Query(neighbours, includeNonResponders);
         }
 
         public async Task<IEnumerable<Neighbour>> Query(IEnumerable<string> targets, bool includeNonResponders = false) {
@@ -53,6 +53,19 @@ namespace Quorum.Services {
                 result = queries.Where(t => !t.IsFaulted && t.Result.IsNotNull() && (t.Result.IsValid || includeNonResponders)).Select(t => t.Result);
             }
             return result;
+        }
+
+        public async Task<BroadcastDiscoveryResult> BroadcastDiscovery(IEnumerable<string> targets, IEnumerable<string> possibleNeighbours) {
+            var request = Builder.Create(new OutOfBandDiscoveryRequest { MootedNeighbours = possibleNeighbours });
+            Task<string>[] queries = targets.Select(s => WriteNeighbour(s, request)).ToArray();
+            LogFacade.Instance.LogDebug("Wait for " + queries.Count() + " task(s)");
+            await Task.WhenAll(queries);
+            return new BroadcastDiscoveryResult {
+                QueriedMembers = queries
+                                    .Where(t => !t.IsFaulted && t.Result.IsNotNull())
+                                    .Select(t => Parser.As<DiscoveryEncapsulate>(t.Result))
+                                    .ToArray()
+            };
         }
 
         public IEnumerable<BasicMachine> VisibleComputers(bool workgroupOnly = false) {

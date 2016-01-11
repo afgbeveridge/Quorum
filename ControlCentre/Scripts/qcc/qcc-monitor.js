@@ -2,7 +2,7 @@
 
     // See if we have some in local storage
 
-    var config = window.qcc.deserializeWithCheck(), maxTrackedRequests = 100, scanInterval = 10000;
+    var config = qcc.deserializeWithCheck(), maxTrackedRequests = 100, scanInterval = 10000;
 
     var member = function (n, port, limit) {
         var self = this;
@@ -21,7 +21,7 @@
         self.detected = ko.observable(false);
         function mutator(stateName) {
             $.ajax({
-                url: '/Neighbourhood/Render' + stateName,
+                url: qcc.makeUrl('/Neighbourhood/Render' + stateName),
                 type: 'POST',
                 data: JSON.stringify({
                     Name: self.name,
@@ -103,7 +103,7 @@
             return vm.discoPeriod();
         },
         write: function (value) {
-            var valid = window.qcc.isPositiveNumeric(value) && parseInt(value) >= parseInt(config.responseLimit);
+            var valid = qcc.isPositiveNumeric(value) && parseInt(value) >= parseInt(config.responseLimit);
             if (valid)
                 vm.discoPeriod(value);
             $('#invalidPollPeriod')[valid ? 'hide' : 'show']();
@@ -183,7 +183,7 @@
                 return qcc.findWithIndex(vm.members, function (v) { return v.name == nm; }).element;
             };
 
-            window.qcc.queryMachines(mcs, config,
+            qcc.queryMachines(mcs, config,
                 function (machines) {
                     var needConfig = [];
                     var curSet = mcs.sort().join("");
@@ -197,7 +197,7 @@
                                 needConfig.push(m.Name);
                         }
                     });
-                    (needConfig.length > 0) && window.qcc.broadcastConfiguration(config, needConfig, mcs);
+                    (needConfig.length > 0) && qcc.broadcastConfiguration(config, needConfig, mcs);
                 },
             function (xhr, status, error) {
                 mcs.forEach(function (m) {
@@ -248,12 +248,12 @@
         });
     };
 
-    window.qcc.scanner(config, scanNodes, onScanComplete, function () {
+    qcc.scanner(config, scanNodes, onScanComplete, function () {
         $('#bootWait').toggle();
         $('#monitorSection').show('slidein');
         start(vm.gatedDiscoPeriod());
     });
 
-    vm.scanTimer(setInterval(window.qcc.scanner, scanInterval, config, scanNodes, onScanComplete));
+    vm.scanTimer(setInterval(qcc.scanner, scanInterval, config, scanNodes, onScanComplete));
 
 });

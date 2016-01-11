@@ -41,7 +41,8 @@ namespace Infra {
             catch (Exception ex) {
                 //Diagnostics.LogException(typeof(ObjectExtensions), "Guarded execution failed", ex);
                 try {
-                    if (onFailure.IsNotNull()) onFailure(ex);
+                    onFailure?.Invoke(ex);
+                    //if (onFailure.IsNotNull()) onFailure(ex);
                 }
                 catch (Exception) {
                     // Diagnostics.LogException(typeof(ObjectExtensions), "Guarded execution error handler failed (!)", e);

@@ -4,8 +4,7 @@
 // MIT license applies.
 //
 #endregion
-using Infra;
-using Quorum;
+using FSM;
 
 namespace ControlCentre {
 
@@ -21,6 +20,8 @@ namespace ControlCentre {
         }
 
         internal static Quorum.Builder Container { get; set; }
+
+        internal static IContainer AsContainer { get { return Container.AsContainer(); } }
 
     }
 

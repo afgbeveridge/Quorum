@@ -1,6 +1,6 @@
 ﻿$(document).ready(function () {
 
-    var config = window.qcc.deserializeWithCheck();
+    var config = qcc.deserializeWithCheck();
 
     var machine = function (mc) {
         var self = this;
@@ -26,7 +26,7 @@
         vm.appConfigText('');
         $('#probeStart').hide();
         $('#probeWorking').show();
-        window.qcc.scanNetworkLite(
+        qcc.scanNetworkLite(
             config,
             vm.scope(),
             function (machines) {
@@ -60,7 +60,7 @@
             var mcs = vm.machines().map(function (m) { return m.name(); });
             vm.responders.removeAll();
             changeStatus('Waiting...');
-            window.qcc.queryMachines(mcs, config, function (machines) {
+            qcc.queryMachines(mcs, config, function (machines) {
                 changeStatus('No');
                 machines.forEach(function (m) {
                     if (m.IsValid) {

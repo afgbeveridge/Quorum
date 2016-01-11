@@ -15,10 +15,13 @@ namespace Quorum {
 
     public class EventInterpreter : IEventInterpreter<IExecutionContext> {
 
+        // Requests that target a directly executable aspect
         private static readonly Dictionary<string, Type> ExecMap = new Dictionary<string, Type> { 
-            { typeof(QueryRequest).Name, typeof(QueryState) }
-        }; 
+            { typeof(QueryRequest).Name, typeof(QueryState) },
+            { typeof(OutOfBandDiscoveryRequest).Name, typeof(DiscoveryState) }
+        };
 
+        // Requests that target state changes directed through the state machine
         private static readonly Dictionary<string, string> TypeNameMap = new Dictionary<string, string> { 
             { typeof(DeathAnnouncement).Name, EventNames.NeighbourDying },
             { typeof(AbdicationState).Name, EventNames.Abdication },

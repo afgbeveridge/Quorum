@@ -2,7 +2,7 @@
 
     // See if we have some in local storage
 
-    var config = window.qcc.deserialize();
+    var config = qcc.deserialize();
 
     if (!config) {
         alert('Cannot ascertain any configuration at all');
@@ -25,7 +25,7 @@
             standardSecurePort: 8999
         };
         obsForm.isInRange = function (val, min, max) {
-            return window.qcc.isPositiveNumeric(val) && parseInt(val) >= min && parseInt(val) <= max;
+            return qcc.isPositiveNumeric(val) && parseInt(val) >= min && parseInt(val) <= max;
         };
         obsForm.membersInvalid = ko.computed(function () {
             return !obsForm.members() || obsForm.members().length == 0 || 
@@ -47,11 +47,54 @@
             $('#analysisResults').hide();
         });
         obsForm.targets = ko.observableArray();
-        obsForm.protocolsDetected = ko.observableArray();
         obsForm.analysisIssues = ko.observable(false);
-        obsForm.protocolsDetected.subscribe(function () {
-            var cur = obsForm.protocolsDetected();
-            obsForm.analysisIssues(cur.length < 2 ? false : !cur.reduce(function (a, b) { return a === b ? a : false; }));
+        obsForm.analysisLeft = ko.observable(0);
+        obsForm.analysisLeft.subscribe(function (val) {
+            var machinesContacted = obsForm.targets().filter(function (m) { return m.contacted(); });
+            if (val == 0) {
+                if (obsForm.analysisIssues() || machinesContacted.length == 0) {
+                    machinesContacted.forEach(function (m) {
+                        m.phase2Active(false);
+                        m.phase2Ok('n');
+                    });
+                }
+                else {
+                    function getVmContainer(name) {
+                        return qcc.findWithIndex(machinesContacted, function (p) { return p.name == name; }).element;
+                    };
+                    qcc.log('Commence phase #2 of analysis');
+                    $.ajax({
+                        url: qcc.makeUrl('/Neighbourhood/RequestQuorumSelfValidation'),
+                        type: 'POST',
+                        data: JSON.stringify({
+                            Timeout: obsForm.responseLimit() * 5,
+                            Machines: machinesContacted.map(function (m) { return m.name; }),
+                            PossibleNeighbours: obsForm.members().split(','),
+                            Protocol: machinesContacted[0].protocol().toLowerCase(),
+                            Port: obsForm.port()
+                        }),
+                        contentType: 'application/json',
+                        timeout: obsForm.responseLimit() * 5,
+                    })
+                    .done(function (data, textStatus, jqXHR) {
+                        var mems = data.result.QueriedMembers;
+                        mems.forEach(function (m) {
+                            var cur = getVmContainer(m.Name), uncontactable = m.Results.filter(function (n) { return !n.Contacted; }).map(function (n) { return n.Name; }).join(",");
+                            cur.phase2Active(false);
+                            cur.phase2Ok(uncontactable == '' ? 'y' : 'n');
+                            cur.uncontactedMachines(uncontactable);
+                        });
+                    })
+
+                    .fail(function () {
+                        machinesContacted.forEach(function (m) { m.phase2Active(false); })
+                    });
+                }
+            }
+        });
+        obsForm.targets.subscribe(function () {
+            var cur = obsForm.targets().filter(function(m) { return m.contacted(); });
+            obsForm.analysisIssues(cur.length < 2 ? false : !cur.reduce(function (a, b) { return a.protocol() === b.protocol() ? a : false; }));
         });
         ko.applyBindings(obsForm, $('#cfgBindingSection')[0]);
 
@@ -69,8 +112,8 @@
 
         $('#save').click(function () {
             var cfg = deriveConfiguration();
-            window.qcc.save(cfg);
-            config.hash = window.qcc.computeConfigurationHash(obsForm);
+            qcc.save(cfg);
+            config.hash = qcc.computeConfigurationHash(obsForm);
             toastr["info"]("Configuration saved...", "QCC");
         });
 
@@ -79,7 +122,7 @@
         $('#scanLite').click(function () {
             $('#scanDiv').hide();
             $('#scanWorking').show();
-            window.qcc.scanNetworkLite(
+            qcc.scanNetworkLite(
                 config,
                 null,
                 function (machines) {
@@ -93,16 +136,38 @@
             );
         });
 
+        var analysisVm = function (name) {
+            var self = this;
+            self.name = name;
+            self.contacted = ko.observable();
+            self.contactedText = ko.computed(function () {
+                return self.contacted() ? 'Yes' : 'No';
+            });
+            self.protocol = ko.observable();
+            self.phase1Active = ko.observable(true);
+            self.phase2Active = ko.observable(false);
+            self.phase2Ok = ko.observable('?');
+            self.uncontactedMachines = ko.observable('');
+            self.inactive = ko.computed(function () {
+                return !self.phase2Active() && !self.phase1Active();
+            });
+            self.phase2Image = ko.computed(function () {
+                return self.phase2Ok() == 'y' ? '/Content/Images/tick.png' : (self.phase2Ok() == 'n' || !self.contacted() ? '/Content/Images/cross.png' : '/Content/Images/ajax-loader.gif');
+            });
+        };
+
         $('#analyze').click(function () {
             $('#importExport').hide();
             $('#analysisResults').show();
+            qcc.log('Commence phase #1 of analysis');
             obsForm.targets.removeAll();
-            obsForm.protocolsDetected.removeAll();
-            obsForm.members().split(',').forEach(function (t) {
-                var cur = { name: t, contacted: ko.observable(), protocol: ko.observable(), querying: ko.observable(true) };
+            var mems = obsForm.members().split(',');
+            obsForm.analysisLeft(mems.length);
+            mems.forEach(function (t) {
+                var cur = new analysisVm(t);
                 obsForm.targets.push(cur);
                 $.ajax({
-                    url: '/Neighbourhood/Analyze',
+                    url: qcc.makeUrl('/Neighbourhood/Analyze'),
                     type: 'POST',
                     data: JSON.stringify({
                         Timeout: obsForm.responseLimit(),
@@ -110,19 +175,24 @@
                     }),
                     contentType: 'application/json',
                     timeout: obsForm.responseLimit() * 5,
-                    success: function (data, textStatus, jqXHR) {
-                        var protocol = data.result.Protocol;
-                        cur.querying(false);
-                        cur.contacted(protocol ? 'Yes' : 'No');
-                        cur.protocol(protocol || '-');
-                        protocol && obsForm.protocolsDetected.push(protocol);
-                    }
                 })
-            .fail(function () {
-                cur.querying(false);
-                cur.contacted('No');
-                cur.protocol('-');
-            });
+                .done(function (data, textStatus, jqXHR) {
+                        var protocol = data.result.Protocol;
+                        cur.phase1Active(false);
+                        cur.contacted(protocol ? true : false);
+                        cur.protocol(protocol || '-');
+                        // Let all machines be dispatched to phase #2; this is for a reason
+                        // protocol && obsForm.machinesContacted.push({ protocol: protocol, vm: cur });
+                })
+                .fail(function () {
+                    cur.phase1Active(false);
+                    cur.contacted(false);
+                    cur.protocol('-');
+                })
+                .always(function () {
+                    obsForm.targets.valueHasMutated();
+                    obsForm.analysisLeft(obsForm.analysisLeft() - 1);
+                });
             });
 
         });
@@ -163,7 +233,7 @@
         });
 
         $(window).on('beforeunload', function () {
-            var hash = window.qcc.computeConfigurationHash(obsForm);
+            var hash = qcc.computeConfigurationHash(obsForm);
             if (hash != config.hash) return 'You have unsaved changes.';
         });
 

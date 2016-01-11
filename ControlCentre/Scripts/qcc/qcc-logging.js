@@ -1,6 +1,6 @@
 ﻿$(document).ready(function () {
 
-    var cfg = window.qcc.deserializeWithCheck(), transport = cfg.transportType.toLowerCase(), secureTransport = transport.indexOf("s") > 0;
+    var cfg = qcc.deserializeWithCheck(), transport = cfg.transportType.toLowerCase(), secureTransport = transport.indexOf("s") > 0;
 
     if (transport.indexOf("h") < 0) {
         $('#bootWait').hide();
@@ -11,7 +11,7 @@
 
         var maxSocketConnectionWait = 5000, socketConnectionTimeout = 100, token;
 
-        $.getJSON('/Neighbourhood/GenerateCustomHeaders', null, function (data) {
+        $.getJSON(qcc.makeUrl('/Neighbourhood/GenerateCustomHeaders'), null, function (data) {
             token = data.result;
         });
 
@@ -125,12 +125,12 @@
             });
         };
 
-        window.qcc.scanner(loggingViewModel.config, loggingViewModel.config.members, onScanComplete, function () {
+        qcc.scanner(loggingViewModel.config, loggingViewModel.config.members, onScanComplete, function () {
             $('#bootWait').toggle();
             $('#bindingSection').show('slidein');
         });
 
-        loggingViewModel.scanTimer = setInterval(window.qcc.scanner, 10000, loggingViewModel.config, loggingViewModel.config.members, onScanComplete);
+        loggingViewModel.scanTimer = setInterval(qcc.scanner, 10000, loggingViewModel.config, loggingViewModel.config.members, onScanComplete);
 
         $(window).unload(function () {
             qcc.log("Stopping scan timer");

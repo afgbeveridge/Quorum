@@ -3,34 +3,39 @@
 
 window.qcc = window.qcc || {};
 
-window.qcc.configuration = window.qcc.configuration || {};
+qcc.configuration = qcc.configuration || {};
 
-window.qcc.redirectLocation = "/QCC/Configuration";
+qcc.redirectLocation = "/QCC/Configuration";
+qcc.urlBase = '';
 
-window.qcc.logEnabled = true;
+qcc.logEnabled = true;
 
-window.qcc.log = function (msg) {
-    window.qcc.logEnabled && console.log(msg);
+qcc.log = function (msg) {
+    qcc.logEnabled && console.log(msg);
 };
 
-window.qcc.serialize = function (cfg) {
+qcc.makeUrl = function (url) {
+    return qcc.urlBase + url;
+};
+
+qcc.serialize = function (cfg) {
     return ko.toJSON(cfg);
 };
 
-window.qcc.withLocalStorage = function (f) {
+qcc.withLocalStorage = function (f) {
     if (typeof (Storage) === "undefined")
         alert('Browser local storage is required to use this web app');
     else return f();
 };
 
-window.qcc.computeConfigurationHash = function (cfg) {
+qcc.computeConfigurationHash = function (cfg) {
     // TOD: Handle situation where order of members changes, but not actually their names
     return ['members', 'port', 'responseLimit', 'transportType']
         .map(function (p) { return ko.isObservable(cfg[p]) ? cfg[p]() : cfg[p]; }).join(',');
 };
 
-window.qcc.deserialize = function () {
-    return window.qcc.withLocalStorage(function () {
+qcc.deserialize = function () {
+    return qcc.withLocalStorage(function () {
         var stored = localStorage.getItem('qcc'), result;
         if (stored)
             result = JSON.parse(stored);
@@ -43,13 +48,13 @@ window.qcc.deserialize = function () {
             };
         }
         result.observableForm = ko.mapping.fromJS(result);
-        result.hash = window.qcc.computeConfigurationHash(result);
+        result.hash = qcc.computeConfigurationHash(result);
         result.members = result.members.split(',');
         return result;
     });
 };
 
-window.qcc.deserializeWithCheck = function () {
+qcc.deserializeWithCheck = function () {
     var config = qcc.deserialize();
     if (!config || !config.members || config.members.length == 0 || !config.members.every(function (n) { return n && n.length > 0; })) {
         alert('Please set up your configuration');
@@ -58,16 +63,16 @@ window.qcc.deserializeWithCheck = function () {
     return config;
 };
 
-window.qcc.save = function (cfg) {
-    window.qcc.withLocalStorage(function () {
-        localStorage.setItem('qcc', window.qcc.serialize(cfg));
+qcc.save = function (cfg) {
+    qcc.withLocalStorage(function () {
+        localStorage.setItem('qcc', qcc.serialize(cfg));
     });
 };
 
-window.qcc.queryMachines = function (mcs, config, onSuccess, failed, always) {
+qcc.queryMachines = function (mcs, config, onSuccess, failed, always) {
     qcc.log('Querying neighbours with timeout set to ' + config.responseLimit);
     $.ajax({
-        url: '/Neighbourhood/QueryMachines',
+        url: qcc.makeUrl('/Neighbourhood/QueryMachines'),
         type: 'POST',
         data: JSON.stringify({
             Machines: mcs,
@@ -76,10 +81,11 @@ window.qcc.queryMachines = function (mcs, config, onSuccess, failed, always) {
             TransportType: (ko.isObservable(config.transportType) ? config.transportType() : config.transportType)
         }),
         contentType: 'application/json',
-        success: function (data, textStatus, jqXHR) {
-            onSuccess(data.machines);
-        }
     })
+        .done(function (data, textStatus, jqXHR) {
+            onSuccess(data.machines);
+        })
+
         .fail(function (xHR, status, error) {
             if (failed) failed(xHR, status, error);
         })
@@ -88,9 +94,9 @@ window.qcc.queryMachines = function (mcs, config, onSuccess, failed, always) {
         });
 };
 
-window.qcc.networkProbe = function (options) {
+qcc.networkProbe = function (options) {
     $.ajax({
-        url: options.url,
+        url: qcc.makeUrl(options.url),
         type: 'POST',
         data: JSON.stringify({
             Port: options.config.port,
@@ -101,9 +107,9 @@ window.qcc.networkProbe = function (options) {
         }),
         contentType: 'application/json',
         timeout: options.ajaxTimeout,
-        success: function (data, textStatus, jqXHR) {
-                options.success(data.machines);
-            }
+    }).
+        done(function (data, textStatus, jqXHR) {
+            options.success(data.machines);
         })
         .fail(function () {
             if (!options.silent)
@@ -114,9 +120,9 @@ window.qcc.networkProbe = function (options) {
         });
 };
 
-window.qcc.scanNetworkLite = function (config, scope, success, always, timeout) {
-    window.qcc.networkProbe({
-        url: '/Neighbourhood/ApparentNeighbours',
+qcc.scanNetworkLite = function (config, scope, success, always, timeout) {
+    qcc.networkProbe({
+        url: qcc.makeUrl('/Neighbourhood/ApparentNeighbours'),
         config: config,
         scope: scope,
         success: success,
@@ -125,9 +131,9 @@ window.qcc.scanNetworkLite = function (config, scope, success, always, timeout) 
     });
 };
 
-window.qcc.pingNetworkLite = function (mcs, config, scope, success, always, silent, timeout) {
-    window.qcc.networkProbe({
-        url: '/Neighbourhood/ContactableNeighbours',
+qcc.pingNetworkLite = function (mcs, config, scope, success, always, silent, timeout) {
+    qcc.networkProbe({
+        url: qcc.makeUrl('/Neighbourhood/ContactableNeighbours'),
         config: config,
         scope: scope,
         success: success,
@@ -140,10 +146,10 @@ window.qcc.pingNetworkLite = function (mcs, config, scope, success, always, sile
     });
 };
 
-window.qcc.broadcastConfiguration = function (config, targets, nexus) {
+qcc.broadcastConfiguration = function (config, targets, nexus) {
     qcc.log('Updating neighbour configuraton for ' + targets.join(",") + ' with ' + nexus.join(","));
     $.ajax({
-        url: '/Neighbourhood/ConfigurationOffer',
+        url: qcc.makeUrl('/Neighbourhood/ConfigurationOffer'),
         type: 'POST',
         data: JSON.stringify({
             StatedNexus: nexus,
@@ -153,13 +159,13 @@ window.qcc.broadcastConfiguration = function (config, targets, nexus) {
             TransportType: (ko.isObservable(config.transportType) ? config.transportType() : config.transportType)
         }),
         contentType: 'application/json',
-        success: function (data, textStatus, jqXHR) {
-        }
-    });
+    })
+        .done(function (data, textStatus, jqXHR) {
+        });
 };
 
-window.qcc.scanner = function(config, members, success, always) {
-    window.qcc.pingNetworkLite(
+qcc.scanner = function (config, members, success, always) {
+    qcc.pingNetworkLite(
         members,
         config,
         null,
@@ -169,7 +175,7 @@ window.qcc.scanner = function(config, members, success, always) {
 };
 
 // Util
-window.qcc.findWithIndex = function (arr, fn) {
+qcc.findWithIndex = function (arr, fn) {
     var result;
     for (var i = 0; i < arr.length && !result; i++) {
         result = fn(arr[i], i) ? { element: arr[i], index: i } : null;
@@ -177,6 +183,6 @@ window.qcc.findWithIndex = function (arr, fn) {
     return result;
 };
 
-window.qcc.isPositiveNumeric = function (val) {
+qcc.isPositiveNumeric = function (val) {
     return /^\d+$/.test(val);
 };

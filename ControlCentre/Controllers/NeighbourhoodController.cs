@@ -54,7 +54,12 @@ namespace ControlCentre.Controllers {
 
         [HttpPost]
         public async Task<ActionResult> Analyze(TargetRequestModel target) {
-            return this.Json(new { result = await CommsService.Analyze(Builder.Container.AsContainer(), target.Name) });
+            return this.Json(new { result = await CommsService.Analyze(Builder.AsContainer, target.Name) });
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> RequestQuorumSelfValidation(SelfDiscoveryRequest model) {
+            return this.Json(new { result = await CommsService.BroadcastDiscovery(model.Machines, model.PossibleNeighbours) });
         }
 
         [HttpGet]

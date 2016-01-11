@@ -14,7 +14,7 @@ namespace Infra {
             store.Open(OpenFlags.ReadOnly);
             X509Certificate2 cert = store.Certificates.Cast<X509Certificate2>().FirstOrDefault(certFinder);
             store.Close();
-            DBC.False(cert.IsNull(), () => string.Format("No certificate matching the request found in {0}/{1}", storeLocation, storeName));
+            DBC.False(cert.IsNull(), () => $"No certificate matching the request found in {storeLocation}/{storeName}");
             return cert;
         }
 

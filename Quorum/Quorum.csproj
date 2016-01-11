@@ -95,8 +95,10 @@
     <Compile Include="Payloads\BasicMachine.cs" />
     <Compile Include="Payloads\ConfigurationBroadcast.cs" />
     <Compile Include="Payloads\DeathAnnouncement.cs" />
+    <Compile Include="Payloads\BroadcastDiscoveryResult.cs" />
     <Compile Include="Payloads\Neighbour.cs" />
     <Compile Include="Payloads\Neighbourhood.cs" />
+    <Compile Include="Payloads\OutOfBandDiscoveryRequest.cs" />
     <Compile Include="Payloads\PendingEvent.cs" />
     <Compile Include="Payloads\QueryRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -14,9 +14,11 @@ namespace Quorum.Services {
     
     public interface ICommunicationsService {
 
-        Task<IEnumerable<Neighbour>> DiscoverExcept(string invokingHostName);
+        Task<IEnumerable<Neighbour>> DiscoverExcept(string invokingHostName, bool includeNonResponders = false);
 
         Task<IEnumerable<Neighbour>> Query(IEnumerable<string> targets, bool includeNonResponders = false);
+
+        Task<BroadcastDiscoveryResult> BroadcastDiscovery(IEnumerable<string> targets, IEnumerable<string> possibleNeighbours);
 
         Task<Neighbour> QueryNeighbour(string name, IWriteableChannel channel = null);
 

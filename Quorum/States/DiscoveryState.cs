@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using FSM;
 using Quorum.Services;
 using Quorum.Payloads;
+using Quorum.Integration;
+using System.Diagnostics;
 using Infra;
 
 namespace Quorum.States {
@@ -19,6 +21,12 @@ namespace Quorum.States {
         public ICommunicationsService DiscoveryService { get; set; }
 
         public IConfiguration Configuration { get; set; }
+
+        public IPayloadParser Parser { get; set; }
+
+        public IPayloadBuilder Builder { get; set; }
+
+        public IWriteableChannel Channel { get; set; }
 
         public override async Task<StateResult> OnEntry(IStateMachineContext<IExecutionContext> context) {
             bool reversionPossible = AllowInterrupt;
@@ -56,6 +64,29 @@ namespace Quorum.States {
             }
             result.Revert = reversionPossible && context.EnclosingMachine.HasPreviousState;
             return result;
+        }
+
+        public override async Task<StateResult> Execute(IStateMachineContext<IExecutionContext> context, IEventInstance anEvent) {
+            Stopwatch watch = new Stopwatch();
+            try {
+                var request = Parser.As<OutOfBandDiscoveryRequest>(anEvent.Payload);
+                int timeout = Configuration.Get(Constants.Configuration.ResponseLimit);
+                LogFacade.Instance.LogDebug("Query timeout set at ms = " + timeout);
+                var neighbourResponses = (await DiscoveryService.Query(request.MootedNeighbours.Except(new[] { context.ExecutionContext.HostName }), true) ?? Enumerable.Empty<Neighbour>())
+                                .Select(n => new SingleDiscoveryResult { Name = n.Name, Contacted = n.IsValid })
+                                .ToArray();
+                // This is a wait as the caller is not guaranteed to be async possible
+                await Channel.Respond(anEvent.ResponseContainer,
+                                Builder.Create(new DiscoveryEncapsulate { Name = context.ExecutionContext.HostName, Results = neighbourResponses }),
+                                timeout);
+            }
+            catch {
+            }
+            finally {
+                LogFacade.Instance.LogDebug("OOB response in ms = " + watch.ElapsedMilliseconds);
+            }
+            // This is a bounce state, so we revert to the previous state
+            return new StateResult { Revert = true };
         }
 
         private bool AllowInterrupt { get; set; }

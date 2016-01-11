@@ -62,13 +62,13 @@
         </div>
     </div>
     <p></p>
-    <div class="row" data-bind="visible: analysisIssues" style="color: red;">
-        <div class="col-xs-8">
+    <div class="row" id="analysisResults" style="display: none;">
+        <div class="col-xs-12 text-center">
+            <h3>Analysis Results</h3>
+        </div>
+        <div class="col-xs-12 text-center" data-bind="visible: analysisIssues" style="color: red;">
             Warning: Detected that the quorum is unstable - different protocols in use.
         </div>
-    </div>
-    <p></p>
-    <div class="row" id="analysisResults" style="display: none;">
         <div class="col-xs-12">
             <table class="table">
                 <thead>
@@ -76,15 +76,24 @@
                         <th>Name</th>
                         <th>Contacted?</th>
                         <th>Protocol</th>
+                        <th>Self discovery successful</th>
+                        <th>Uncontactable machines</th>
                     </tr>
                 </thead>
                 <tbody data-bind="foreach: targets">
                     <tr>
                         <td data-bind="text: name"></td>
-                        <td data-bind="visible: !querying(), text: contacted"></td>
-                        <td data-bind="visible: querying"><img src="~/Content/Images/ajax-loader.gif" /></td>
-                        <td data-bind="visible: !querying(), text: protocol"></td>
-                        <td data-bind="visible: querying"><img src="~/Content/Images/ajax-loader.gif" /></td>
+                        <td data-bind="visible: !phase1Active(), text: contactedText"></td>
+                        <td data-bind="visible: phase1Active"><img src="~/Content/Images/ajax-loader.gif" /></td>
+                        <td data-bind="visible: !phase1Active(), text: protocol"></td>
+                        <td data-bind="visible: phase1Active"><img src="~/Content/Images/ajax-loader.gif" /></td>
+                        <td data-bind="visible: phase1Active()">-</td>
+                        <td data-bind="visible: inactive() && $root.analysisLeft() == 0">
+                            <img height="16" width="16" data-bind="attr: { src: phase2Image() }" />
+                        </td>
+                        <td data-bind="visible: inactive() && $root.analysisLeft() > 0, text: phase2Ok"></td>
+                        <td data-bind="visible: phase2Active"><img src="~/Content/Images/ajax-loader.gif" /></td>
+                        <td data-bind="visible: inactive() && $root.analysisLeft() == 0, text: uncontactedMachines"></td>
                     </tr>
                 </tbody>
             </table>
