@@ -70,7 +70,7 @@
                             Timeout: obsForm.responseLimit() * 5,
                             Machines: machinesContacted.map(function (m) { return m.name; }),
                             PossibleNeighbours: obsForm.members().split(','),
-                            Protocol: machinesContacted[0].protocol().toLowerCase(),
+                            TransportType: machinesContacted[0].protocol().toLowerCase(),
                             Port: obsForm.port()
                         }),
                         contentType: 'application/json',
