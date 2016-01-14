@@ -111,7 +111,6 @@
             entries: ko.observableArray([]),
             maxEntries: ko.observable(50),
             config: cfg,
-            socketViewModels: ko.observableArray([]),
             scanTimer: null,
             insecure: !secureTransport
         };
@@ -133,8 +132,11 @@
         loggingViewModel.scanTimer = setInterval(qcc.scanner, 10000, loggingViewModel.config, loggingViewModel.config.members, onScanComplete);
 
         $(window).unload(function () {
-            qcc.log("Stopping scan timer");
+            qcc.log("Stopping scan timer and closing any open sockets");
             clearInterval(loggingViewModel.scanTimer);
+            loggingViewModel.nodes().forEach(function (m) {
+                m.socketViewModel && m.socketViewModel.close();
+            });
         });
 
         ko.applyBindings(loggingViewModel, $('#bindingSection')[0]);

@@ -211,7 +211,7 @@
                 vm.communicationsErrors.push({ id: Date.now(), status: status, error: error, formattedDate: formattedNow() });
             },
             function () {
-                vm.queries(vm.queries() + vm.members.length);
+                vm.queries(vm.queries() + mcs.length);
                 vm.querying(false);
             });
         }, period));

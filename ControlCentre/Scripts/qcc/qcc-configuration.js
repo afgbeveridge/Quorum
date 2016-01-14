@@ -48,8 +48,13 @@
         });
         obsForm.targets = ko.observableArray();
         obsForm.analysisIssues = ko.observable(false);
-        obsForm.analysisLeft = ko.observable(0);
-        obsForm.analysisLeft.subscribe(function (val) {
+        obsForm.phase1QueriesOutstanding = ko.observable(0);
+        obsForm.phase2QueriesOutstanding = ko.observable(0);
+        obsForm.analysisInProgress = ko.computed(function () {
+            return obsForm.phase1QueriesOutstanding() > 0 | obsForm.phase2QueriesOutstanding() > 0;
+        });
+
+        obsForm.phase1QueriesOutstanding.subscribe(function (val) {
             var machinesContacted = obsForm.targets().filter(function (m) { return m.contacted(); });
             if (val == 0) {
                 if (obsForm.analysisIssues() || machinesContacted.length == 0) {
@@ -63,6 +68,7 @@
                         return qcc.findWithIndex(machinesContacted, function (p) { return p.name == name; }).element;
                     };
                     qcc.log('Commence phase #2 of analysis');
+                    obsForm.phase2QueriesOutstanding(machinesContacted.length);
                     $.ajax({
                         url: qcc.makeUrl('/Neighbourhood/RequestQuorumSelfValidation'),
                         type: 'POST',
@@ -88,6 +94,9 @@
 
                     .fail(function () {
                         machinesContacted.forEach(function (m) { m.phase2Active(false); })
+                    })
+                    .always(function () {
+                        obsForm.phase2QueriesOutstanding(obsForm.phase2QueriesOutstanding() - 1);
                     });
                 }
             }
@@ -96,6 +105,7 @@
             var cur = obsForm.targets().filter(function(m) { return m.contacted(); });
             obsForm.analysisIssues(cur.length < 2 ? false : !cur.reduce(function (a, b) { return a.protocol() === b.protocol() ? a : false; }));
         });
+
         ko.applyBindings(obsForm, $('#cfgBindingSection')[0]);
 
         function deriveConfiguration() {
@@ -159,42 +169,43 @@
         $('#analyze').click(function () {
             $('#importExport').hide();
             $('#analysisResults').show();
-            qcc.log('Commence phase #1 of analysis');
-            obsForm.targets.removeAll();
-            var mems = obsForm.members().split(',');
-            obsForm.analysisLeft(mems.length);
-            mems.forEach(function (t) {
-                var cur = new analysisVm(t);
-                obsForm.targets.push(cur);
-                $.ajax({
-                    url: qcc.makeUrl('/Neighbourhood/Analyze'),
-                    type: 'POST',
-                    data: JSON.stringify({
-                        Timeout: obsForm.responseLimit(),
-                        Name: t
-                    }),
-                    contentType: 'application/json',
-                    timeout: obsForm.responseLimit() * 5,
-                })
-                .done(function (data, textStatus, jqXHR) {
+            if (!obsForm.analysisInProgress()) {
+                qcc.log('Commence phase #1 of analysis');
+                obsForm.targets.removeAll();
+                var mems = obsForm.members().split(',');
+                obsForm.phase1QueriesOutstanding(mems.length);
+                mems.forEach(function (t) {
+                    var cur = new analysisVm(t);
+                    obsForm.targets.push(cur);
+                    $.ajax({
+                        url: qcc.makeUrl('/Neighbourhood/Analyze'),
+                        type: 'POST',
+                        data: JSON.stringify({
+                            Timeout: obsForm.responseLimit(),
+                            Name: t
+                        }),
+                        contentType: 'application/json',
+                        timeout: obsForm.responseLimit() * 5,
+                    })
+                    .done(function (data, textStatus, jqXHR) {
                         var protocol = data.result.Protocol;
                         cur.phase1Active(false);
                         cur.contacted(protocol ? true : false);
                         cur.protocol(protocol || '-');
                         // Let all machines be dispatched to phase #2; this is for a reason
                         // protocol && obsForm.machinesContacted.push({ protocol: protocol, vm: cur });
-                })
-                .fail(function () {
-                    cur.phase1Active(false);
-                    cur.contacted(false);
-                    cur.protocol('-');
-                })
-                .always(function () {
-                    obsForm.targets.valueHasMutated();
-                    obsForm.analysisLeft(obsForm.analysisLeft() - 1);
+                    })
+                    .fail(function () {
+                        cur.phase1Active(false);
+                        cur.contacted(false);
+                        cur.protocol('-');
+                    })
+                    .always(function () {
+                        obsForm.targets.valueHasMutated();
+                        obsForm.phase1QueriesOutstanding(obsForm.phase1QueriesOutstanding() - 1);
+                    });
                 });
-            });
-
+            }
         });
 
         $('#hideAnalysis').click(function () {

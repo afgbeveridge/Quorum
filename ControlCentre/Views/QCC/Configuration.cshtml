@@ -88,12 +88,12 @@
                         <td data-bind="visible: !phase1Active(), text: protocol"></td>
                         <td data-bind="visible: phase1Active"><img src="~/Content/Images/ajax-loader.gif" /></td>
                         <td data-bind="visible: phase1Active()">-</td>
-                        <td data-bind="visible: inactive() && $root.analysisLeft() == 0">
+                        <td data-bind="visible: inactive() && $root.phase1QueriesOutstanding() == 0">
                             <img height="16" width="16" data-bind="attr: { src: phase2Image() }" />
                         </td>
-                        <td data-bind="visible: inactive() && $root.analysisLeft() > 0, text: phase2Ok"></td>
+                        <td data-bind="visible: inactive() && $root.phase1QueriesOutstanding() > 0, text: phase2Ok"></td>
                         <td data-bind="visible: phase2Active"><img src="~/Content/Images/ajax-loader.gif" /></td>
-                        <td data-bind="visible: inactive() && $root.analysisLeft() == 0, text: uncontactedMachines"></td>
+                        <td data-bind="visible: inactive() && $root.phase1QueriesOutstanding() == 0, text: uncontactedMachines"></td>
                     </tr>
                 </tbody>
             </table>
