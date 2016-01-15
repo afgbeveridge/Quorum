@@ -15,7 +15,7 @@
             "timeOut": "2500"
         };
         var obsForm = config.observableForm;
-        // Now fill in some limits
+        // Now fill in some limits and augment the observable form
         obsForm.limits = {
             minResponseLimit: 999,
             maxResponseLimit: 30000,
@@ -24,6 +24,11 @@
             standardInsecurePort: 9999,
             standardSecurePort: 8999
         };
+
+        function standardPortForProtocol(protocol) {
+            return protocol.indexOf('s') > 0 ? obsForm.limits.standardSecurePort : obsForm.limits.standardInsecurePort;
+        };
+
         obsForm.isInRange = function (val, min, max) {
             return qcc.isPositiveNumeric(val) && parseInt(val) >= min && parseInt(val) <= max;
         };
@@ -38,7 +43,7 @@
             return !obsForm.isInRange(obsForm.port(), obsForm.limits.minPort, obsForm.limits.maxPort);
         });
         obsForm.transportType.subscribe(function (val) {
-            return obsForm.port(val.indexOf('s') > 0 ? obsForm.limits.standardSecurePort : obsForm.limits.standardInsecurePort);
+            return obsForm.port(standardPortForProtocol(val));
         });
         obsForm.isValid = ko.computed(function () {
             return !obsForm.membersInvalid() && !obsForm.responseLimitInvalid() && !obsForm.portInvalid();
@@ -47,17 +52,21 @@
             $('#analysisResults').hide();
         });
         obsForm.targets = ko.observableArray();
-        obsForm.analysisIssues = ko.observable(false);
+        obsForm.disjointProtocols = ko.observable(false);
+        obsForm.analysisDetectedProtocol = ko.observable();
+        obsForm.configurationAnalysisProtocolDisagreement = ko.computed(function () {
+            return obsForm.analysisDetectedProtocol() && obsForm.analysisDetectedProtocol() !== obsForm.transportType();
+        });
         obsForm.phase1QueriesOutstanding = ko.observable(0);
         obsForm.phase2QueriesOutstanding = ko.observable(0);
         obsForm.analysisInProgress = ko.computed(function () {
-            return obsForm.phase1QueriesOutstanding() > 0 | obsForm.phase2QueriesOutstanding() > 0;
+            return obsForm.phase1QueriesOutstanding() > 0 || obsForm.phase2QueriesOutstanding() > 0;
         });
 
         obsForm.phase1QueriesOutstanding.subscribe(function (val) {
             var machinesContacted = obsForm.targets().filter(function (m) { return m.contacted(); });
             if (val == 0) {
-                if (obsForm.analysisIssues() || machinesContacted.length == 0) {
+                if (obsForm.disjointProtocols() || machinesContacted.length == 0) {
                     machinesContacted.forEach(function (m) {
                         m.phase2Active(false);
                         m.phase2Ok('n');
@@ -69,6 +78,7 @@
                     };
                     qcc.log('Commence phase #2 of analysis');
                     obsForm.phase2QueriesOutstanding(machinesContacted.length);
+                    var protocolInUse = machinesContacted[0].protocol().toLowerCase();
                     $.ajax({
                         url: qcc.makeUrl('/Neighbourhood/RequestQuorumSelfValidation'),
                         type: 'POST',
@@ -76,8 +86,8 @@
                             Timeout: obsForm.responseLimit() * 5,
                             Machines: machinesContacted.map(function (m) { return m.name; }),
                             PossibleNeighbours: obsForm.members().split(','),
-                            TransportType: machinesContacted[0].protocol().toLowerCase(),
-                            Port: obsForm.port()
+                            TransportType: protocolInUse,
+                            Port: standardPortForProtocol(protocolInUse)
                         }),
                         contentType: 'application/json',
                         timeout: obsForm.responseLimit() * 5,
@@ -91,7 +101,6 @@
                             cur.uncontactedMachines(uncontactable);
                         });
                     })
-
                     .fail(function () {
                         machinesContacted.forEach(function (m) { m.phase2Active(false); })
                     })
@@ -103,7 +112,8 @@
         });
         obsForm.targets.subscribe(function () {
             var cur = obsForm.targets().filter(function(m) { return m.contacted(); });
-            obsForm.analysisIssues(cur.length < 2 ? false : !cur.reduce(function (a, b) { return a.protocol() === b.protocol() ? a : false; }));
+            obsForm.disjointProtocols(cur.length < 2 ? false : !cur.reduce(function (a, b) { return a.protocol() === b.protocol() ? a : false; }));
+            obsForm.analysisDetectedProtocol(cur.length > 0 && !obsForm.disjointProtocols() ? cur[0].protocol().toLowerCase() : null);
         });
 
         ko.applyBindings(obsForm, $('#cfgBindingSection')[0]);
@@ -121,6 +131,8 @@
         };
 
         $('#save').click(function () {
+            if (obsForm.configurationAnalysisProtocolDisagreement())
+                alert("Your configuration protocol disagrees with the analysis results");
             var cfg = deriveConfiguration();
             qcc.save(cfg);
             config.hash = qcc.computeConfigurationHash(obsForm);
@@ -246,6 +258,7 @@
         $(window).on('beforeunload', function () {
             var hash = qcc.computeConfigurationHash(obsForm);
             if (hash != config.hash) return 'You have unsaved changes.';
+            if (obsForm.obsForm.configurationAnalysisProtocolDisagreement()) return "Configuration protocol may be incorrect";
         });
 
         $('#cfgBindingSection').show('slidein');

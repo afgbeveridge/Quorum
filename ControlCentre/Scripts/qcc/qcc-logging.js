@@ -117,6 +117,13 @@
 
         loggingViewModel.nodes = ko.observableArray(loggingViewModel.config.members.map(function (m) { return new selectableNodeViewModel(m, cfg.port); }));
 
+        loggingViewModel.maxEntries.extend({ rateLimit: { timeout: 250, method: "notifyWhenChangesStop" } });
+        loggingViewModel.maxEntries.subscribe(function (val) {
+            var v = parseInt(val), curLength = loggingViewModel.entries().length;
+            if (val > 0 && val < curLength) 
+                loggingViewModel.entries.splice(val, curLength - val);
+        });
+
         function onScanComplete(machines) {
             var found = machines.map(function (m) { return m.Name; });
             loggingViewModel.nodes().forEach(function (m) {

@@ -8,7 +8,7 @@ namespace Quorum {
 
     public static class EventNames {
 
-        public const string Discovery = "Disco";
+        public const string Discovery = "Discovery";
         public const string Query = "Query";
         public const string Active = "Active";
         public const string Die = "Die";
