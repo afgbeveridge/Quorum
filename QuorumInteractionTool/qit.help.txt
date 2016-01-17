@@ -1,0 +1,4 @@
+﻿This utility must be invoked with one argument, from the list below, and
+the file quorum.config.json must contain a valid configuration json document.
+
+Options available:
