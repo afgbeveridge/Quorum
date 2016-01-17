@@ -5,10 +5,13 @@
 //
 #endregion
 
+using System.Collections.Generic;
+
 namespace FSM {
 
     public interface IContainer {
         TType Resolve<TType>(string name = null) where TType : class;
+        IEnumerable<TType> ResolveAll<TType>() where TType : class;
     }
 
 }

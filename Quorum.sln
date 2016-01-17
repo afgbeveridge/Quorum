@@ -41,6 +41,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utils", "Utils", "{7BF37DF1
 		gencert.bat = gencert.bat
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuorumInteractionTool", "QuorumInteractionTool\QuorumInteractionTool.csproj", "{EEA3A6C1-82E2-43B3-8E18-0AB5EB6E7A36}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -89,6 +91,10 @@ Global
 		{025CDCC8-1240-4241-8CA1-00A50A11CA8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{025CDCC8-1240-4241-8CA1-00A50A11CA8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{025CDCC8-1240-4241-8CA1-00A50A11CA8D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEA3A6C1-82E2-43B3-8E18-0AB5EB6E7A36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEA3A6C1-82E2-43B3-8E18-0AB5EB6E7A36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEA3A6C1-82E2-43B3-8E18-0AB5EB6E7A36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEA3A6C1-82E2-43B3-8E18-0AB5EB6E7A36}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

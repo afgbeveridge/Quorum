@@ -36,9 +36,15 @@ namespace Quorum {
             AcceptTransportType((TransportType)Enum.Parse(typeof(TransportType), type, true));
         }
 
+        public static bool ExpectsEncryption {
+            get {
+                return Shim.Current.ToString().EndsWith("s");
+            }
+        }
+
         public static void AcceptTransportType(TransportType type) {
             Shim.Current = type;
-            new Configuration().WithAppropriateOverrides().LocalSet(Constants.Configuration.EncryptedTransportRequired.Key, Shim.Current.ToString().EndsWith("s"));
+            new Configuration().WithAppropriateOverrides().LocalSet(Constants.Configuration.EncryptedTransportRequired.Key, ExpectsEncryption);
         }
 
         public static void Initialise(string type = null) {
@@ -57,7 +63,7 @@ namespace Quorum {
             }
         }
 
-        public static bool IsTransient{
+        public static bool IsTransient {
             get {
                 return Shim.IsTransient;
             }

@@ -5,6 +5,7 @@
 //
 #endregion
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using FSM;
 using Quorum.States;
@@ -188,6 +189,10 @@ namespace Quorum {
             internal IWindsorContainer Container { get; set; }
             public TType Resolve<TType>(string name = null) where TType : class {
                 return String.IsNullOrEmpty(name) ? Container.Resolve<TType>() : Container.Resolve<TType>(name);
+            }
+
+            public IEnumerable<TType> ResolveAll<TType>() where TType : class {
+                return Container.ResolveAll<TType>().Cast<TType>();
             }
         }
 

@@ -134,13 +134,10 @@ namespace Quorum.Services {
             return new AnalysisResult { Protocol = result.IsNull() || !result.IsValid ? null : protocol.ToString() };
         }
 
-        public Task OfferConfiguration(IEnumerable<string> targets, IEnumerable<string> quorumMembers) {
-            targets
-                .ToList()
-                .ForEach(async t => {
-                    await WriteNeighbour(t, Builder.Create(new ConfigurationBroadcast { QuorumMembers = quorumMembers.ToArray() }));
-                });
-            return Task.FromResult(0);
+        public async Task OfferConfiguration(IEnumerable<string> targets, IEnumerable<string> quorumMembers) {
+            var request = Builder.Create(new ConfigurationBroadcast { QuorumMembers = quorumMembers.ToArray() });
+            Task<string>[] queries = targets.Select(t => WriteNeighbour(t, request)).ToArray();
+            await Task.WhenAll(queries);
         }
 
 
