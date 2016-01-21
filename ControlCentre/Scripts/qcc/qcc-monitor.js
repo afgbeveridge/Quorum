@@ -197,7 +197,8 @@
                                 needConfig.push(m.Name);
                         }
                     });
-                    (needConfig.length > 0) && qcc.broadcastConfiguration(config, needConfig, mcs);
+                    // Send all machines as possible quorum members in case one comes on line between a query cycle
+                    (needConfig.length > 0) && qcc.broadcastConfiguration(config, needConfig, vm.members.map(function(m) { return m.name; })); //mcs);
                 },
             function (xhr, status, error) {
                 mcs.forEach(function (m) {

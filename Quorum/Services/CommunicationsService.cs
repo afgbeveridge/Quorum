@@ -57,13 +57,13 @@ namespace Quorum.Services {
 
         public async Task<BroadcastDiscoveryResult> BroadcastDiscovery(IEnumerable<string> targets, IEnumerable<string> possibleNeighbours) {
             var request = Builder.Create(new OutOfBandDiscoveryRequest { MootedNeighbours = possibleNeighbours });
-            Task<string>[] queries = targets.Select(s => WriteNeighbour(s, request)).ToArray();
+            Task<WriteResult>[] queries = targets.Select(s => WriteNeighbour(s, request)).ToArray();
             LogFacade.Instance.LogDebug("Wait for " + queries.Count() + " task(s)");
             await Task.WhenAll(queries);
             return new BroadcastDiscoveryResult {
                 QueriedMembers = queries
                                     .Where(t => !t.IsFaulted && t.Result.IsNotNull())
-                                    .Select(t => Parser.As<DiscoveryEncapsulate>(t.Result))
+                                    .Select(t => Parser.As<DiscoveryEncapsulate>(t.Result.Response))
                                     .ToArray()
             };
         }
@@ -134,10 +134,11 @@ namespace Quorum.Services {
             return new AnalysisResult { Protocol = result.IsNull() || !result.IsValid ? null : protocol.ToString() };
         }
 
-        public async Task OfferConfiguration(IEnumerable<string> targets, IEnumerable<string> quorumMembers) {
+        public async Task<IEnumerable<object>> OfferConfiguration(IEnumerable<string> targets, IEnumerable<string> quorumMembers) {
             var request = Builder.Create(new ConfigurationBroadcast { QuorumMembers = quorumMembers.ToArray() });
-            Task<string>[] queries = targets.Select(t => WriteNeighbour(t, request)).ToArray();
+            Task<WriteResult>[] queries = targets.Select(t => WriteNeighbour(t, request)).ToArray();
             await Task.WhenAll(queries);
+            return queries.Where(t => !t.IsFaulted).Select(t => new { Response = t.Result.Response, Name = t.Result.Name }).ToArray();
         }
 
 
@@ -147,9 +148,9 @@ namespace Quorum.Services {
             try {
                 Stopwatch watch = new Stopwatch();
                 watch.Start();
-                string result = await WriteNeighbour(name.ToString(), 
+                string result = (await WriteNeighbour(name.ToString(), 
                                               Builder.Create(new QueryRequest { Requester = Network.HostName, Timeout = Configuration.Get(Constants.Configuration.ResponseLimit) }),
-                                              channel);
+                                              channel)).Response;
                 n = result.IsNull() ? Neighbour.NonRespondingNeighbour(name) : Parser.As<Neighbour>(result);
                 watch.Stop();
                 n.LastRequestElapsedTime = watch.ElapsedMilliseconds;
@@ -162,7 +163,7 @@ namespace Quorum.Services {
             return n;
         }
 
-        private async Task<string> WriteNeighbour(string name, string content, IWriteableChannel channel = null) {
+        private async Task<WriteResult> WriteNeighbour(string name, string content, IWriteableChannel channel = null) {
             string result = null;
             try {
                 LogFacade.Instance.LogDebug("Write to " + name + " with content: '" + content + "'");
@@ -175,7 +176,12 @@ namespace Quorum.Services {
             catch (Exception ex) {
                 LogFacade.Instance.LogWarning("Neighbour (" + name + ") queried, general exception abend '" + RecurseException(ex) + "'");
             }
-            return result;
+            return new WriteResult { Response = result, Name = name };
+        }
+
+        private class WriteResult {
+            internal string Name { get; set; }
+            internal string Response { get; set; }
         }
 
         private string RecurseException(Exception ex) {

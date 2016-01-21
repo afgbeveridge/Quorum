@@ -28,7 +28,7 @@ namespace Quorum.Services {
 
         Task<AnalysisResult> Analyze(IContainer container, string name);
 
-        Task OfferConfiguration(IEnumerable<string> targets, IEnumerable<string> quorumMembers);
+        Task<IEnumerable<object>> OfferConfiguration(IEnumerable<string> targets, IEnumerable<string> quorumMembers);
 
         bool RenderEligible(string name);
 

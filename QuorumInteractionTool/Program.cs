@@ -25,8 +25,7 @@ namespace QuorumInteractionTool {
                 Execute(args.First());
             }
             catch (Exception ex) {
-                Console.WriteLine(ex.Message);
-                Console.WriteLine("Execution finished with errors");
+                Console.WriteLine(Container.Resolve<IPayloadBuilder>().Create(new { Result = ex.Message, Success = false }));
                 Environment.Exit(1);
             }
         }
@@ -69,6 +68,7 @@ namespace QuorumInteractionTool {
 
     }
 
+
     public class QuorumConfiguration {
         public int Port { get; set; }
         public int ResponseLimit { get; set; }
@@ -98,7 +98,7 @@ namespace QuorumInteractionTool {
 
         public async Task<string> Execute(QuorumConfiguration cfg, IContainer container) {
             object result = await Target.Execute(cfg, container);
-            return container.Resolve<IPayloadBuilder>().Create(new { Result = result });
+            return container.Resolve<IPayloadBuilder>().Create(new { Result = result, Success = true });
         }
 
     } 
@@ -156,6 +156,23 @@ namespace QuorumInteractionTool {
         public string HelpText {
             get {
                 return "discover - ask quorum members to self validate";
+            }
+        }
+    }
+
+    public class OfferConfigurationCommand : ICommand {
+
+        public async Task<object> Execute(QuorumConfiguration cfg, IContainer container) {
+            return await container.Resolve<ICommunicationsService>().OfferConfiguration(cfg.Nexus, cfg.Nexus);
+        }
+
+        public bool Understands(string shorthand) {
+            return shorthand == "offer";
+        }
+
+        public string HelpText {
+            get {
+                return "offer - offer membership configuration to all quorum members";
             }
         }
     }

@@ -12,7 +12,7 @@ namespace Quorum {
 
     // Lazy class :-)
 
-    public enum TransportType { Tcp, Http, Https, Tcps };
+    public enum TransportType { Http, Https, Tcp, Tcps };
 
     public static class ActiveDisposition {
 
