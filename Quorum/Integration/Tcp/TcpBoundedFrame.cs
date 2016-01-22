@@ -22,11 +22,14 @@ namespace Quorum.Integration.Tcp {
         static TcpBoundedFrame() {
             LengthBytes = new Configuration().WithAppropriateOverrides().Get(Constants.Configuration.TcpFrameSizeSpecificationLength);
             DirectiveFromContentSeparator = new string((char)3, 1);
+            FrameStartMarker = "~";
         }
 
         public static int LengthBytes { get; set; }
 
         public static string DirectiveFromContentSeparator { get; set; }
+
+        private static string FrameStartMarker { get; set; }
 
         public async Task<int> FrameAndWrite(Stream stream, string content, string directives = "") {
             return await FrameAndWrite(stream, SizeUp(content, directives));
@@ -73,12 +76,14 @@ namespace Quorum.Integration.Tcp {
             var unconverted = directives + (!string.IsNullOrEmpty(directives) ? DirectiveFromContentSeparator : string.Empty) + content;
             var all = Convert.ToBase64String(Encoding.ASCII.GetBytes(unconverted));
             LogFacade.Instance.LogDebug("Converted tcp send content: " + all);
-            return LengthBytes + all.Length.ToString().PadLeft(LengthBytes, '0') + all;
+            return FrameStartMarker + LengthBytes + all.Length.ToString().PadLeft(LengthBytes, '0') + all;
         }
 
         public static async Task<int?> DetermineFrameSize(Stream stream) {
-            // First byte is size of length spec
+            // 1st byte is frame start marker
+            // 2nd byte is size of length spec
             // Retained for possible future use
+            await EnsureFrameStartCorrect(stream);
             LogFacade.Instance.LogDebug("Request to determine frame size");
             int? remaining = null;
             var lenSpec = await stream.ReadExactly(1);
@@ -90,9 +95,16 @@ namespace Quorum.Integration.Tcp {
             return remaining;
         }
 
+        // Crude
+        private static async Task EnsureFrameStartCorrect(Stream stream) {
+            LogFacade.Instance.LogDebug("Require frame start marker");
+            var fs = await stream.ReadExactly(FrameStartMarker.Length);
+            DBC.True((char)fs[0] == FrameStartMarker[0], () => "No frame start marker present in TCP frame");
+        }
+
         // If a complete frame is offered up, length bytes and all, try and decipher
         public static string DissectCompleteFrame(string src) {
-            return src.Substring(LengthBytes + 1);
+            return src.Substring(LengthBytes + 1 + FrameStartMarker.Length);
         }
 
     }
