@@ -186,7 +186,8 @@
             qcc.queryMachines(mcs, config,
                 function (machines) {
                     var needConfig = [];
-                    var curSet = mcs.sort().join("");
+                    var allMembers = vm.members.map(function (m) { return m.name; }).sort();
+                    var curSet = allMembers.join("");
                     machines.forEach(function (m) {
                         var target = getObservable(m.Name);
                         if (!m.IsValid)
@@ -198,7 +199,7 @@
                         }
                     });
                     // Send all machines as possible quorum members in case one comes on line between a query cycle
-                    (needConfig.length > 0) && qcc.broadcastConfiguration(config, needConfig, vm.members.map(function(m) { return m.name; })); //mcs);
+                    (needConfig.length > 0) && qcc.broadcastConfiguration(config, needConfig, allMembers); //mcs);
                 },
             function (xhr, status, error) {
                 mcs.forEach(function (m) {
