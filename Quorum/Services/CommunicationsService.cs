@@ -62,7 +62,7 @@ namespace Quorum.Services {
             await Task.WhenAll(queries);
             return new BroadcastDiscoveryResult {
                 QueriedMembers = queries
-                                    .Where(t => !t.IsFaulted && t.Result.IsNotNull())
+                                    .Where(t => !t.IsFaulted && t.Result.IsNotNull() && t.Result.Response.IsNotNull())
                                     .Select(t => Parser.As<DiscoveryEncapsulate>(t.Result.Response))
                                     .ToArray()
             };

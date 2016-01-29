@@ -12,12 +12,12 @@
             "positionClass": "toast-top-center",
             "showDuration": "300",
             "hideDuration": "1000",
-            "timeOut": "2500"
+            "timeOut": "1500"
         };
         var obsForm = config.observableForm;
         // Now fill in some limits and augment the observable form
         obsForm.limits = {
-            minResponseLimit: 999,
+            minResponseLimit: 3000,
             maxResponseLimit: 30000,
             minPort: 1025,
             maxPort: 65535,
