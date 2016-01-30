@@ -9,7 +9,7 @@ This project provides:
 * A pro forma Windows service implementation for a quorum member
 * A pro forma console app implementation for a quorum member
 
-Please see the [wiki](https://github.com/afgbeveridge/Quorum/wiki) for further details.
+Please see the [wiki](https://github.com/afgbeveridge/Quorum/wiki) for further details. There is a [Quorum implementation planning guide](https://github.com/afgbeveridge/Quorum/wiki/Planning-a-quorum-implementation) that outlines the quorum establishment process.
 
 # License
 This project is released under the [MIT license](https://opensource.org/licenses/MIT), with the project specific license [here](https://github.com/afgbeveridge/Quorum/blob/master/license.md)
