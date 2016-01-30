@@ -1,5 +1,6 @@
 ﻿using FSM;
 using FluentAssertions;
+using Infra;
 using System.Threading.Tasks;
 
 namespace Quorum.Tests {
@@ -9,6 +10,8 @@ namespace Quorum.Tests {
         protected IStateMachine<IExecutionContext> CreateMachine(Builder bldr) {
             var mc = bldr.Create();
             bldr.Register<IMasterWorkAdapter, EmptyWorker>();
+            // Register any old nexus
+            bldr.Resolve<IConfiguration>().LocalSet(Constants.Configuration.Nexus.Key, "A,B");
             return mc;
         }
 
